@@ -1,0 +1,19 @@
+{
+  "name": "slackclone",
+  "version": "1.0.0",
+  "description": "Slack Clone built for Project Month at Pesto by CODERHOOD Group - Batch 8",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pesto-students/batch-8-CODERHOOD.git"
+  },
+  "author": "sourabhmodi20051 <sourabhmodi20051@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pesto-students/batch-8-CODERHOOD/issues"
+  },
+  "homepage": "https://github.com/pesto-students/batch-8-CODERHOOD#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
