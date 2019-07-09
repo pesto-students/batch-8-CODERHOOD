@@ -14,6 +14,8 @@
   },
   "homepage": "https://github.com/pesto-students/batch-8-CODERHOOD#readme",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:server": "cd server && yarn && yarn test",
+    "test:client": "cd client && yarn && yarn test",
+    "test": "yarn test:client"
   }
 }
