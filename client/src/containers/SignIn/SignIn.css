@@ -1,0 +1,11 @@
+form > figure {
+  margin-bottom: 30px;
+}
+
+figure.image {
+  margin: 0px auto 30px;
+}
+
+.formFooter {
+  margin-top: 40px;
+}
