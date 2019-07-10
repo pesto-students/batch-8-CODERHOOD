@@ -6,20 +6,23 @@ import {
   update,
 } from '../../Repositories/genericRepository';
 import successHandler from '../../libs/routes/successHandler';
+import { userResponse } from '../../Constants/constants';
 import { userModel } from '../../Model';
 
 
 const getUser = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { userFound, userNotFound } = userResponse;
     const result = await findOne(userModel, id);
     if (!result) {
-      const err = new Error('User does not exists');
+      const err = new Error(userNotFound);
+      err.status = 404;
       next(err);
     }
     res
       .status(200)
-      .send(successHandler('User is here', result));
+      .send(successHandler(userFound, result));
   } catch (error) {
     next(error);
   }
@@ -27,10 +30,11 @@ const getUser = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
+    const { foundAllUsers } = userResponse;
     const result = await findMany(userModel);
     res
       .status(200)
-      .send(successHandler('Users are here', result));
+      .send(successHandler(foundAllUsers, result));
   } catch (error) {
     next(error);
   }
@@ -38,13 +42,24 @@ const getAllUsers = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
-    const data = { name, email, password };
+    const {
+      name,
+      email,
+      password,
+      bio,
+    } = req.body;
+    const data = {
+      name,
+      email,
+      password,
+      bio,
+    };
     const result = await create(userModel, data);
+    const { userCreated } = userResponse;
 
     res
-      .status(200)
-      .send(successHandler('User created successfully', result));
+      .status(201)
+      .send(successHandler(userCreated, result));
   } catch (error) {
     next(error);
   }
@@ -53,11 +68,12 @@ const createUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { userDeleted } = userResponse;
     const result = await deleteDoc(userModel, id);
 
     res
       .status(200)
-      .send(successHandler('User deleted successfully', result));
+      .send(successHandler(userDeleted, result));
   } catch (error) {
     next(error);
   }
@@ -66,11 +82,12 @@ const deleteUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { id, dataToUpdate } = req.body;
+    const { userUpdated } = userResponse;
     const result = await update(userModel, id, dataToUpdate);
 
     res
       .status(200)
-      .send(successHandler('User updated successfully', result));
+      .send(successHandler(userUpdated, result));
   } catch (error) {
     next(error);
   }
