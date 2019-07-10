@@ -2,8 +2,8 @@ import React from 'react';
 
 const Container = (props) => {
   return (
-    <section class="section">
-      <div class="container">
+    <section className="section">
+      <div className="container">
         {props.children}
       </div>
     </section>

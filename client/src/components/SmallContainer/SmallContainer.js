@@ -4,8 +4,8 @@ import Container from '../Container/Container';
 const SmallContainer = (props) => {
   return (
     <Container>
-      <div class="columns is-centered">
-        <div class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+      <div className="columns is-centered">
+        <div className="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
           {props.children}  
         </div>
       </div>

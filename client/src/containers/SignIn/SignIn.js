@@ -1,43 +1,28 @@
 import React from "react";
 import SmallContainer from '../../components/SmallContainer/SmallContainer';
+import InputField from '../../components/InputField/InputField';
 import './SignIn.css';
 
 function SignIn() {
   return (
     <SmallContainer>
-      <div className="has-text-centered">
-
-        <figure class="image is-128x128">
+      <form className="has-text-centered">
+        <figure className="image is-128x128">
           <img src="https://dummyimage.com/100x100/000/fff&text=CoderHood" alt="CoderHood" className="brand-logo is-rounded"/>
         </figure>
-        <br/>
 
-        <div className="field has-text-left">
-          <label for="email" className="label is-text-left">Email</label>
-          <div className="control">
-            <input id="email" className="input email" type="email" placeholder="Email" />
-          </div>
+        <InputField labelDirection="left" type="email" id="email" label="Email" />
+        <InputField labelDirection="left" type="password" id="password" label="Password" />
+
+        <div className="control has-text-centered">
+          <button className="button is-primary">Sign In</button>
         </div>
 
-        <div className="field has-text-left">
-          <label for="password" className="label is-text-left">Password</label>
-          <div className="control">
-            <input id="password" className="input password" type="password" placeholder="Password" />
-          </div>
-        </div>
-
-        <div class="control">
-          <button class="button is-primary">Submit</button>
-        </div>
-
-        <br/>
-        <br/>
-        <p>
+        <p className="formFooter">
           Not a registered user?<br />
           <a href="/signup">Sign Up</a>
         </p>
-        
-      </div>
+      </form>
     </SmallContainer>    
   );
 }
