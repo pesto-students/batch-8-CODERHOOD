@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import socketIO from 'socket.io';
 
 import router from './router';
 import { errorHandler, notFoundRoutes } from './libs/routes';
@@ -38,4 +39,5 @@ export const server = app.listen(PORT, (err) => {
   }
 }());
 
+export const io = socketIO(server, { path: '/' });
 export const db = mongoose.connection;
