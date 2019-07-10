@@ -3,8 +3,15 @@ const create = (model, data) => model.create({ ...data });
 const count = model => model.countDocuments();
 
 const findOne = async (model, data) => {
-  const result = await model.findOne({ _id: data }).lean();
-  return result;
+  try {
+    const result = await model.findOne({ _id: data }).lean();
+    if (!result) {
+      throw new Error('No data found');
+    }
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const findMany = async (model, data, skip, limit) => {
@@ -14,11 +21,11 @@ const findMany = async (model, data, skip, limit) => {
   });
   const counts = await count(model);
   const result = { counts, data: [...foundData] };
-  if (!result) {
+  if (!counts) {
     const error = {
       error: 'No Data Found',
       message: 'No data present in DB',
-      status: 400,
+      status: 404,
     };
     throw error;
   }
