@@ -39,5 +39,6 @@ export const server = app.listen(PORT, (err) => {
   }
 }());
 
-export const io = socketIO(server, { path: '/' });
+export const socketPath = '/sockets/';
+export const io = socketIO(server, { path: socketPath });
 export const db = mongoose.connection;

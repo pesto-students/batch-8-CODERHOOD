@@ -1,6 +1,11 @@
 
 import client from 'socket.io-client';
-import { io, server, db } from '../index';
+import {
+  io,
+  server,
+  socketPath,
+  db,
+} from '../index';
 import {
   createWorkspaceNamespace,
   configureEventHandlersForWorkspace,
@@ -33,6 +38,7 @@ afterAll((done) => {
 describe('basic socket.io communication testing', () => {
   beforeEach((done) => {
     socket = client(`http://127.0.0.1:${httpServerAddr.port}`, {
+      path: socketPath,
       'reconnection delay': 0,
       'reopen delay': 0,
       'force new connection': true,
@@ -72,6 +78,7 @@ describe('testing socket functions from "./Sockets/socket.js"', () => {
     configureEventHandlersForWorkspace(workspace);
 
     socket = client(`http://127.0.0.1:${httpServerAddr.port}/${namespace}`, {
+      path: socketPath,
       'reconnection delay': 0,
       'reopen delay': 0,
       'force new connection': true,
@@ -122,6 +129,7 @@ describe('testing messaging between two sockets in a namespace', () => {
       const soc = client(
         `http://127.0.0.1:${httpServerAddr.port}/${nsps}`,
         {
+          path: socketPath,
           'reconnection delay': 0,
           'reopen delay': 0,
           'force new connection': true,
