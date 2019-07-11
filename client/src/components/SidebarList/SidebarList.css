@@ -1,0 +1,8 @@
+.content > h4 > span {
+  float: right;
+}
+
+.content > h4 {
+  padding-bottom: 5px;
+  border-bottom: 2px solid black;
+}
