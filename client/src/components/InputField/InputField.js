@@ -8,6 +8,7 @@ const InputField = ({
   className, 
   placeholder,
   id,
+  error,
   ...props
 }) => {
   return (
@@ -21,11 +22,14 @@ const InputField = ({
           id={id} 
           type={type} 
           placeholder={placeholder} 
+          {...props}
           className={cn(
-          "input",
-          className
-        )} />
+            "input",
+            className
+          )}
+        />
       </div>
+      {error ? <p className="is-pulled-right help is-danger">{error}</p> : null}
     </div>
   );
 };
