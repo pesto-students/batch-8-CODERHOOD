@@ -2,15 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./containers/App";
-import SignIn from "./containers/SignIn/SignIn";
+import { SignIn, SignUp } from './containers'
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { NotFound } from "./components";
 
 const routing = (
   <Router>
     <Switch>
       <Route exact path="/" component={App} />
       <Route exact path="/signin" component={SignIn} />
+      <Route exact path="/signup" component={SignUp} />
+      <Route component={NotFound} />
     </Switch>
   </Router>
 );
