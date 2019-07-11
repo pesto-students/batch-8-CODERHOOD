@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <AppContextProvider>
-        <Header workspaceName="#CoderHood" />
+        <Header channelName="#CoderHood" memberCount="9" />
         <SmallContainer>
           <UserStatus />
         </SmallContainer>
