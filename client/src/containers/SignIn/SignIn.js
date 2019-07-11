@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom'
 import SmallContainer from '../../components/SmallContainer/SmallContainer';
 import InputField from '../../components/InputField/InputField';
 import './SignIn.css';
@@ -20,7 +21,7 @@ function SignIn() {
 
         <p className="formFooter">
           Not a registered user?<br />
-          <a href="/signup">Sign Up</a>
+          <Link to="/signup">Sign Up</Link>
         </p>
       </form>
     </SmallContainer>    
