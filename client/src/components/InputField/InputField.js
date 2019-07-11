@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import capitalizeFirstLetter from '../../libs/utils';
 
 const InputField = ({
   label,
@@ -8,6 +9,7 @@ const InputField = ({
   className, 
   placeholder,
   id,
+  error,
   ...props
 }) => {
   return (
@@ -15,17 +17,20 @@ const InputField = ({
       "field",
       labelDirection && `has-text-${labelDirection}`
     )}>
-      <label htmlFor={id} className="label">{label}</label>
+      <label htmlFor={id} className="label">{label ? label : capitalizeFirstLetter(type)}</label>
       <div className="control">
         <input 
           id={id} 
           type={type} 
           placeholder={placeholder} 
+          {...props}
           className={cn(
-          "input",
-          className
-        )} />
+            "input",
+            className
+          )}
+        />
       </div>
+      {error ? <p className="is-pulled-right help is-danger">{error}</p> : null}
     </div>
   );
 };
