@@ -14,9 +14,11 @@ import Spinner from '../../components/Spinner/Spinner';
 import callApi from '../../libs/axios';
 
 import './Thread.css';
+import callApi from "../../libs/axios";
 
 function Thread({ match }) {
   // TODO: fill with real data later
+
   const toggleSelected = (e, content) => {
     e.target.classList.toggle('isSelected');
     // setActiveChannel();
@@ -27,14 +29,19 @@ function Thread({ match }) {
   const workspace = 'coderhood';
   const members = [ 'User One', 'User Two' ];
   const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
+  const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
+  const endpoint = 'http://localhost:8000/'
+  const userId = '5d28eb1ec8d9dd16d8dca1b4'; // Kunal's
+  
   const usernames = ["Jane", "Fed", "Mary", "April", "Aunt May", "June", "Julian","Augustus", "Sebin", "Octoman", "Novan", "Dex"];
 
   const clientSocket = useRef(null);
+  const workspaceName = useRef('');
   const threadIdCounter = useRef(null);
-  const endpoint = 'http://localhost:8000/'
 
   const [username, setUsername] = useState('Anonymous');
   const [activeChannel, setActiveChannel] = useState('general');
+  const [members, setMembers] = useState([])
   const [messages, setMessages] = useState({
     general: {
       msgs: [],
@@ -55,12 +62,32 @@ function Thread({ match }) {
     setUsername(`${usernames[Math.floor(Math.random() * usernames.length)]}`);
     threadIdCounter.current = Math.floor(Math.random() * 10000);
 
-    let socket = socketIOClient(endpoint + workspace, { path : '/sockets/'} );
+    let socket = socketIOClient(endpoint + workspaceId, { path : '/sockets/'} );
     clientSocket.current = socket;
+
+    // Fetch workspace data
+    const membersPromise = fetchWorkspaceMembers();
+    fetchAndPopulateUsers(membersPromise);
+
 
     socket.on('message', (obj) => handleIncomingMessage(obj))
     socket.on('connected', () => console.log(`Connected to server! - id: ${socket.id}`));
   }, [])
+
+  const fetchWorkspaceMembers = async () => {
+    const result =  await callApi('get', `/workspace/${workspaceId}`);
+    const { Data } = result.data;
+    workspaceName.current = Data.name;
+    return Data.members;
+    
+  }
+
+  const fetchAndPopulateUsers = async (promise) => {
+    const members = await promise;
+    const allUsers = await callApi('get', '/user').then(result => result.data.Data.data);
+    const relevantUsers = allUsers.filter(user => members.includes(user._id));
+    setMembers(relevantUsers);
+  }
 
   const headerTitle = "# Channel Name";
   const headerActions = [
@@ -114,13 +141,16 @@ function Thread({ match }) {
 
   return (
     <Container>
+      { members.length === 0 
+      ? <Spinner />
+      :
       <Columns>
         <Sidebar>
           <SidebarList list={channels} heading="Channels" action="+" />
-          <SidebarList list={members} heading="Users" action="+" />
+          <SidebarList list={members.map(({ name }) => name)} heading="Users" action="+" />
         </Sidebar>
         <div className="column is-9 thread-body">
-          <ThreadHeader heading={'Pesto'} />
+          <ThreadHeader heading={workspaceName.current} />
           <ThreadHeader heading={`#${activeChannel} -- user: ${username}`} actions={headerActions} />
           {console.log(messages[activeChannel])}
           {messages[activeChannel].msgs.map(message => <ThreadMessage {...message} />)}
@@ -128,6 +158,7 @@ function Thread({ match }) {
 
         </div>
       </Columns>
+      }
     </Container>
   );
 }

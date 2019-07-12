@@ -46,7 +46,7 @@ export const server = app.listen(PORT, (err) => {
 
 export const socketPath = '/sockets/';
 export const io = socketIO(server, { path: socketPath });
-const workspaceName = 'coderhood';
+const workspaceName = '5d28ecbbc8d9dd16d8dca1b8';
 const workspace = createWorkspaceNamespace(workspaceName);
 configureEventHandlersForWorkspace(workspace);
 export const db = mongoose.connection;
