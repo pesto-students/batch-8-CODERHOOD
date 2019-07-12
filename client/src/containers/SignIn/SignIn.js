@@ -33,7 +33,7 @@ function SignIn(props) {
       const { Data } = result.data;
       const user = JSON.stringify(Data);
       localStorage.setItem('user', user);
-      props.history.push('/');
+      props.history.push('/workspace');
     } else {
       alert(result);
     }
