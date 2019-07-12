@@ -20,7 +20,7 @@ const routing = (
     <Switch>
       <PrivateRoute exact path="/" component={App} />
       <Route exact path="/signin" component={SignIn} />
-      <PrivateRoute exact path="/thread" component={Thread} />
+      <PrivateRoute exact path="/thread/:id" component={Thread} />
       <PrivateRoute exact path="/workspace" component={Workspace} />
       <PrivateRoute exact path="/workspace/add" component={WSAdd} />
       <Route exact path="/signup" component={SignUp} />

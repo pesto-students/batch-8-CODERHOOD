@@ -6,17 +6,19 @@ import InputField from '../../components/InputField/InputField';
 import SidebarList from '../../components/SidebarList/SidebarList';
 import getUser from '../../libs/getUser';
 import callApi from '../../libs/axios';
+import { Spinner } from '../../components';
 
 const Workspace = ({userName, ...props}) => {
   const [ownedWS, setOwnedWS] = useState([]);
   const [ joinedWS, setJoinedWS] = useState([]);
+  const [ isLoading, setLoading ] = useState(true);
 
   const ownedWorkspaces = ownedWS.map(workspace => (
-    <a key={workspace._id} href="/thread">{workspace.name}</a>
+    <Link key={workspace._id} to={`/thread/${workspace._id}`}>{workspace.name}</Link>
   ))
 
   const joinedWorkspaces = joinedWS.map(workspace => (
-    <a key={workspace._id} href="/thread">{workspace.name}</a>
+    <Link key={workspace._id} to={`/thread/${workspace._id}`}>{workspace.name}</Link>
   ))
 
   const pendingWorkspaces = [
@@ -25,27 +27,48 @@ const Workspace = ({userName, ...props}) => {
   ];
 
   const fetchOwnedWS = async () => {
-    callApi('post', '/workspace/all', {user: user._id})
-      .then((result) => {
-        const { data } = result.data.Data;
-        setOwnedWS(data);
-    });
+    const result = await callApi('post', '/workspace/all', {user: user._id}); 
+    const { data } = result.data.Data;
+    setOwnedWS(data);
   }
 
   const fetchJoinedWS = async () => {
-    callApi('post', '/workspace/all', {members: user._id})
-      .then((result) => {
-        const { data } = result.data.Data;
-        setJoinedWS(data);
-    });
+    const result  = await callApi('post', '/workspace/all', {members: user._id})
+    const { data } = result.data.Data;
+    setJoinedWS(data);
   }
 
   useEffect(() => {
     fetchOwnedWS();
     fetchJoinedWS();
+    setLoading(false);
   }, []);
 
   const user = getUser();
+  console.log(isLoading);
+
+  const renderWorkSpaces = () => {
+    if (isLoading) {
+      return <Spinner />
+    }
+
+    return (
+      <>
+        <SidebarList 
+        heading="Owned Workspaces" 
+        list={ownedWorkspaces} 
+        action={<Link to="/workspace/add"><i className="fas fa-plus"></i></Link>} />
+
+      <SidebarList
+        heading="Joined Workspaces"
+        list={joinedWorkspaces} />
+
+      <SidebarList
+        heading="Pending Invitations"
+        list={pendingWorkspaces} />
+      </>
+    )
+  }
 
   return (
     <Container>
@@ -62,20 +85,7 @@ const Workspace = ({userName, ...props}) => {
           </form>
         </div>
       </div>
-
-      <SidebarList 
-        heading="Owned Workspaces" 
-        list={ownedWorkspaces} 
-        action={<Link to="/workspace/add"><i className="fas fa-plus"></i></Link>} />
-
-      <SidebarList
-        heading="Joined Workspaces"
-        list={joinedWorkspaces} />
-
-      <SidebarList
-        heading="Pending Invitations"
-        list={pendingWorkspaces} />
-
+      {renderWorkSpaces()}
       <Columns>
       </Columns>
     </Container>

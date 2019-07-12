@@ -3,10 +3,12 @@ import './Spinner.css';
 
 const Spinner = ({ cls }) => {
     return (
-        <div className={`la-ball-fall ${cls}`}>
-            <div />
-            <div />
-            <div />
+        <div className="is-narrow">
+            <div className={`la-ball-fall ${cls}`}>
+                <div className="is-centered" />
+                <div />
+                <div />
+            </div>
         </div>
     )
 }
