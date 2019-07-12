@@ -1,0 +1,9 @@
+.thread-body {
+  border-left: 2px solid black;
+}
+.has-bottom-border-2 {
+  border-bottom: 2px solid black;
+}
+.thread-body h3 {
+  font-size: 1.5em;
+}

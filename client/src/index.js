@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./containers/App";
 import SignIn from "./containers/SignIn/SignIn";
+import Thread from "./containers/Thread/Thread";
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
@@ -11,6 +12,7 @@ const routing = (
     <Switch>
       <Route exact path="/" component={App} />
       <Route exact path="/signin" component={SignIn} />
+      <Route exact path="/thread" component={Thread} />
     </Switch>
   </Router>
 );
