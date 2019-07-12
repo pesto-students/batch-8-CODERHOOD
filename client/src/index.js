@@ -7,7 +7,8 @@ import {
   SignIn, 
   SignUp,
   Workspace,
-  WorkspaceAdd, 
+  // WorkspaceAdd,
+  WSAdd,
 } from './containers'
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
@@ -21,6 +22,7 @@ const routing = (
       <Route exact path="/signin" component={SignIn} />
       <PrivateRoute exact path="/thread" component={Thread} />
       <PrivateRoute exact path="/workspace" component={Workspace} />
+      <PrivateRoute exact path="/workspace/add" component={WSAdd} />
       <Route exact path="/signup" component={SignUp} />
       <Route component={NotFound} />
     </Switch>

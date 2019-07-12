@@ -43,7 +43,7 @@ const Workspace = ({userName, ...props}) => {
   useEffect(() => {
     fetchOwnedWS();
     fetchJoinedWS();
-  }, [fetchJoinedWS, fetchOwnedWS]);
+  }, []);
 
   const user = getUser();
 

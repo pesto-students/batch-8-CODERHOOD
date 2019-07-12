@@ -5,22 +5,22 @@ const schema = Yup.object().shape({
     .string()
     .required()
     .label('Workspace Name'),
-  users: Yup
-    .array()
-    .ensure()
-    .required()
-    .label('Users'),
+  // users: Yup
+  //   .array()
+  //   .ensure()
+  //   .required()
+  //   .label('Users'),
 });
 
 const handleErrors = (values, setErrorFn) => {
   const parsedErrors = {};
   const {
     workspaceName,
-    users,
+    // users,
   } = values;
   schema.validate({
     workspaceName,
-    users,
+    // users,
   }, { abortEarly: false })
     .then(() => setErrorFn({ ...{} }))
     .catch((error) => {
