@@ -9,7 +9,7 @@ import {
 
 const channelRouter = express.Router();
 
-channelRouter.get('/', getAllChannels);
+channelRouter.post('/all', getAllChannels);
 channelRouter.get('/:id', getChannel);
 channelRouter.post('/', createChannel);
 channelRouter.delete('/:id', deleteChannel);

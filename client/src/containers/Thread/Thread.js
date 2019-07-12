@@ -11,19 +11,22 @@ import ThreadMessage from '../../components/ThreadMessage/ThreadMessage';
 import ThreadForm from '../../components/ThreadForm/ThreadForm';
 import SideTab from '../../components/SideTab/SideTab';
 import Spinner from '../../components/Spinner/Spinner';
+import callApi from '../../libs/axios';
 
 import './Thread.css';
 
-function Thread() {
+function Thread({ match }) {
   // TODO: fill with real data later
   const toggleSelected = (e, content) => {
     e.target.classList.toggle('isSelected');
     // setActiveChannel();
   }
+
+  const [Channels, setChannels] = useState([]);
   
   const workspace = 'coderhood';
   const members = [ 'User One', 'User Two' ];
-  const channels = [ '#general', '#signin_signout' ].map(channel => <SideTab content={channel} onClick={toggleSelected} />);
+  const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
   const usernames = ["Jane", "Fed", "Mary", "April", "Aunt May", "June", "Julian","Augustus", "Sebin", "Octoman", "Novan", "Dex"];
 
   const clientSocket = useRef(null);
@@ -39,8 +42,16 @@ function Thread() {
     },
   })
 
+  const fetchChannels = async () => {
+    const { id } = match.params;
+    const result = await callApi('post', '/channel/all', {workspace: id})
+    const { data } = result.data.Data;
+    setChannels(data);
+  }
+
   useEffect(() => {
     //set random username
+    fetchChannels();
     setUsername(`${usernames[Math.floor(Math.random() * usernames.length)]}`);
     threadIdCounter.current = Math.floor(Math.random() * 10000);
 
