@@ -17,10 +17,6 @@ import './Thread.css';
 
 function Thread({ match }) {
   // TODO: fill with real data later
-
- 
-  
-
   // TODO: Remove this later
   const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
   const endpoint = 'http://localhost:8000/'
@@ -81,6 +77,9 @@ function Thread({ match }) {
   }
 
   const fetchAndPopulateUsers = async (promise) => {
+    .git/rebase-apply/patch:58: trailing whitespace.
+      
+    .git/rebase-apply/patch:87: trailing whitespace.
     const members = await promise;
     const allUsers = await callApi('get', '/user').then(result => result.data.Data.data);
     const relevantUsers = allUsers.filter(user => members.includes(user._id));
