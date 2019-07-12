@@ -9,13 +9,21 @@ import SidebarList from '../../components/SidebarList/SidebarList';
 import ThreadHeader from '../../components/ThreadHeader/ThreadHeader';
 import ThreadMessage from '../../components/ThreadMessage/ThreadMessage';
 import ThreadForm from '../../components/ThreadForm/ThreadForm';
+import SideTab from '../../components/SideTab/SideTab';
+import Spinner from '../../components/Spinner/Spinner';
+
 import './Thread.css';
 
 function Thread() {
   // TODO: fill with real data later
+  const toggleSelected = (e, content) => {
+    e.target.classList.toggle('isSelected');
+    // setActiveChannel();
+  }
+  
   const workspace = 'coderhood';
   const members = [ 'User One', 'User Two' ];
-  const channels = [ '#general', '#signin_signout' ];
+  const channels = [ '#general', '#signin_signout' ].map(channel => <SideTab content={channel} onClick={toggleSelected} />);
   const usernames = ["Jane", "Fed", "Mary", "April", "Aunt May", "June", "Julian","Augustus", "Sebin", "Octoman", "Novan", "Dex"];
 
   const clientSocket = useRef(null);
@@ -54,17 +62,6 @@ function Thread() {
     <span className="icon is-small"><i className="fas fa-reply"></i></span>,
     <span className="icon is-small"><i className="fas fa-heart"></i></span>,
   ];
-
-
-  // {
-  //   threadId: 234,
-  //   userName: 'Mr Anderson',
-  //   userPic: 'https://dummyimage.com/64x64/000/fff&text=MrAnderson',
-  //   timeSince: '28m',
-  //   message: 'I know lorem ipsum.',
-  //   messageActions,
-  // },
-
 
   const handleIncomingMessage = (msgObj) => {
     const { channel, user, msg } = msgObj;
@@ -111,13 +108,11 @@ function Thread() {
           <SidebarList list={channels} heading="Channels" action="+" />
           <SidebarList list={members} heading="Users" action="+" />
         </Sidebar>
-
         <div className="column is-9 thread-body">
           <ThreadHeader heading={'Pesto'} />
           <ThreadHeader heading={`#${activeChannel} -- user: ${username}`} actions={headerActions} />
           {console.log(messages[activeChannel])}
           {messages[activeChannel].msgs.map(message => <ThreadMessage {...message} />)}
-
           <ThreadForm onClick={handleSend} />
 
         </div>
@@ -125,5 +120,14 @@ function Thread() {
     </Container>
   );
 }
+
+  // {
+  //   threadId: 234,
+  //   userName: 'Mr Anderson',
+  //   userPic: 'https://dummyimage.com/64x64/000/fff&text=MrAnderson',
+  //   timeSince: '28m',
+  //   message: 'I know lorem ipsum.',
+  //   messageActions,
+  // },
 
 export default Thread;
