@@ -3,8 +3,12 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./containers/App";
 import Thread from "./containers/Thread/Thread";
-import Workspace from "./containers/Workspace/Workspace";
-import { SignIn, SignUp } from './containers'
+import { 
+  SignIn, 
+  SignUp,
+  Workspace,
+  WorkspaceAdd, 
+} from './containers'
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { NotFound } from "./components";

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import Columns from '../../components/Columns/Columns';
 import InputField from '../../components/InputField/InputField';
@@ -42,7 +43,7 @@ const Workspace = ({userName, ...props}) => {
   useEffect(() => {
     fetchOwnedWS();
     fetchJoinedWS();
-  }, []);
+  }, [fetchJoinedWS, fetchOwnedWS]);
 
   const user = getUser();
 
@@ -65,7 +66,7 @@ const Workspace = ({userName, ...props}) => {
       <SidebarList 
         heading="Owned Workspaces" 
         list={ownedWorkspaces} 
-        action={<i className="fas fa-plus"></i>} />
+        action={<Link to="/workspace/add"><i className="fas fa-plus"></i></Link>} />
 
       <SidebarList
         heading="Joined Workspaces"
