@@ -24,14 +24,11 @@ function Thread({ match }) {
   }
 
   const [Channels, setChannels] = useState([]);
-  
-  const workspace = 'coderhood';
-  // const members = [ 'User One', 'User Two' ];
   const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
+  
   const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
   const endpoint = 'http://localhost:8000/'
   const userId = '5d28eb1ec8d9dd16d8dca1b4'; // Kunal's
-  
   const usernames = ["Jane", "Fed", "Mary", "April", "Aunt May", "June", "Julian","Augustus", "Sebin", "Octoman", "Novan", "Dex"];
 
   const clientSocket = useRef(null);
