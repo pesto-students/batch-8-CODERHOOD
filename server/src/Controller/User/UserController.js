@@ -14,7 +14,7 @@ const getUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { userFound, userNotFound } = userResponse;
-    const result = await findOne(userModel, id);
+    const result = await findOne(userModel, { _id: id });
     if (!result) {
       const err = new Error(userNotFound);
       err.status = 404;
@@ -93,7 +93,20 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const result = await findOne(userModel, { email, password });
+    res
+      .status(200)
+      .send(successHandler('logged in', result));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
+  login,
   getUser,
   createUser,
   getAllUsers,

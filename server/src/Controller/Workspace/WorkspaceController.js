@@ -14,7 +14,7 @@ const getWorkspace = async (req, res, next) => {
   try {
     const { workspaceFound, workspaceNotFound } = workspaceResponse;
     const { id } = req.params;
-    const result = await findOne(workspaceModel, id);
+    const result = await findOne(workspaceModel, { _id: id });
     if (!result || result === null) {
       const err = new Error(workspaceNotFound);
       err.status = 404;

@@ -4,9 +4,10 @@ import SmallContainer from '../../components/SmallContainer/SmallContainer';
 import InputField from '../../components/InputField/InputField';
 import { getError, hasError, isTouched } from '../../libs/validate';
 import handleErrors from './Schema';
+import callApi from '../../libs/axios';
 import './SignUp.css';
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [ user, setUser ] = useState({ name: '', email: '', password: '' });
   const [ touched, setTouched ]= useState({});
   const [ error, setError ] = useState({});
@@ -14,13 +15,25 @@ const SignUp = () => {
   const touchedFields = {}
   
   const handleChange = field => event => {
-    setUser({ ...user, [field]: event.target.value }, () => handleErrors(user, setError));
+    setUser({ ...user, [field]: event.target.value });
+    handleErrors(user, setError);
   }
 
   const handleBlur = (field) => (event) => {
     handleErrors(user, setError);
     touchedFields[field] = true;
     setTouched({ ...touched, ...touchedFields})
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { name, email, password } = user;
+    const result = await callApi('post', '/user', { name, email, password });
+    if (result.data) {
+      props.history.push('/signin');
+    } else {
+      alert(result);
+    }
   }
 
   return (
@@ -37,7 +50,7 @@ const SignUp = () => {
           label="Name"
           onChange={handleChange('name')}
           onBlur={handleBlur('name')}
-          error={ error.email ? getError('name', touched, error) : null}
+          error={ error.name ? getError('name', touched, error) : null}
           value={user.name}
         />
         <InputField
@@ -65,6 +78,7 @@ const SignUp = () => {
           <button
             className="button is-primary"
             disabled={ hasError(error) || !isTouched(touched) }
+            onClick={handleSubmit}
           >
             Sign Up
           </button>

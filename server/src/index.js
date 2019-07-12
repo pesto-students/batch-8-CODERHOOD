@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import cors from 'cors';
 import socketIO from 'socket.io';
 
 import router from './router';
@@ -14,6 +15,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
+app.use(cors());
+
 app.use('/api', router);
 app.use(notFoundRoutes);
 app.use(errorHandler);

@@ -14,7 +14,7 @@ const getChannel = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { channelNotFound, channelFound } = channelResponse;
-    const result = await findOne(channelModel, id);
+    const result = await findOne(channelModel, { _id: id });
     if (!result) {
       const err = new Error(channelNotFound);
       err.status = 404;

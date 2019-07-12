@@ -4,7 +4,7 @@ const count = model => model.countDocuments();
 
 const findOne = async (model, data) => {
   try {
-    const result = await model.findOne({ _id: data }).lean();
+    const result = await model.findOne({ ...data }).lean();
     if (!result) {
       throw new Error('No data found');
     }

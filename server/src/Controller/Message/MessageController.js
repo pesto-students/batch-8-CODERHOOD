@@ -14,7 +14,7 @@ const getMessage = async (req, res, next) => {
   try {
     const { messageFound, messageNotFound } = messageResponse;
     const { id } = req.params;
-    const result = await findOne(messageModel, id);
+    const result = await findOne(messageModel, { _id: id });
     if (!result) {
       const err = new Error(messageNotFound);
       err.status = 404;
