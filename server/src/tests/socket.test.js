@@ -1,4 +1,3 @@
-
 import client from 'socket.io-client';
 import {
   io,
@@ -16,6 +15,7 @@ import {
   connectionConfirmationEvent,
 } from '../Sockets/events';
 
+// TODO: change test workspace names?
 let socket;
 let httpServer;
 let httpServerAddr;
@@ -29,6 +29,12 @@ beforeAll((done) => {
 });
 
 afterAll((done) => {
+  // Clear namespaces
+  const namespaces = Object.keys(ioServer.nsps);
+  // eslint-disable-next-line no-restricted-syntax
+  for (const namespace of namespaces) {
+    delete ioServer.nsps[namespace];
+  }
   ioServer.close();
   httpServer.close();
   db.close();

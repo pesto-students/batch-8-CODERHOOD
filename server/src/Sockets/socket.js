@@ -11,6 +11,7 @@ const createWorkspaceNamespace = namespace => io.of(`/${namespace}`);
 
 const configureEventHandlersForWorkspace = (namespace) => {
   namespace.on('connection', (socket) => {
+    console.log('User Connected');
     socket.emit(connectionConfirmationEvent);
 
     /**
@@ -21,7 +22,10 @@ const configureEventHandlersForWorkspace = (namespace) => {
     * @param msgObj.timestamp Time when the message was sent.
     */
     socket.on(messageEvent, (msgObj) => {
-      socket.broadcast.emit(messageEvent, msgObj);
+      // console.log(msgObj);
+      // console.log('message sent by user');
+      // socket.broadcast.emit(messageEvent, msgObj);
+      namespace.emit(messageEvent, msgObj);
     });
 
     /**
