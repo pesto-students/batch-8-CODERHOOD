@@ -2,29 +2,19 @@ h1 {
   font-size: large;
 }
 
-.channel-info {
-  flex-grow: 4;
-  text-align: left;
-}
-
 .header-container {
-  margin: 10px;
-  display: flex;
-  height: 60px;
-  align-items: center;
-  justify-content: flex-start;
+  margin: 4px;
 }
 
-.header-item {
-  flex-grow: 1;
-  align-items: left;
-}
-
-.search-container {
-  flex-grow: 1;
+.channel-info {
+  text-align: left;
 }
 
 .separator {
   margin-left: 4px;
   margin-right: 4px;
+}
+
+.clickable-icon {
+  cursor: pointer;
 }
