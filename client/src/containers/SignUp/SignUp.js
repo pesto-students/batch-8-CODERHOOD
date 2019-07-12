@@ -1,81 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
-import * as Yup from 'yup';
 import SmallContainer from '../../components/SmallContainer/SmallContainer';
 import InputField from '../../components/InputField/InputField';
+import { getError, hasError, isTouched } from '../../libs/validate';
+import handleErrors from './Schema';
 import './SignUp.css';
 
 const SignUp = () => {
   const [ user, setUser ] = useState({ name: '', email: '', password: '' });
   const [ touched, setTouched ]= useState({});
   const [ error, setError ] = useState({});
-
-  const schema = Yup.object().shape({
-    name: Yup
-      .string()
-      .required()
-      .label('Name'),
-    email: Yup
-      .string().email()
-      .required()
-      .label('Email'),
-    password: Yup
-      .string()
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-        'Min 8 characters and must contain at least one lowercase letter, one uppercase and a number.')
-      .required().label('Password'),
-  });
   
   const touchedFields = {}
-
-  const handleErrors = () => {
-    const parsedErrors = {};
-    const {
-      name,
-      email,
-      password,
-    } = user;
-    schema.validate({
-      name,
-      email,
-      password,
-    }, { abortEarly: false })
-      .then(() => setError({ ...{} }))
-      .catch((error) => {
-        error.inner.forEach((element) => {
-          parsedErrors[element.path] = element.path ? element.message : '';
-        });
-        setError({ ...parsedErrors })
-      });
-  }
-
   
   const handleChange = field => event => {
-    setUser({ ...user, [field]: event.target.value }, () => handleErrors(
-      schema,
-      setError,
-      error,
-      user,
-    ));
-  }
-
-  const isTouched = () => {
-    return !!Object.keys(touched).length;
-  }
-
-  const getError = (field) => {
-    if (touched[field]) {
-      return error[field];
-    }
-    return null;
-  }
-
-  const hasError = () => {
-    return !!Object.keys(error).length;
+    setUser({ ...user, [field]: event.target.value }, () => handleErrors(user, setError));
   }
 
   const handleBlur = (field) => (event) => {
-    handleErrors(schema, setError, error, user);
+    handleErrors(user, setError);
     touchedFields[field] = true;
     setTouched({ ...touched, ...touchedFields})
   }
@@ -94,7 +37,7 @@ const SignUp = () => {
           label="Name"
           onChange={handleChange('name')}
           onBlur={handleBlur('name')}
-          error={ error.email ? getError('name') : null}
+          error={ error.email ? getError('name', touched, error) : null}
           value={user.name}
         />
         <InputField
@@ -104,7 +47,7 @@ const SignUp = () => {
           label="Email"
           onChange={handleChange('email')}
           onBlur={handleBlur('email')}
-          error={ error.email ? getError('email') : null}
+          error={ error.email ? getError('email', touched, error) : null}
           value={user.email}
         />
         <InputField
@@ -114,14 +57,14 @@ const SignUp = () => {
           label="Password"
           onChange={handleChange('password')}
           onBlur={handleBlur('password')}
-          error={ error.password ? getError('password') : null}
+          error={ error.password ? getError('password', touched, error) : null}
           value={user.password}
         />
 
         <div className="control has-text-centered">
           <button
             className="button is-primary"
-            disabled={ hasError() || !isTouched() }
+            disabled={ hasError(error) || !isTouched(touched) }
           >
             Sign Up
           </button>
