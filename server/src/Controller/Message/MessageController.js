@@ -31,8 +31,8 @@ const getMessage = async (req, res, next) => {
 const getAllMessages = async (req, res, next) => {
   try {
     const { foundAllMessages } = messageResponse;
-    const { data } = req.body;
-    const result = await findMany(messageModel, data);
+    const { channel } = req.body;
+    const result = await findMany(messageModel, { channel });
     res
       .status(200)
       .send(successHandler(foundAllMessages, result));

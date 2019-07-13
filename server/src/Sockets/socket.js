@@ -5,7 +5,7 @@ import {
   unsubscribeToChannelsEvent,
 } from './events';
 
-import { io } from '../index';  
+import { io } from '../index';
 import { messageModel } from '../Model';
 import { create } from '../Repositories/genericRepository';
 
@@ -31,6 +31,7 @@ const configureEventHandlersForWorkspace = (namespace) => {
       // socket.broadcast.emit(messageEvent, msgObj);
       const { message } = msgObj.msg;
       const from = msgObj.userId;
+      const user = msgObj.user;
       const to = msgObj.channel;
       const { workspace } = msgObj;
       const createdAt = msgObj.timestamp;
@@ -38,6 +39,7 @@ const configureEventHandlersForWorkspace = (namespace) => {
       const newMessage = {
         from,
         to,
+        user,
         message,
         workspace,
         channel: to,
@@ -45,9 +47,8 @@ const configureEventHandlersForWorkspace = (namespace) => {
         createdAt,
       };
 
-      create(messageModel, newMessage);
-
       namespace.emit(messageEvent, msgObj);
+      create(messageModel, newMessage);
     });
 
     /**

@@ -16,7 +16,7 @@ import getUser from '../../libs/getUser';
 
 import './Thread.css';
 
-function Thread({ match }) {
+function Thread({ match, history }) {
   const workspaceId = match.params.id;
   const endpoint = 'http://localhost:8000/'
 
@@ -38,13 +38,22 @@ function Thread({ match }) {
     },
   })
 
-  const toggleSelected = (e, id, content) => {
+  const toggleSelected = async (e, id, content) => {
     // e.target.classList.toggle('isSelected');
-    console.log(id);
+    const messages = await fetchChannelMessages(id);
     setActiveChannel({
       id,
       name: content,
     });
+    const channelMessages = await printMessages(messages);
+    console.log('channel:::::::::::::', channelMessages);
+    setMessages((store) => ({
+      ...store,
+      [id]: {
+        msgs: channelMessages || [],
+        unread: false,
+      }
+    }));
   }
 
   
@@ -56,6 +65,16 @@ function Thread({ match }) {
     key={_id}
   />);
 
+  const fetchChannelMessages = async (channelID) => {
+    const result = await callApi('post', '/message/all', {channel: channelID});
+    console.log('messages', result);
+    if (result.data) {
+      const { data } = result.data.Data;
+      return data;
+    }
+    return [];
+  }
+  
   const fetchChannels = async () => {
     const { id } = match.params;
     const result = await callApi('post', '/channel/all', {workspace: id})
@@ -81,8 +100,8 @@ function Thread({ match }) {
     const result =  await callApi('get', `/workspace/${workspaceId}`);
     const { Data } = result.data;
     workspaceName.current = Data.name;
-    return Data.members;
-    
+    const members = Data.members.filter(member => member !== getUser()._id);
+    return members;
   }
 
   const fetchAndPopulateUsers = async (promise) => {
@@ -138,17 +157,36 @@ function Thread({ match }) {
     }));
   }
 
+  const printMessages = (messages) => {
+    const { messages: channelMessages } = activeChannel;
+    const mapMessgaesArray = channelMessages || messages;
+    const arrayOfMessages = mapMessgaesArray.map(message => {
+      const messageObject = {
+        threadId: message._id,
+        userName: message.user,
+        userPic: 'https://dummyimage.com/64x64/000/fff&text=MrAnderson',
+        timeSince: `${message.created_At}`,
+        message: message.message,
+        messageActions,
+      }
+      return messageObject;
+    });
+    console.log('araayM::::', arrayOfMessages);
+    return arrayOfMessages;
+  }
+
   const handleSend = () => {
     console.log(channels);
     console.log(messages);
     const socket = clientSocket.current;
     const content = document.getElementsByClassName('textarea')[0].value;
+    const date = new Date();
     threadIdCounter.current += 1;
     const msg = {
       threadId: threadIdCounter.current,
       userName: username,
       userPic: 'https://dummyimage.com/64x64/000/fff&text=MrAnderson',
-      timeSince: '1 min ago...',
+      timeSince: 'just now',
       message: content,
       // messageActions,
     }
@@ -178,7 +216,7 @@ function Thread({ match }) {
           <ThreadHeader heading={`#${activeChannel.name} -- user: ${username}`} actions={headerActions} />
           {console.log(activeChannel)}
           {console.log('at id ...', activeChannel.id)}
-          {console.log(messages)}
+          {console.log('eror:::::::::::::', messages)}
           {messages[activeChannel.id].msgs.map(message => <ThreadMessage {...message} />)}
           <ThreadForm onClick={handleSend} />
 
