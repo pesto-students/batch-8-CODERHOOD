@@ -5,7 +5,7 @@ import './SideTab.css';
 const SideTab = ({ cls, content, onClick, ...props }) => {
     return (
         <div className={cls}
-        onClick={(e, content) => onClick(e, content)}
+        onClick={(e) => onClick(e, content)}
         >
             { content }
         </div>

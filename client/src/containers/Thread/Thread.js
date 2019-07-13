@@ -18,14 +18,9 @@ import './Thread.css';
 function Thread({ match }) {
   // TODO: fill with real data later
 
-  const toggleSelected = (e, content) => {
-    e.target.classList.toggle('isSelected');
-    // setActiveChannel();
-  }
+ 
 
-  const [Channels, setChannels] = useState([]);
-  const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
-  
+  // TODO: Remove this later
   const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
   const endpoint = 'http://localhost:8000/'
   const userId = '5d28eb1ec8d9dd16d8dca1b4'; // Kunal's
@@ -38,6 +33,7 @@ function Thread({ match }) {
   const [username, setUsername] = useState('Anonymous');
   const [activeChannel, setActiveChannel] = useState('general');
   const [members, setMembers] = useState([])
+  const [Channels, setChannels] = useState([]);
   const [messages, setMessages] = useState({
     general: {
       msgs: [],
@@ -45,30 +41,35 @@ function Thread({ match }) {
     },
   })
 
+  const toggleSelected = (e, content) => {
+    // e.target.classList.toggle('isSelected');
+    console.log(content);
+    setActiveChannel(content);
+  }
+
+  
+  const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
+
   const fetchChannels = async () => {
     const { id } = match.params;
     const result = await callApi('post', '/channel/all', {workspace: id})
     const { data } = result.data.Data;
+
+    const genericChannelDataObj = {
+      msgs: [],
+      unread : false,
+    }
+
+    data.forEach(channel => {
+      setMessages((store) => ({
+        ...store,
+        [channel.name]: {
+          ...genericChannelDataObj,
+        }
+      }))
+    });
     setChannels(data);
   }
-
-  useEffect(() => {
-    //set random username
-    fetchChannels();
-    setUsername(`${usernames[Math.floor(Math.random() * usernames.length)]}`);
-    threadIdCounter.current = Math.floor(Math.random() * 10000);
-
-    let socket = socketIOClient(endpoint + workspaceId, { path : '/sockets/'} );
-    clientSocket.current = socket;
-
-    // Fetch workspace data
-    const membersPromise = fetchWorkspaceMembers();
-    fetchAndPopulateUsers(membersPromise);
-
-
-    socket.on('message', (obj) => handleIncomingMessage(obj))
-    socket.on('connected', () => console.log(`Connected to server! - id: ${socket.id}`));
-  }, [])
 
   const fetchWorkspaceMembers = async () => {
     const result =  await callApi('get', `/workspace/${workspaceId}`);
@@ -84,6 +85,27 @@ function Thread({ match }) {
     const relevantUsers = allUsers.filter(user => members.includes(user._id));
     setMembers(relevantUsers);
   }
+
+  useEffect(() => {
+    //set random username
+    fetchChannels();
+    setUsername(`${usernames[Math.floor(Math.random() * usernames.length)]}`);
+    threadIdCounter.current = Math.floor(Math.random() * 10000);
+
+    let socket = socketIOClient(endpoint + workspaceId, { path : '/sockets/'} );
+    clientSocket.current = socket;
+
+    // Fetch workspace data
+    const membersPromise = fetchWorkspaceMembers();
+    fetchAndPopulateUsers(membersPromise);
+
+    console.log(channels);
+
+    socket.on('message', (obj) => handleIncomingMessage(obj))
+    socket.on('connected', () => console.log(`Connected to server! - id: ${socket.id}`));
+  }, [])
+
+  
 
   const headerTitle = "# Channel Name";
   const headerActions = [
@@ -107,13 +129,15 @@ function Thread({ match }) {
     setMessages((store) => ({
       ...store,
       [channel]: {
-        unread: true,
+        unread: false,
         msgs: [...store[channel].msgs, modMsg],
       }
     }));
   }
 
   const handleSend = () => {
+    console.log(channels);
+    console.log(messages);
     const socket = clientSocket.current;
     const content = document.getElementsByClassName('textarea')[0].value;
     threadIdCounter.current += 1;

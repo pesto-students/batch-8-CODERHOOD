@@ -10,7 +10,7 @@ import { errorHandler, notFoundRoutes } from './libs/routes';
 import { PORT, MONGO_CONNECTION_STRING } from './configs/config';
 import successHandler from './libs/routes/successHandler';
 // temp
-import { createWorkspaceNamespace, configureEventHandlersForWorkspace } from './Sockets/socket';
+import populatesWorkspaceNamespacesInIo from './tempSetup';
 
 const app = express();
 
@@ -46,7 +46,5 @@ export const server = app.listen(PORT, (err) => {
 
 export const socketPath = '/sockets/';
 export const io = socketIO(server, { path: socketPath });
-const workspaceName = '5d28ecbbc8d9dd16d8dca1b8';
-const workspace = createWorkspaceNamespace(workspaceName);
-configureEventHandlersForWorkspace(workspace);
 export const db = mongoose.connection;
+populatesWorkspaceNamespacesInIo();
