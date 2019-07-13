@@ -51,3 +51,6 @@ export const messageResponse = {
   messageUpdated: 'Message updated successfully',
   messageDeleted: 'Message deleted successfully',
 };
+
+// OTHER
+export const SALT_WORK_FACTOR = 10;

@@ -96,10 +96,25 @@ const updateUser = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const result = await findOne(userModel, { email, password });
-    res
-      .status(200)
-      .send(successHandler('logged in', result));
+    if (!email || !password) {
+      res
+        .status(201)
+        .send(successHandler('Invalid credentials'));
+    } else {
+      findOne(userModel, { email })
+        .then((user) => {
+          if (!user || !user.validPassword(password)) {
+            res
+              .status(201)
+              .send(successHandler('Invalid credentials'));
+          } else {
+            res
+              .status(200)
+              .send(successHandler('logged in', user));
+          }
+        })
+        .catch(next);
+    }
   } catch (error) {
     next(error);
   }
