@@ -17,38 +17,44 @@ import getUser from '../../libs/getUser';
 import './Thread.css';
 
 function Thread({ match }) {
-  // TODO: fill with real data later
-
-
-  // TODO: Remove this later
-  const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
+  const workspaceId = match.params.id;
   const endpoint = 'http://localhost:8000/'
-  const userId = '5d28eb1ec8d9dd16d8dca1b4'; // Kunal's
-  const usernames = ["Jane", "Fed", "Mary", "April", "Aunt May", "June", "Julian","Augustus", "Sebin", "Octoman", "Novan", "Dex"];
 
   const clientSocket = useRef(null);
   const workspaceName = useRef('');
   const threadIdCounter = useRef(null);
 
   const [username, setUsername] = useState('Anonymous');
-  const [activeChannel, setActiveChannel] = useState('general');
+  const [activeChannel, setActiveChannel] = useState({
+    id: 1111,
+    name: 'general',
+  });
   const [members, setMembers] = useState([])
   const [Channels, setChannels] = useState([]);
   const [messages, setMessages] = useState({
-    general: {
+    1111: {
       msgs: [],
       unread : false,
     },
   })
 
-  const toggleSelected = (e, content) => {
+  const toggleSelected = (e, id, content) => {
     // e.target.classList.toggle('isSelected');
-    console.log(content);
-    setActiveChannel(content);
+    console.log(id);
+    setActiveChannel({
+      id,
+      name: content,
+    });
   }
 
   
-  const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
+  const channels = Channels.map(({ _id, name}) => 
+  <SideTab
+    content={name}
+    id={_id}
+    onClick={toggleSelected}
+    key={_id}
+  />);
 
   const fetchChannels = async () => {
     const { id } = match.params;
@@ -63,7 +69,7 @@ function Thread({ match }) {
     data.forEach(channel => {
       setMessages((store) => ({
         ...store,
-        [channel.name]: {
+        [channel._id]: {
           ...genericChannelDataObj,
         }
       }))
@@ -105,9 +111,6 @@ function Thread({ match }) {
     socket.on('connected', () => console.log(`Connected to server! - id: ${socket.id}`));
   }, [])
 
-  
-
-  const headerTitle = "# Channel Name";
   const headerActions = [
     <i class="fas fa-info-circle"></i>,
     <i class="fas fa-check-square"></i>,
@@ -150,9 +153,11 @@ function Thread({ match }) {
       // messageActions,
     }
     const msgObj = {
-      channel: activeChannel,
+      channel: activeChannel.id,
       user: username,
+      userId: getUser()._id,
       timestamp: Date.now(),
+      workspace: workspaceId,
       msg,
     }
     socket.emit('message', msgObj);
@@ -170,9 +175,11 @@ function Thread({ match }) {
         </Sidebar>
         <div className="column is-9 thread-body">
           <ThreadHeader heading={workspaceName.current} />
-          <ThreadHeader heading={`#${activeChannel} -- user: ${username}`} actions={headerActions} />
-          {console.log(messages[activeChannel])}
-          {messages[activeChannel].msgs.map(message => <ThreadMessage {...message} />)}
+          <ThreadHeader heading={`#${activeChannel.name} -- user: ${username}`} actions={headerActions} />
+          {console.log(activeChannel)}
+          {console.log('at id ...', activeChannel.id)}
+          {console.log(messages)}
+          {messages[activeChannel.id].msgs.map(message => <ThreadMessage {...message} />)}
           <ThreadForm onClick={handleSend} />
 
         </div>
