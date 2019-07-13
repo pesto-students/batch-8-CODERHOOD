@@ -1,4 +1,4 @@
-import React,{ useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import socketIOClient from 'socket.io-client'
 
 
@@ -19,12 +19,17 @@ import './Thread.css';
 function Thread({ match }) {
   // TODO: fill with real data later
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> Solved conflicts
 
   // TODO: Remove this later
   const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
   const endpoint = 'http://localhost:8000/'
   const userId = '5d28eb1ec8d9dd16d8dca1b4'; // Kunal's
-  const usernames = ["Jane", "Fed", "Mary", "April", "Aunt May", "June", "Julian","Augustus", "Sebin", "Octoman", "Novan", "Dex"];
+  const usernames = ["Jane", "Fed", "Mary", "April", "Aunt May", "June", "Julian", "Augustus", "Sebin", "Octoman", "Novan", "Dex"];
 
   const clientSocket = useRef(null);
   const workspaceName = useRef('');
@@ -37,7 +42,7 @@ function Thread({ match }) {
   const [messages, setMessages] = useState({
     general: {
       msgs: [],
-      unread : false,
+      unread: false,
     },
   })
 
@@ -47,17 +52,17 @@ function Thread({ match }) {
     setActiveChannel(content);
   }
 
-  
+
   const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
 
   const fetchChannels = async () => {
     const { id } = match.params;
-    const result = await callApi('post', '/channel/all', {workspace: id})
+    const result = await callApi('post', '/channel/all', { workspace: id })
     const { data } = result.data.Data;
 
     const genericChannelDataObj = {
       msgs: [],
-      unread : false,
+      unread: false,
     }
 
     data.forEach(channel => {
@@ -72,11 +77,11 @@ function Thread({ match }) {
   }
 
   const fetchWorkspaceMembers = async () => {
-    const result =  await callApi('get', `/workspace/${workspaceId}`);
+    const result = await callApi('get', `/workspace/${workspaceId}`);
     const { Data } = result.data;
     workspaceName.current = Data.name;
     return Data.members;
-    
+
   }
 
   const fetchAndPopulateUsers = async (promise) => {
@@ -92,7 +97,7 @@ function Thread({ match }) {
     setUsername(getUser().name);
     threadIdCounter.current = Math.floor(Math.random() * 10000);
 
-    let socket = socketIOClient(endpoint + workspaceId, { path : '/sockets/'} );
+    let socket = socketIOClient(endpoint + workspaceId, { path: '/sockets/' });
     clientSocket.current = socket;
 
     // Fetch workspace data
@@ -105,7 +110,7 @@ function Thread({ match }) {
     socket.on('connected', () => console.log(`Connected to server! - id: ${socket.id}`));
   }, [])
 
-  
+
 
   const headerTitle = "# Channel Name";
   const headerActions = [
@@ -160,35 +165,35 @@ function Thread({ match }) {
 
   return (
     <Container>
-      { members.length === 0 
-      ? <Spinner />
-      :
-      <Columns>
-        <Sidebar>
-          <SidebarList list={channels} heading="Channels" action="+" />
-          <SidebarList list={members.map(({ name }) => name)} heading="Users" action="+" />
-        </Sidebar>
-        <div className="column is-9 thread-body">
-          <ThreadHeader heading={workspaceName.current} />
-          <ThreadHeader heading={`#${activeChannel} -- user: ${username}`} actions={headerActions} />
-          {console.log(messages[activeChannel])}
-          {messages[activeChannel].msgs.map(message => <ThreadMessage {...message} />)}
-          <ThreadForm onClick={handleSend} />
+      {members.length === 0
+        ? <Spinner />
+        :
+        <Columns>
+          <Sidebar>
+            <SidebarList list={channels} heading="Channels" action="+" />
+            <SidebarList list={members.map(({ name }) => name)} heading="Users" action="+" />
+          </Sidebar>
+          <div className="column is-9 thread-body">
+            <ThreadHeader heading={workspaceName.current} />
+            <ThreadHeader heading={`#${activeChannel} -- user: ${username}`} actions={headerActions} />
+            {console.log(messages[activeChannel])}
+            {messages[activeChannel].msgs.map(message => <ThreadMessage {...message} />)}
+            <ThreadForm onClick={handleSend} />
 
-        </div>
-      </Columns>
+          </div>
+        </Columns>
       }
     </Container>
   );
 }
 
-  // {
-  //   threadId: 234,
-  //   userName: 'Mr Anderson',
-  //   userPic: 'https://dummyimage.com/64x64/000/fff&text=MrAnderson',
-  //   timeSince: '28m',
-  //   message: 'I know lorem ipsum.',
-  //   messageActions,
-  // },
+// {
+//   threadId: 234,
+//   userName: 'Mr Anderson',
+//   userPic: 'https://dummyimage.com/64x64/000/fff&text=MrAnderson',
+//   timeSince: '28m',
+//   message: 'I know lorem ipsum.',
+//   messageActions,
+// },
 
 export default Thread;
