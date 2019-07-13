@@ -14,7 +14,6 @@ import Spinner from '../../components/Spinner/Spinner';
 import callApi from '../../libs/axios';
 
 import './Thread.css';
-import callApi from "../../libs/axios";
 
 function Thread({ match }) {
   // TODO: fill with real data later
@@ -27,7 +26,7 @@ function Thread({ match }) {
   const [Channels, setChannels] = useState([]);
   
   const workspace = 'coderhood';
-  const members = [ 'User One', 'User Two' ];
+  // const members = [ 'User One', 'User Two' ];
   const channels = Channels.map(channel => <SideTab content={channel.name} onClick={toggleSelected} key={channel._id} />);
   const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
   const endpoint = 'http://localhost:8000/'
