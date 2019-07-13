@@ -175,12 +175,13 @@ function Thread({ match, history }) {
     return arrayOfMessages;
   }
 
-  const handleSend = () => {
+  const handleSend = (e) => {
+    e.preventDefault();
     console.log(channels);
     console.log(messages);
     const socket = clientSocket.current;
     const content = document.getElementsByClassName('textarea')[0].value;
-    const date = new Date();
+    document.getElementsByClassName('textarea')[0].value = '';
     threadIdCounter.current += 1;
     const msg = {
       threadId: threadIdCounter.current,
@@ -211,12 +212,9 @@ function Thread({ match, history }) {
           <SidebarList list={channels} heading="Channels" action="+" />
           <SidebarList list={members.map(({ name }) => name)} heading="Users" action="+" />
         </Sidebar>
-        <div className="column is-9 thread-body">
-          <ThreadHeader heading={workspaceName.current} />
-          <ThreadHeader heading={`#${activeChannel.name} -- user: ${username}`} actions={headerActions} />
-          {console.log(activeChannel)}
-          {console.log('at id ...', activeChannel.id)}
-          {console.log('eror:::::::::::::', messages)}
+        <div className="column fullHeight is-9 thread-body">
+          <ThreadHeader heading={workspaceName.current} actions={[username]} />
+          <ThreadHeader heading={`#${activeChannel.name}`} actions={headerActions} />
           {messages[activeChannel.id].msgs.map(message => <ThreadMessage {...message} />)}
           <ThreadForm onClick={handleSend} />
 
