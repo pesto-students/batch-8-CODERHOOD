@@ -22,7 +22,8 @@
     "install:server": "cd server && yarn",
     "test:server": "cd server && yarn && yarn test",
     "test:client": "cd client && yarn && yarn test",
-    "test": "yarn test:client && yarn test:server"
+    "test": "yarn test:client && yarn test:server",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
     "babel-eslint": "10.0.1",
