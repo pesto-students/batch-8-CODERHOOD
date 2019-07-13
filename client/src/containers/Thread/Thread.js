@@ -19,6 +19,7 @@ function Thread({ match }) {
   // TODO: fill with real data later
 
  
+  
 
   // TODO: Remove this later
   const workspaceId = match.params.id || '5d28ecbbc8d9dd16d8dca1b8';
