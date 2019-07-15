@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
   const resStatus = status || 500;
   res
     .status(resStatus)
-    .json({
+    .send({
       error: error || 'Something went wrong',
       message: message || err,
       timestamp: new Date(),

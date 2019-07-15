@@ -14,6 +14,12 @@
   },
   "homepage": "https://github.com/pesto-students/batch-8-CODERHOOD#readme",
   "scripts": {
+    "server": "cd server/ && yarn start",
+    "client": "cd client/ && yarn start",
+    "start": "concurrently \"yarn server\" \"yarn client\"",
+    "postinstall": "yarn install:client && yarn install:server",
+    "install:client": "cd client && yarn",
+    "install:server": "cd server && yarn",
     "test:server": "cd server && yarn && yarn test",
     "test:client": "cd client && yarn && yarn test",
     "test": "yarn test:client && yarn test:server"
@@ -41,6 +47,7 @@
     ]
   },
   "dependencies": {
+    "concurrently": "^4.1.1",
     "eslint-config-airbnb": "^17.1.1"
   }
 }

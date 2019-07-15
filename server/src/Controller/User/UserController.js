@@ -8,6 +8,7 @@ import {
 import successHandler from '../../libs/routes/successHandler';
 import { userResponse } from '../../Constants/constants';
 import { userModel } from '../../Model';
+import getExistingUser from './utils';
 
 
 const getUser = async (req, res, next) => {
@@ -42,26 +43,20 @@ const getAllUsers = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const {
-      name,
-      email,
-      password,
-      bio,
-    } = req.body;
-    const data = {
-      name,
-      email,
-      password,
-      bio,
-    };
-    const result = await create(userModel, data);
-    const { userCreated } = userResponse;
-
-    res
+    const { name, email, password } = req.body;
+    const { userCreated, userAlreadyExists } = userResponse;
+    const user = await getExistingUser(userModel, email);
+    if (user) {
+      const error = new Error(userAlreadyExists);
+      error.status = 400;
+      return next(error);
+    }
+    const result = await create(userModel, { name, email, password });
+    return res
       .status(201)
       .send(successHandler(userCreated, result));
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -93,10 +88,34 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const { invalidPassword, userDoesNotExists } = userResponse;
+    const user = await getExistingUser(userModel, email, password);
+    if (!user) {
+      const error = new Error(userDoesNotExists);
+      error.status = 400;
+      return next(error);
+    }
+    if (user && !user.validPassword(password)) {
+      const error = new Error(invalidPassword);
+      error.status = 400;
+      return next(error);
+    }
+    return res
+      .status(200)
+      .send(successHandler('Successfully logged in', user));
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export {
   getUser,
   createUser,
   getAllUsers,
   deleteUser,
   updateUser,
+  login,
 };
