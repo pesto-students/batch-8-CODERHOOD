@@ -10,6 +10,9 @@ export const CHANNEL_PREFIX = 'channel';
 export const WORKSPACE_PREFIX = 'workspace';
 export const MESSAGE_PREFIX = 'message';
 
+// bcrypt salt factor
+export const SALT_WORK_FACTOR = 10;
+
 // Endpoint response messages
 
 // Channel
@@ -30,6 +33,9 @@ export const userResponse = {
   userCreated: 'User created successfully',
   userUpdated: 'User updated successfully',
   userDeleted: 'User deleted successfully',
+  userAlreadyExists: 'This email is already registered',
+  invalidPassword: 'The password is invalid',
+  userDoesNotExists: 'User doesn\'t exists.',
 };
 
 // Workspace
