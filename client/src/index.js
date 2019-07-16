@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./containers/App";
-import { SignIn, SignUp } from './containers'
+import { SignIn, SignUp, Workspaces } from './containers'
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { NotFound } from "./components";
@@ -13,6 +13,7 @@ const routing = (
       <Route exact path="/" component={App} />
       <Route exact path="/signin" component={SignIn} />
       <Route exact path="/signup" component={SignUp} />
+      <Route exact path="/workspaces" component={Workspaces} />
       <Route component={NotFound} />
     </Switch>
   </Router>
