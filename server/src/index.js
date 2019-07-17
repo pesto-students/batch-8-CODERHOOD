@@ -9,6 +9,7 @@ import router from './router';
 import { errorHandler, notFoundRoutes } from './libs/routes';
 import { PORT, MONGO_CONNECTION_STRING } from './configs/config';
 import successHandler from './libs/routes/successHandler';
+import populateWorkspaceAsNamespacesInIO from './Sockets/setup';
 
 const app = express();
 
@@ -36,6 +37,7 @@ export const server = app.listen(PORT, (err) => {
       useNewUrlParser: true,
       useFindAndModify: false,
     });
+    populateWorkspaceAsNamespacesInIO();
   } catch (e) {
     console.error(e);
     server.close(() => console.log('Server stopped.'));
