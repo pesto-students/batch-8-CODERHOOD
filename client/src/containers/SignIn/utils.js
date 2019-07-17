@@ -9,7 +9,7 @@ export const handleSubmit = async (e, user, history) => {
     const user = JSON.stringify(Data);
     // TODO: implement JWT in server
     localStorage.setItem('user', user);
-    history.push('/workspace');
+    history.push('/workspaces');
   } else {
     // TODO: add component (Toast) to display errors;
     alert(result);
