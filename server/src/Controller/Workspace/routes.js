@@ -9,7 +9,7 @@ import {
 
 const workspaceRouter = express.Router();
 
-workspaceRouter.get('/', getAllWorkspaces);
+workspaceRouter.post('/all', getAllWorkspaces);
 workspaceRouter.get('/:id', getWorkspace);
 workspaceRouter.post('/', createWorkspace);
 workspaceRouter.delete('/:id', deleteWorkspace);
