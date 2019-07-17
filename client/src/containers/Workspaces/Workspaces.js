@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Container from '../../components/Container/Container';
-import Columns from '../../components/Columns/Columns';
 import InputField from '../../components/InputField/InputField';
 import SidebarList from '../../components/SidebarList/SidebarList';
 import Spinner  from '../../components/Spinner/Spinner';
+import AddWorkspaceModal from './AddWorkspace';
  
 
 const Workspaces = () => {
   const [ownedWS, setOwnedWS] = useState([]);
   const [ joinedWS, setJoinedWS] = useState([]);
   const [ isLoading, setLoading ] = useState(true);
+  const [modalVisibility, setModalVisibility] = useState(false);
 
   const ownedWorkspaces = ownedWS.map(workspace => (
     <Link key={workspace._id} to={`/workspaces/${workspace._id}`}>{workspace.name}</Link>
@@ -45,6 +46,9 @@ const Workspaces = () => {
   // TODO: Get user data
   const user = dummyUser;
 
+  const showModal = () => { setModalVisibility(true); };
+  const closeModal = () => { setModalVisibility(false); };
+
   const renderWorkSpaces = () => {
     if (isLoading) {
       return <Spinner />
@@ -55,7 +59,7 @@ const Workspaces = () => {
         <SidebarList 
           heading="Owned Workspaces" 
           list={ownedWorkspaces} 
-          action={<Link to="/workspaces/add"><i className="fas fa-plus"></i></Link>}
+          action={<i className="fas fa-plus" onClick={showModal}></i>}
         />
         <SidebarList
           heading="Joined Workspaces"
@@ -81,8 +85,12 @@ const Workspaces = () => {
         </div>
       </div>
       {renderWorkSpaces()}
-      <Columns>
-      </Columns>
+      <AddWorkspaceModal
+        show={modalVisibility}
+        showClose={false}
+        onClose={closeModal}
+        modal={{ closeOnEsc: true }}
+      />
     </Container>
   )
 }

@@ -5,19 +5,29 @@ import capitalizeFirstLetter from '../../libs/utils';
 const InputField = ({
   label,
   labelDirection, 
-  type = "text",
+  type,
   className, 
   placeholder,
   id,
   error,
   ...props
 }) => {
+  const getLabel = () => {
+    if (label) {
+      return label
+    }
+    if (type) {
+      return capitalizeFirstLetter(type);
+    }
+    return null;
+  }
+
   return (
     <div className={cn(
       "field",
       labelDirection && `has-text-${labelDirection}`
     )}>
-      <label htmlFor={id} className="label">{label ? label : capitalizeFirstLetter(type)}</label>
+      <label htmlFor={id} className="label">{getLabel()}</label>
       <div className="control">
         <input 
           id={id} 
