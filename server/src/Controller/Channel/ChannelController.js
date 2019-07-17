@@ -30,8 +30,9 @@ const getChannel = async (req, res, next) => {
 
 const getAllChannels = async (req, res, next) => {
   try {
+    const data = req.body;
     const { foundAllChannels } = channelResponse;
-    const result = await findMany(channelModel);
+    const result = await findMany(channelModel, data);
     res
       .status(200)
       .send(successHandler(foundAllChannels, result));

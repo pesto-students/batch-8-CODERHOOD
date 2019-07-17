@@ -15,7 +15,7 @@ const findOne = async (model, data) => {
 };
 
 const findMany = async (model, data, skip, limit) => {
-  const foundData = await model.find({ ...data }, undefined, {
+  const foundData = await model.find(data, undefined, {
     limit: Number(limit),
     skip: Number(skip),
   });

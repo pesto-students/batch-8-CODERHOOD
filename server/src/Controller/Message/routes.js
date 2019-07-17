@@ -9,7 +9,7 @@ import {
 
 const messageRouter = express.Router();
 
-messageRouter.get('/', getAllMessages);
+messageRouter.post('/all', getAllMessages);
 messageRouter.get('/:id', getMessage);
 messageRouter.post('/', createMessage);
 messageRouter.delete('/:id', deleteMessage);

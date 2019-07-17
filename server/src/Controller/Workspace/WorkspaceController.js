@@ -30,8 +30,9 @@ const getWorkspace = async (req, res, next) => {
 
 const getAllWorkspaces = async (req, res, next) => {
   try {
+    const data = req.body;
     const { foundAllWorkspaces } = workspaceResponse;
-    const result = await findMany(workspaceModel);
+    const result = await findMany(workspaceModel, data);
     res
       .status(200)
       .send(successHandler(foundAllWorkspaces, result));

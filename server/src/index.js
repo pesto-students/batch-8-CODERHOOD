@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import socketIO from 'socket.io';
 import cors from 'cors';
+import 'dotenv/config';
 
 import router from './router';
 import { errorHandler, notFoundRoutes } from './libs/routes';
