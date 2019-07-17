@@ -6,15 +6,16 @@ import { SignIn, SignUp, Thread, Workspaces } from './containers'
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { NotFound } from "./components";
+import { PrivateRoute, AuthRoute } from './routes';
 
 const routing = (
   <Router>
     <Switch>
-      <Route exact path="/" component={App} />
-      <Route exact path="/signin" component={SignIn} />
-      <Route exact path="/signup" component={SignUp} />
-      <Route exact path="/workspaces" component={Workspaces} />
-      <Route exact path="/thread" component={Thread} />
+      <PrivateRoute exact path="/" component={App} />
+      <AuthRoute exact path="/signin" component={SignIn} />
+      <AuthRoute exact path="/signup" component={SignUp} />
+      <PrivateRoute exact path="/workspaces" component={Workspaces} />
+      <PrivateRoute exact path="/thread" component={Thread} />
       <Route component={NotFound} />
     </Switch>
   </Router>
