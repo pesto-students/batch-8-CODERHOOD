@@ -2,6 +2,10 @@
   padding: 0.25em;
 }
 
+.item--selected {
+  background-color: rgb(230, 226, 226);
+}
+
 .item__content {
   padding-left: 0.5em;
 }
