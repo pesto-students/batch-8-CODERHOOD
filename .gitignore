@@ -2,7 +2,6 @@
 .env
 
 # Lock files
-yarn.lock
 package-lock.json
 
 # Logs
@@ -63,3 +62,6 @@ typings/
 
 # next.js build output
 .next
+
+# server production build
+server/dist

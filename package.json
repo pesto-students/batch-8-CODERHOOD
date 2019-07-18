@@ -14,14 +14,17 @@
   },
   "homepage": "https://github.com/pesto-students/batch-8-CODERHOOD#readme",
   "scripts": {
-    "server": "cd server/ && yarn start",
+    "server": "cd server/ && yarn build && yarn start",
     "client": "cd client/ && yarn start",
     "start": "concurrently \"yarn server\" \"yarn client\"",
-    "postinstall": "yarn install:client && yarn install:server",
+    "postinstall": "yarn install:server",
     "install:client": "cd client && yarn",
     "install:server": "cd server && yarn",
     "test:server": "cd server && yarn && yarn test",
     "test:client": "cd client && yarn && yarn test",
+    "deploy:server:prod": "git push heroku master",
+    "deploy:client:dev": "cd client && yarn build && netlify deploy",
+    "deploy:client:prod": "cd client && yarn build && netlify deploy --prod",
     "test": "yarn test:client && yarn test:server"
   },
   "devDependencies": {
