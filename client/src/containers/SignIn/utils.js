@@ -8,7 +8,7 @@ export const handleSubmit = async (e, user, history, dispatch) => {
   const { user: User } = modules;
   const { login } = endpoints;
   const result = await callApi(post, `/${User}/${login}`, { email, password });
-  if (result.data) {
+  if (result && Object.prototype.hasOwnProperty.call(result, 'data')) {
     const { data } = result.data;
     const user = JSON.stringify(data);
     // TODO: implement JWT in server

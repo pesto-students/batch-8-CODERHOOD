@@ -4,17 +4,15 @@
   "description": "Slack Clone Server built for project month at pesto by batch-8 CODERHOOD Group",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "node dist/index.js",
+    "build": "babel src/ -d dist",
+    "dev": "nodemon --exec babel-node src/index.js",
     "test": "jest --runInBand --passWithNoTests",
     "pretest": "yarn"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/node": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.10.0",
@@ -22,6 +20,10 @@
     "eslint-plugin-react": "^7.7.0"
   },
   "dependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
