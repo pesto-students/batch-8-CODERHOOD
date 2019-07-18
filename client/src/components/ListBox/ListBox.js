@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { SelectableItem } from '..';
 import InputField from '../InputField/InputField';
+import './ListBox.css';
 
 const ListBox = (props) => {
   const { items } = props;
@@ -16,7 +17,7 @@ const ListBox = (props) => {
   };
 
   return (
-    <div className="box">
+    <div className="box list-box">
       <InputField placeholder="search for user" onChange={handleChange} />
       {items
         .filter((item) =>
