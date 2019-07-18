@@ -8,13 +8,14 @@ import {
 import successHandler from '../../libs/routes/successHandler';
 import { channelResponse } from '../../Constants/constants';
 import { channelModel } from '../../Model';
+import updateMembers from '../utils';
 
 
 const getChannel = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { channelNotFound, channelFound } = channelResponse;
-    const result = await findOne(channelModel, id);
+    const result = await findOne(channelModel, { _id: id });
     if (!result) {
       const err = new Error(channelNotFound);
       err.status = 404;
@@ -96,10 +97,25 @@ const updateChannel = async (req, res, next) => {
   }
 };
 
+const updateChannelMembers = async (req, res, next) => {
+  const { channelNotFound, memberUpdated } = channelResponse;
+  const result = await updateMembers(
+    req,
+    res,
+    next,
+    channelModel,
+    channelNotFound,
+    memberUpdated,
+    successHandler,
+  );
+  return result;
+};
+
 export {
   getChannel,
   createChannel,
   getAllChannels,
   deleteChannel,
   updateChannel,
+  updateChannelMembers,
 };
