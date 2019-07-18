@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import SmallContainer from '../../components/SmallContainer/SmallContainer';
-import InputField from '../../components/InputField/InputField';
+import SmallContainer from '../SmallContainer/SmallContainer';
+import InputField from '../InputField/InputField';
 import {
   getError,
   hasError,
@@ -11,12 +11,9 @@ import {
 import { handleChange, handleBlur } from '../../libs/handleInputEvents';
 import logo from '../../constants/constants';
 
-import './AuthForm.css';
+import './Form.css';
 
-const AuthForm = props => {
-  const [user, setUser] = useState({});
-  const [touched, setTouched] = useState({});
-  const [error, setError] = useState({});
+const Form = props => {
 
   const {
     inputs,
@@ -26,8 +23,16 @@ const AuthForm = props => {
     footerLabel,
     linkTo,
     linkToLabel,
-    dispatch
+    dispatch,
+    initialData,
+    alwaysEnableButton
   } = props;
+
+  const [user, setUser] = useState(initialData ? initialData : {});
+  const [touched, setTouched] = useState({});
+  const [error, setError] = useState({});
+
+
 
   useEffect(() => handleErrors(schema, user, setError), [schema, user]);
 
@@ -45,6 +50,8 @@ const AuthForm = props => {
     />
   );
 
+
+
   return (
     <SmallContainer>
       <form className="has-text-centered">
@@ -56,12 +63,12 @@ const AuthForm = props => {
           />
         </figure>
 
-        {inputs.map(({ type }, index) => renderInputField({ type, key: index }))}
+        {inputs.map(({ type }, index) => renderInputField({ type, label: schema.fields[type]._label, key: index }))}
 
         <div className="control has-text-centered">
           <button
             className="button is-primary"
-            disabled={hasError(error) || !isTouched(touched)}
+            disabled={!alwaysEnableButton && (hasError(error) || !isTouched(touched))}
             onClick={e => handleSubmit(e, user, props.history, dispatch)}
           >
             {submitLabel}
@@ -78,4 +85,4 @@ const AuthForm = props => {
   );
 };
 
-export default AuthForm;
+export default Form;

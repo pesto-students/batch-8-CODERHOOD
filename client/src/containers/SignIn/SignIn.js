@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthForm } from "../../components";
+import { Form } from "../../components";
 import { handleSubmit } from "./utils";
 import { schema, inputs } from "./Schema";
 import { useAppContext } from "../App/AppContext";
@@ -9,7 +9,7 @@ const SignIn = props => {
 
   return (
     <div>
-      <AuthForm
+      <Form
         {...props}
         handleSubmit={handleSubmit}
         schema={schema}
