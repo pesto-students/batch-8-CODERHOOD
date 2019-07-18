@@ -1,19 +1,34 @@
 import React, { useState } from 'react';
 
-import SmallContainer from '../SmallContainer/SmallContainer';
 import { SelectableItem } from '..';
+import InputField from '../InputField/InputField';
 
 const ListBox = (props) => {
-  const { items, handleChange } = props;
+  const { items } = props;
 
   // const [mainList, setMainList] = useState(items);
   // const [searchList, setSearchList] = useState([]);
+  const [searchText, setSearchText] = useState('');
+
+  const handleChange = (e) => {
+    setSearchText(e.target.value);
+    console.log(searchText);
+  };
 
   return (
     <div className="box">
-      {items.map(({ id, content }) => (
-        <SelectableItem key={id} content={content} handleChange={handleChange(id)}/>
-      ))}
+      <InputField placeholder="search for user" onChange={handleChange} />
+      {items
+        .filter((item) =>
+          searchText.length > 0 ? item.content.startsWith(searchText) : true
+        )
+        .map(({ id, content }) => (
+          <SelectableItem
+            key={id}
+            content={content}
+            handleChange={props.handleChange(id)}
+          />
+        ))}
     </div>
   );
 };
