@@ -3,6 +3,7 @@ import {
   getUser,
   createUser,
   getAllUsers,
+  getSelectedUsers,
   deleteUser,
   updateUser,
 } from '../Controller/User/UserController';
@@ -167,5 +168,61 @@ describe('Test api/user endpoints', () => {
       },
       message: 'User updated successfully',
     });
+  });
+
+  test('post(/) - getSelectedUsers should data of user with ids in member list', async () => {
+    // create two users for testing
+    const userA = {
+      name: 'memberA',
+      email: 'chm1@mail.com',
+      password: 'password',
+    };
+
+    let tempReq = mockRequest({ ...userA });
+    let tempRes = mockResponse();
+
+    await createUser(tempReq, tempRes, next);
+    const userB = {
+      name: 'memberB',
+      email: 'chm2@mail.com',
+      password: 'password',
+    };
+
+    tempReq = mockRequest({ ...userB });
+    tempRes = mockResponse();
+
+    await createUser(tempReq, tempRes, next);
+
+    // Get their ids
+    const testUserA = await userModel.findOne({ name: 'memberA' });
+    const testUserB = await userModel.findOne({ name: 'memberB' });
+
+    const members = [testUserA.id, testUserB.id];
+
+    const req = {
+      body: {
+        members,
+      },
+    };
+    const res = mockResponse();
+
+    await getSelectedUsers(req, res, next);
+    expect(res.send.mock.calls[0][0]).toMatchObject({
+      data: {
+        data: [
+          {
+            name: 'memberA',
+            email: 'chm1@mail.com',
+          },
+          {
+            name: 'memberB',
+            email: 'chm2@mail.com',
+          },
+        ],
+      },
+      message: 'Users are here',
+    });
+
+    expect(true).toBe(true);
   });
 });

@@ -1,19 +1,27 @@
-.thread-body {
+.channel-body {
   border-left: 2px solid black;
   display: flex;
   flex-direction: column;
-  min-height: 90vh;
+  height: 80vh;
 }
 .has-bottom-border-2 {
   border-bottom: 2px solid black;
 }
-.thread-body h3 {
+.channel-body h3 {
   font-size: 1.5em;
 }
-.thread-body #messages {
+.channel-body #messages {
   flex: 1;
   overflow: scroll;
+  overflow-x: hidden;
 }
 article .media:last-child {
   flex-shrink: 0;
 }
+.container {
+  margin: 0 0;
+  margin-right: 0;
+  width: 100%;
+
+}
+

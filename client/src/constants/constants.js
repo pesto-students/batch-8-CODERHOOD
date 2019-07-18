@@ -22,4 +22,7 @@ export const endpoints = {
     login: 'login',
 }
 
+export const messageEvent = 'message';
+export const connectedEvent = 'connected';
+
 export default logo;

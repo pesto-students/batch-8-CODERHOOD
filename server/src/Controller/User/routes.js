@@ -3,6 +3,7 @@ import {
   getUser,
   createUser,
   getAllUsers,
+  getSelectedUsers,
   deleteUser,
   updateUser,
   login,
@@ -11,6 +12,7 @@ import {
 const userRouter = express.Router();
 
 userRouter.get('/', getAllUsers);
+userRouter.post('/', getSelectedUsers);
 userRouter.get('/:id', getUser);
 userRouter.post('/', createUser);
 userRouter.delete('/:id', deleteUser);
