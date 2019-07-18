@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 
-import Container from '../Container/Container';
 import './SelectableItem.css';
 
 const SelectableItem = (props) => {

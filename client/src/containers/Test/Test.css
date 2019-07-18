@@ -1,0 +1,10 @@
+.button-list {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+}
+
+.button-list__button {
+    margin: 0.25em;
+    flex: 0 0 auto;
+}

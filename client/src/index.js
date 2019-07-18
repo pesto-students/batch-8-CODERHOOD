@@ -7,6 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { NotFound, SelectableItem } from "./components";
 import { PrivateRoute, AuthRoute } from './routes';
+import Test from "./containers/Test/Test";
 
 const routing = (
   <Router>
@@ -16,7 +17,7 @@ const routing = (
       <AuthRoute exact path="/signup" component={SignUp} />
       <PrivateRoute exact path="/workspaces" component={Workspaces} />
       <PrivateRoute exact path="/thread" component={Thread} />
-      <Route exact path="/test" component={SelectableItem} />
+      <Route exact path="/test" component={Test} />
       <Route component={NotFound} />
     </Switch>
   </Router>

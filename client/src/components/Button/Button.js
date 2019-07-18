@@ -16,6 +16,7 @@ const Button = ({
   loading,
   disabled,
   btnStatic,
+  cls,
   ...props
 }) => {
 
@@ -45,7 +46,8 @@ const Button = ({
         focussed && `is-focussed`,
         active && `is-active`,
         loading && `is-loading`,
-        btnStatic && `is-static`
+        btnStatic && `is-static`,
+        cls,
       )}
       { ...defaultProps[TagName] }
       { ...props }
