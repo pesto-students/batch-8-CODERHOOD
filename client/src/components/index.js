@@ -1,5 +1,5 @@
 export { default as NotFound } from './NotFound/NotFound';
-export { default as AuthForm } from './AuthForm/AuthForm';
+export { default as Form } from './Form/Form';
 export { default as Columns } from './Columns/Columns';
 export { default as SidebarList } from './SidebarList/SidebarList';
 export { default as ThreadHeader } from './ThreadHeader/ThreadHeader';
