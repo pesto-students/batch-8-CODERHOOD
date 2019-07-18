@@ -1,9 +1,12 @@
 import callApi from '../../libs/axios';
+import { methods, modules } from '../../constants/constants';
 
 export const handleSubmit = async (event, values, history) => {
   event.preventDefault();
   const { name, email, password } = values;
-  const result = await callApi('post', '/user', { name, email, password });
+  const { post } = methods;
+  const { user } = modules;
+  const result = await callApi(post, `/${user}`, { name, email, password });
   if (result.data) {
     history.push('/signin');
   } else {

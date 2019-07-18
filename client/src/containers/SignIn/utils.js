@@ -1,9 +1,13 @@
 import callApi from '../../libs/axios';
+import { modules, methods, endpoints } from '../../constants/constants';
 
 export const handleSubmit = async (e, user, history, dispatch) => {
   e.preventDefault();
   const { email, password } = user;
-  const result = await callApi('post', '/user/login', { email, password });
+  const { post } = methods;
+  const { user: User } = modules;
+  const { login } = endpoints;
+  const result = await callApi(post, `/${User}/${login}`, { email, password });
   if (result.data) {
     const { data } = result.data;
     const user = JSON.stringify(data);

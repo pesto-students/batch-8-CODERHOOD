@@ -5,7 +5,7 @@ import { schema, inputs } from "./Schema";
 import { useAppContext } from "../App/AppContext";
 
 const SignIn = props => {
-  const { loginStatus, dispatch } = useAppContext();
+  const { dispatch } = useAppContext();
 
   return (
     <div>
