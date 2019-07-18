@@ -53,35 +53,33 @@ const Form = props => {
 
 
   return (
-    <SmallContainer>
-      <form className="has-text-centered">
-        <figure className="image is-128x128">
-          <img
-            src={logo.src}
-            alt={logo.alt}
-            className="brand-logo is-rounded"
-          />
-        </figure>
+    <form className="has-text-centered">
+      <figure className="image is-128x128">
+        <img
+          src={logo.src}
+          alt={logo.alt}
+          className="brand-logo is-rounded"
+        />
+      </figure>
 
-        {inputs.map(({ type }, index) => renderInputField({ type, label: schema.fields[type]._label, key: index }))}
+      {inputs.map(({ type }, index) => renderInputField({ type, label: schema.fields[type]._label, key: index }))}
 
-        <div className="control has-text-centered">
-          <button
-            className="button is-primary"
-            disabled={!alwaysEnableButton && (hasError(error) || !isTouched(touched))}
-            onClick={e => handleSubmit(e, user, props.history, dispatch)}
-          >
-            {submitLabel}
-          </button>
-        </div>
+      <div className="control has-text-centered">
+        <button
+          className="button is-primary"
+          disabled={!alwaysEnableButton && (hasError(error) || !isTouched(touched))}
+          onClick={e => handleSubmit(e, user, props.history, dispatch, props)}
+        >
+          {submitLabel}
+        </button>
+      </div>
 
-        <p className="formFooter">
-          {footerLabel}
-          <br />
-          <Link to={linkTo}>{linkToLabel}</Link>
-        </p>
-      </form>
-    </SmallContainer>
+      <p className="formFooter">
+        {footerLabel}
+        <br />
+        <Link to={linkTo}>{linkToLabel}</Link>
+      </p>
+    </form>
   );
 };
 
