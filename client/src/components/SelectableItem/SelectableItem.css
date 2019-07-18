@@ -1,0 +1,7 @@
+.box.item {
+  padding: 0.25em;
+}
+
+.item__content {
+  padding-left: 0.5em;
+}

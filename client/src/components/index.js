@@ -9,3 +9,4 @@ export { default as SideTab } from './SideTab/SideTab';
 export { default as Container } from './Container/Container';
 export { default as Sidebar } from './Sidebar/Sidebar';
 export { default as InputField } from './InputField/InputField';
+export { default as SelectableItem } from './SelectableItem/SelectableItem';
