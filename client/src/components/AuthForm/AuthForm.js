@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import SmallContainer from '../../components/SmallContainer/SmallContainer';
 import InputField from '../../components/InputField/InputField';
-import { getError, hasError, isTouched, handleErrors } from '../../libs/validate';
+import {
+  getError,
+  hasError,
+  isTouched,
+  handleErrors
+} from '../../libs/validate';
 import { handleChange, handleBlur } from '../../libs/handleInputEvents';
 import logo from '../../constants/constants';
 
 import './AuthForm.css';
 
-const AuthForm = (props) => {
-  const [ user, setUser ] = useState({});
-  const [ touched, setTouched ]= useState({});
-  const [ error, setError ] = useState({});
-  
+const AuthForm = props => {
+  const [user, setUser] = useState({});
+  const [touched, setTouched] = useState({});
+  const [error, setError] = useState({});
+
   const {
     inputs,
     schema,
@@ -20,25 +25,25 @@ const AuthForm = (props) => {
     submitLabel,
     footerLabel,
     linkTo,
-    linkToLabel
+    linkToLabel,
+    dispatch
   } = props;
 
   useEffect(() => handleErrors(schema, user, setError), [schema, user]);
-  
-  
-  const renderInputField = ({type, label, key}) => (
+
+  const renderInputField = ({ type, label, key }) => (
     <InputField
       key={key}
-      labelDirection="left"
+      labelDirection='left'
       type={type}
       id={type}
       label={label}
       onChange={handleChange(setUser, user, type)}
       onBlur={handleBlur(setTouched, touched, type)}
-      error={ error[type] ? getError(type, touched, error) : null}
+      error={error[type] ? getError(type, touched, error) : null}
       value={user[type] ? user[type] : ''}
     />
-  )
+  );
 
   return (
     <SmallContainer>
@@ -51,27 +56,26 @@ const AuthForm = (props) => {
           />
         </figure>
 
-        {
-          inputs.map(({type}) => renderInputField({type, key: type}))
-        }
+        {inputs.map(({ type }, index) => renderInputField({ type, key: index }))}
 
         <div className="control has-text-centered">
           <button
             className="button is-primary"
-            disabled={ hasError(error) || !isTouched(touched) }
-            onClick={(e) => handleSubmit(e, user, props.history)}
+            disabled={hasError(error) || !isTouched(touched)}
+            onClick={e => handleSubmit(e, user, props.history, dispatch)}
           >
             {submitLabel}
           </button>
         </div>
 
         <p className="formFooter">
-          {footerLabel}<br />
+          {footerLabel}
+          <br />
           <Link to={linkTo}>{linkToLabel}</Link>
         </p>
       </form>
     </SmallContainer>
-  )
+  );
 };
 
 export default AuthForm;

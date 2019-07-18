@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import Container from '../../components/Container/Container';
 import InputField from '../../components/InputField/InputField';
 import SidebarList from '../../components/SidebarList/SidebarList';
-import Spinner  from '../../components/Spinner/Spinner';
+import Spinner from '../../components/Spinner/Spinner';
 import AddWorkspaceModal from './AddWorkspace';
- 
+
 
 const Workspaces = () => {
   const [ownedWS, setOwnedWS] = useState([]);
-  const [ joinedWS, setJoinedWS] = useState([]);
-  const [ isLoading, setLoading ] = useState(true);
+  const [joinedWS, setJoinedWS] = useState([]);
+  const [isLoading, setLoading] = useState(true);
   const [modalVisibility, setModalVisibility] = useState(false);
 
   const ownedWorkspaces = ownedWS.map(workspace => (
@@ -56,9 +56,9 @@ const Workspaces = () => {
 
     return (
       <>
-        <SidebarList 
-          heading="Owned Workspaces" 
-          list={ownedWorkspaces} 
+        <SidebarList
+          heading="Owned Workspaces"
+          list={ownedWorkspaces}
           action={<i className="fas fa-plus" onClick={showModal}></i>}
         />
         <SidebarList
@@ -77,9 +77,9 @@ const Workspaces = () => {
         </div>
         <div className="level-right">
           <form className="level-item">
-            <InputField 
-              className="is-primary is-rounded" 
-              placeholder="Search Workspace" 
+            <InputField
+              className="is-primary is-rounded"
+              placeholder="Search Workspace"
             />
           </form>
         </div>
