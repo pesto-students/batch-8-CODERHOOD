@@ -69,13 +69,13 @@ describe('Test api/user endpoints', () => {
     await getUser(req, res, next);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send.mock.calls[0][0]).toMatchObject({
-      Data: {
+      data: {
         _id,
         name: 'bobby',
         email: 'bob@mail.com',
         __v: 0,
       },
-      Message: 'User is here',
+      message: 'User is here',
     });
   });
 
@@ -110,11 +110,11 @@ describe('Test api/user endpoints', () => {
     expect(res.status).toHaveBeenCalledWith(200);
     // Because _id cannot be known.
     expect(res.send.mock.calls[0][0]).toMatchObject({
-      Data: {
+      data: {
         counts: 2,
         data: result,
       },
-      Message: 'Users are here',
+      message: 'Users are here',
     });
   });
 
@@ -132,13 +132,13 @@ describe('Test api/user endpoints', () => {
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send.mock.calls[0][0]).toMatchObject({
-      Data: {
+      data: {
         name: 'bobby',
         email: 'bob@mail.com',
         __v: 0,
         _id,
       },
-      Message: 'User deleted successfully',
+      message: 'User deleted successfully',
     });
   });
 
@@ -159,13 +159,13 @@ describe('Test api/user endpoints', () => {
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.send.mock.calls[0][0]).toMatchObject({
-      Data: {
+      data: {
         name: 'john',
         email: 'newjohn@gmail.com',
         __v: 0,
         _id,
       },
-      Message: 'User updated successfully',
+      message: 'User updated successfully',
     });
   });
 });
