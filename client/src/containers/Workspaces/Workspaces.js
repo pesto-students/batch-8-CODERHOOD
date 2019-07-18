@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useFetch from '../../hooks/useFetch';
+import { useAppContext } from '../App/AppContext';
+import { modules, methods, endpoints } from '../../constants/constants';
 
 import Container from '../../components/Container/Container';
 import InputField from '../../components/InputField/InputField';
@@ -7,50 +10,47 @@ import SidebarList from '../../components/SidebarList/SidebarList';
 import Spinner from '../../components/Spinner/Spinner';
 import AddWorkspaceModal from './AddWorkspace';
 
-
 const Workspaces = () => {
-  const [ownedWS, setOwnedWS] = useState([]);
-  const [joinedWS, setJoinedWS] = useState([]);
-  const [isLoading, setLoading] = useState(true);
   const [modalVisibility, setModalVisibility] = useState(false);
 
+  const user = useAppContext();
+
+  const { post } = methods;
+  const { workspace } = modules;
+  const { getAll } = endpoints;
+
+  const fetchOwnedWorkspaces = useFetch(post, `/${workspace}/${getAll}`, {
+    user: '5d296628efda5a73faa563cb',
+  });
+
+  const fetchJoinedWorkspaces = useFetch(post, `/${workspace}/${getAll}`, {
+    members: '5d296628efda5a73faa563cb',
+    user: { '$ne': '5d296628efda5a73faa563cb' },
+  })
+
+  const ownedWS = fetchOwnedWorkspaces.response
+    ? fetchOwnedWorkspaces.response.data.data
+    : [];
+
+  const joinedWS = fetchJoinedWorkspaces.response
+  ? fetchJoinedWorkspaces.response.data.data
+  : [];
+  
   const ownedWorkspaces = ownedWS.map(workspace => (
     <Link key={workspace._id} to={`/workspaces/${workspace._id}`}>{workspace.name}</Link>
   ))
-
+  
   const joinedWorkspaces = joinedWS.map(workspace => (
     <Link key={workspace._id} to={`/workspaces/${workspace._id}`}>{workspace.name}</Link>
   ))
-
-  useEffect(() => {
-    // TODO: fetch workspaces list
-    const dummyWorkspaces = [
-      {
-        _id: 1,
-        name: 'Workspace 1'
-      },
-      {
-        _id: 2,
-        name: 'Workspace 2'
-      }
-    ]
-    setOwnedWS(dummyWorkspaces);
-    setJoinedWS(dummyWorkspaces);
-    setLoading(false);
-  }, []);
-
-  const dummyUser = {
-    _id: 101010,
-    name: 'John',
-  }
-  // TODO: Get user data
-  const user = dummyUser;
 
   const showModal = () => { setModalVisibility(true); };
   const closeModal = () => { setModalVisibility(false); };
 
   const renderWorkSpaces = () => {
-    if (isLoading) {
+    const { isLoading: isOwnedWSLoading } = fetchOwnedWorkspaces;
+    const { isLoading: isJoinedWSLoading } = fetchJoinedWorkspaces;
+    if (isOwnedWSLoading || isJoinedWSLoading) {
       return <Spinner />
     }
 
@@ -69,11 +69,13 @@ const Workspaces = () => {
     )
   }
 
+  const { name } = user.loginStatus.user;
+
   return (
     <Container>
       <div className="level content">
         <div className="level-left">
-          <h1 className="level-item">Welcome, {user.name}</h1>
+          <h1 className="level-item">Welcome, {name}</h1>
         </div>
         <div className="level-right">
           <form className="level-item">
