@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ThreadHeader = ({heading, actions = [], ...props}) => {
+const ChannelHeader = ({heading, actions = [], ...props}) => {
   return (
     <div className="level has-bottom-border-2">
       <div className="level-left">
@@ -13,4 +13,4 @@ const ThreadHeader = ({heading, actions = [], ...props}) => {
   )
 }
 
-export default ThreadHeader;
+export default ChannelHeader;

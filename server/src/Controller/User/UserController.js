@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import {
   create,
   deleteDoc,
@@ -33,6 +34,21 @@ const getAllUsers = async (req, res, next) => {
   try {
     const { foundAllUsers } = userResponse;
     const result = await findMany(userModel);
+    res
+      .status(200)
+      .send(successHandler(foundAllUsers, result));
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSelectedUsers = async (req, res, next) => {
+  try {
+    const { members } = req.body;
+    const { foundAllUsers } = userResponse;
+    const memberObjectIds = members.map(id => mongoose.Types.ObjectId(id));
+    const query = { _id: { $in: memberObjectIds } };
+    const result = await findMany(userModel, query);
     res
       .status(200)
       .send(successHandler(foundAllUsers, result));
@@ -115,6 +131,7 @@ export {
   getUser,
   createUser,
   getAllUsers,
+  getSelectedUsers,
   deleteUser,
   updateUser,
   login,

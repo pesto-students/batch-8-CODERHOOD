@@ -1,6 +1,10 @@
+import mongoose from 'mongoose';
+
 const create = (model, data) => model.create(data);
 
 const count = model => model.countDocuments();
+
+const generateObjectID = () => mongoose.Types.ObjectId();
 
 const findOne = async (model, data) => {
   try {
@@ -86,4 +90,5 @@ export {
   update,
   count,
   updateArrayField,
+  generateObjectID,
 };

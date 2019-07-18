@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { SignIn, SignUp, Thread, Workspaces, ChannelMembers, ViewProfile } from './containers';
+import { SignIn, SignUp, Workspace, Workspaces, ChannelMembers, ViewProfile } from './containers';
 import * as serviceWorker from './serviceWorker';
 import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 import { NotFound } from './components';
@@ -15,9 +15,10 @@ const routing = (
         <AuthRoute exact path='/signin' component={SignIn} />
         <AuthRoute exact path='/signup' component={SignUp} />
         <PrivateRoute exact path='/workspaces' component={Workspaces} />
-        <PrivateRoute exact path='/thread' component={Thread} />
         <PrivateRoute exact path='/channelMembers' component={ChannelMembers} />
         <PrivateRoute exact path='/viewProfile' component={ViewProfile} />
+        <PrivateRoute exact path='/Workspaces/:id' component={Workspace} />
+        <PrivateRoute exact path='/Workspaces/:id/:channelId/:channelName' component={Workspace} />
         <Redirect from='/' to='/workspaces' />
         <Route component={NotFound} />
       </Switch>

@@ -1,4 +1,5 @@
-.isSelected {
+.tab--selected {
+  display: block;
   color: white;
-  background-color: darkslategray;
+  background-color: rgb(43, 43, 43);
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ThreadMessage = ({
-  threadId,
-  userPic, 
-  userName,
+const Message = ({
+  messageId,
+  userPic = 'https://dummyimage.com/64x64/000/fff&text=MrAnderson', 
+  username,
   timeSince,
   message,
   messageActions = [],
@@ -13,13 +13,13 @@ const ThreadMessage = ({
     <article className="media">
       <figure className="media-left">
         <p className="image is-64x64">
-          <img src={userPic} alt={userName} />
+          <img src={userPic} alt={username} />
         </p>
       </figure>
       <div className="media-content">
         <div className="content">
           <p>
-            <strong>{userName}</strong> <small>{timeSince}</small>
+            <strong>{username}</strong> <small>{timeSince}</small>
             <br /> {message}
           </p>
         </div>
@@ -33,4 +33,4 @@ const ThreadMessage = ({
   )
 }
 
-export default ThreadMessage;
+export default Message;

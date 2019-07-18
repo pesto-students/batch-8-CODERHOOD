@@ -9,6 +9,7 @@ import {
 
 const messageRouter = express.Router();
 
+/* base url - '/message' */
 messageRouter.post('/all', getAllMessages);
 messageRouter.get('/:id', getMessage);
 messageRouter.post('/', createMessage);
