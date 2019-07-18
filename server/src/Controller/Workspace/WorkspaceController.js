@@ -8,13 +8,14 @@ import {
 import successHandler from '../../libs/routes/successHandler';
 import { workspaceResponse } from '../../Constants/constants';
 import { workspaceModel } from '../../Model';
+import updateMembers from '../utils';
 
 
 const getWorkspace = async (req, res, next) => {
   try {
     const { workspaceFound, workspaceNotFound } = workspaceResponse;
     const { id } = req.params;
-    const result = await findOne(workspaceModel, id);
+    const result = await findOne(workspaceModel, { _id: id });
     if (!result || result === null) {
       const err = new Error(workspaceNotFound);
       err.status = 404;
@@ -84,10 +85,25 @@ const updateWorkspace = async (req, res, next) => {
   }
 };
 
+const updateWorkspaceMembers = async (req, res, next) => {
+  const { workspaceNotFound, memberUpdated } = workspaceResponse;
+  const result = await updateMembers(
+    req,
+    res,
+    next,
+    workspaceModel,
+    workspaceNotFound,
+    memberUpdated,
+    successHandler,
+  );
+  return result;
+};
+
 export {
   getWorkspace,
   createWorkspace,
   getAllWorkspaces,
   deleteWorkspace,
   updateWorkspace,
+  updateWorkspaceMembers,
 };

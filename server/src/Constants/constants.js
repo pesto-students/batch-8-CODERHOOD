@@ -23,6 +23,7 @@ export const channelResponse = {
   channelCreated: 'Channel created successfully',
   channelUpdated: 'Channel updated successfully',
   channelDeleted: 'Channel deleted successfully',
+  memberUpdated: 'Member updated successfully',
 };
 
 // User
@@ -46,6 +47,7 @@ export const workspaceResponse = {
   workspaceCreated: 'Workspace created successfully',
   workspaceUpdated: 'Workspace updated successfully',
   workspaceDeleted: 'Workspace deleted successfully',
+  memberUpdated: 'Member updated successfully',
 };
 
 // Message

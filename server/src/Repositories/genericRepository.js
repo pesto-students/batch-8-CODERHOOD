@@ -53,6 +53,31 @@ const update = async (model, id, updatedData) => {
   }
 };
 
+const updateArrayField = async (model, operation, id, dataToUpdate) => {
+  try {
+    if (operation === 'add') {
+      const result = await model.findOneAndUpdate(
+        id,
+        {
+          $push: { members: dataToUpdate },
+        },
+        { new: true },
+      );
+      return result;
+    }
+    const result = await model.findOneAndUpdate(
+      id,
+      {
+        $pull: { members: dataToUpdate },
+      },
+      { new: true },
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   create,
   findOne,
@@ -60,4 +85,5 @@ export {
   deleteDoc,
   update,
   count,
+  updateArrayField,
 };
