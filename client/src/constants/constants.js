@@ -21,6 +21,7 @@ export const endpoints = {
     getAll: 'all',
     getSelected: 'selected',
     login: 'login',
+    getConversation: 'conversation',
 }
 
 export const messageEvent = 'message';

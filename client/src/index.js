@@ -18,7 +18,7 @@ const routing = (
         <PrivateRoute exact path='/channelMembers' component={ChannelMembers} />
         <PrivateRoute exact path='/viewProfile' component={ViewProfile} />
         <PrivateRoute exact path='/Workspaces/:id' component={Workspace} />
-        <PrivateRoute exact path='/Workspaces/:id/:channelId/:channelName' component={Workspace} />
+        <PrivateRoute exact path='/Workspaces/:id/:channelId/:type/:channelName' component={Workspace} />
         <Redirect from='/' to='/workspaces' />
         <Route component={NotFound} />
       </Switch>

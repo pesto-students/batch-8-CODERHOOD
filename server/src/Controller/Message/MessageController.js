@@ -102,10 +102,36 @@ const updateMessage = async (req, res, next) => {
   }
 };
 
+const getConversation = async (req, res, next) => {
+  try {
+    const { userA, userB } = req.body;
+    const { foundAllMessages } = messageResponse;
+    const query = {
+      $or: [
+        {
+          from: userA,
+          to: userB,
+        },
+        {
+          from: userB,
+          to: userA,
+        },
+      ],
+    };
+    const result = await findMany(messageModel, query);
+    res
+      .status(200)
+      .send(successHandler(foundAllMessages, result));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   getMessage,
   createMessage,
   getAllMessages,
   deleteMessage,
   updateMessage,
+  getConversation,
 };

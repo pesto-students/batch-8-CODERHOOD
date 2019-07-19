@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import socketIOClient from 'socket.io-client';
 import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
@@ -16,7 +16,8 @@ import {
 import {
   prettifyMessage,
   loadChannelMessagesIntoStore,
-  fetchMembersData
+  fetchMembersData,
+  loadUserMessagesIntoStore
 } from './utils';
 import { messageEvent, connectedEvent } from '../../constants/constants';
 import './Workspace.css';
@@ -27,28 +28,68 @@ function Workspace({ match }) {
   const endpoint = 'http://localhost:8000/';
 
   const clientSocket = useRef(null);
+  const channelsLoaded = useRef([]);
   const userData = useAppContext();
   const currentUser = userData.loginStatus.user;
 
+  const typeUser = 'usr';
+  const { params } = match;
+  const isActiveChannelAUser = params.type ? params.type === typeUser : false;
+
   const [activeChannel, setActiveChannel] = useState({
-    id: match.params.channelId,
-    name: match.params.channelName
+    id: params.channelId,
+    name: params.channelName,
+    isUser: isActiveChannelAUser
   });
+
   const [messageStore, setMessageStore] = useState({});
   const [members, setMembers] = useState([]);
 
-  const changeActiveChannel = async (channelId, name) => {
+  const changeActiveChannel = async (channelId, name, isUser) => {
     if (!messageStore[channelId]) {
-      loadChannelMessagesIntoStore(channelId, setMessageStore);
+      if (isUser) {
+        loadUserMessagesIntoStore(
+          channelId,
+          currentUser._id,
+          channelId,
+          setMessageStore
+        );
+      } else {
+        loadChannelMessagesIntoStore(channelId, setMessageStore);
+      }
     }
+    channelsLoaded.current.push(channelId);
     setActiveChannel({
       id: channelId,
-      name
+      name,
+      isUser
     });
   };
 
-  const handleIncomingMessage = (messageObj) => {
-    const { channel } = messageObj;
+  const handleIncomingMessage = ({ isConversation, ...messageObj }) => {
+    const { from, to } = messageObj;
+    let { channel } = messageObj;
+    // If user is the receiver of personal message, change channel to from - the id of sender.
+    if (isConversation && currentUser._id === channel) {
+      channel = from;
+    }
+
+    const isUserParticipant =
+      currentUser._id === to || currentUser._id === from;
+
+    if (!channelsLoaded.current.includes(channel)) {
+      if (isConversation && isUserParticipant) {
+        loadUserMessagesIntoStore(
+          channel,
+          currentUser._id,
+          channel,
+          setMessageStore
+        );
+      } else {
+        loadChannelMessagesIntoStore(channel, setMessageStore);
+      }
+      return null;
+    }
     setMessageStore((store) => ({
       ...store,
       [channel]: {
@@ -68,9 +109,9 @@ function Workspace({ match }) {
   const handleSend = (e) => {
     e.preventDefault();
     const socket = clientSocket.current;
+    // FIXME: Change when MessageForm is refactored
     const content = document.getElementsByClassName('textarea')[0].value;
     document.getElementsByClassName('textarea')[0].value = '';
-
     const messageObj = {
       from: currentUser._id,
       to: activeChannel.id,
@@ -78,7 +119,8 @@ function Workspace({ match }) {
       message: content,
       channel: activeChannel.id,
       workspace: workspaceId,
-      isComment: false
+      isComment: false,
+      isConversation: activeChannel.isUser
     };
     socket.emit(messageEvent, messageObj);
   };
@@ -112,6 +154,7 @@ function Workspace({ match }) {
     : [];
   const prettyMembers = members.map(({ _id, name }) => (
     <SideTab
+      isUser={true}
       key={_id}
       content={name}
       id={_id}
@@ -126,9 +169,10 @@ function Workspace({ match }) {
     clientSocket.current = socket;
     setUpSocket(socket);
 
-    const { id, name } = activeChannel;
+    const { id, name, isUser } = activeChannel;
     if (channels && id) {
-      changeActiveChannel(id, name);
+      channelsLoaded.current.push(id);
+      changeActiveChannel(id, name, isUser);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -154,11 +198,14 @@ function Workspace({ match }) {
             <Message {...prettifyMessage(message)} />
           ))}
         </div>
-      )
+      );
     }
-    return <div id="messages"><Spinner /></div>;
-    
-  }
+    return (
+      <div id="messages">
+        <Spinner />
+      </div>
+    );
+  };
   return (
     <Container>
       <div className="level">
@@ -179,7 +226,7 @@ function Workspace({ match }) {
           {activeChannel.id ? (
             <>
               <ChannelHeader heading={`#${activeChannel.name}`} actions={[]} />
-              { renderMessages()}
+              {renderMessages()}
               <div className="fixed form">
                 <ThreadForm onClick={handleSend} />
               </div>
