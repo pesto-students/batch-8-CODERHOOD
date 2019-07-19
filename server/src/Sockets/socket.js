@@ -23,15 +23,17 @@ const configureEventHandlersForWorkspace = (namespace) => {
      * @param messageObj.to Id of channel/user the message is being sent to.
      * @param messageObj.workspace Id of the workspace message is sent from.
      * @param messageObj.fromUser Name of the user sending the message.
+     * @param messageObj.isConversation Flag(bool) to check if it is a one-to-one chat.
      */
     socket.on(messageEvent, (messageObj) => {
       const messageId = generateObjectID();
-      const messageWithId = {
-        ...messageObj,
+      const { isConversation, ...cleanedMessageObj } = messageObj;
+      const cleanedMessageObjWithId = {
+        ...cleanedMessageObj,
         _id: messageId,
       };
-      namespace.emit(messageEvent, messageWithId);
-      create(messageModel, messageWithId);
+      namespace.emit(messageEvent, { isConversation, ...cleanedMessageObjWithId });
+      create(messageModel, cleanedMessageObjWithId);
     });
 
     /**

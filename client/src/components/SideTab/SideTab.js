@@ -12,9 +12,10 @@ const SideTab = ({
   isUser = false,
   ...props
 }) => {
+  const channelType = isUser ? 'usr' : 'ch';
   return (
     <NavLink
-      to={`/workspaces/${workspace}/${id}/${content}`}
+      to={`/workspaces/${workspace}/${id}/${channelType}/${content}`}
       activeClassName={'tab--selected'}
       onClick={() => onClick(id, content, isUser)}
       {...props}

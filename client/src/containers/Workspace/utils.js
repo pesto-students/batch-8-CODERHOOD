@@ -1,5 +1,5 @@
 import callApi from '../../libs/axios';
-import { methods, modules, endpoints} from '../../constants/constants';
+import { methods, modules, endpoints } from '../../constants/constants';
 
 function updateMessageHeight() {
   try {
@@ -29,7 +29,9 @@ const prettifyMessage = (messageObj) => {
 };
 
 const fetchChannelMessages = async (channelID) => {
-  const result = await callApi('post', '/message/all', {
+  const { message } = modules;
+  const { getAll } = endpoints;
+  const result = await callApi('post', `/${message}/${getAll}`, {
     channel: channelID
   });
   if (result.data) {
@@ -44,7 +46,20 @@ const fetchMembersData = async (members) => {
   const { getSelected } = endpoints;
   const { post } = methods;
   const result = await callApi(post, `/${user}/${getSelected}`, { members });
-  console.log(result);
+  if (result.data) {
+    const { data } = result.data.data;
+    return data;
+  }
+  return [];
+};
+
+const fetchConversation = async (participantOne, participantTwo) => {
+  const { message } = modules;
+  const { getConversation } = endpoints;
+  const result = await callApi('post', `/${message}/${getConversation}`, {
+    userA: participantOne,
+    userB: participantTwo,
+  });
   if (result.data) {
     const { data } = result.data.data;
     return data;
@@ -64,9 +79,27 @@ const loadChannelMessagesIntoStore = async (channelId, setStoreFunc) => {
   }));
 };
 
+const loadUserMessagesIntoStore = async (
+  channelId,
+  currentUser,
+  otherUser,
+  setStoreFunc
+) => {
+  const conversation = await fetchConversation(currentUser, otherUser);
+  setStoreFunc((store) => ({
+    ...store,
+    [channelId]: {
+      isUser: true,
+      unread: false,
+      messages: [...conversation]
+    }
+  }));
+};
+
 export {
   updateMessageHeight,
   prettifyMessage,
   loadChannelMessagesIntoStore,
-  fetchMembersData
+  fetchMembersData,
+  loadUserMessagesIntoStore
 };
