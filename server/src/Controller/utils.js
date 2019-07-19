@@ -17,7 +17,7 @@ const updateMembers = async (
       error.status(400);
       return next(error);
     }
-    const result = await updateArrayField(model, operation, id, memberId);
+    const result = await updateArrayField(model, operation, { _id: id }, memberId);
     return res
       .status(200)
       .send(successHandler(updateResponse, result));
