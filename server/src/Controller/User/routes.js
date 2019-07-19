@@ -12,7 +12,7 @@ import {
 const userRouter = express.Router();
 
 userRouter.get('/', getAllUsers);
-userRouter.post('/', getSelectedUsers);
+userRouter.post('/selected', getSelectedUsers);
 userRouter.get('/:id', getUser);
 userRouter.post('/', createUser);
 userRouter.delete('/:id', deleteUser);

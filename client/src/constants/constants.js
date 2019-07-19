@@ -19,6 +19,7 @@ export const modules = {
 
 export const endpoints = {
     getAll: 'all',
+    getSelected: 'selected',
     login: 'login',
 }
 
