@@ -1,6 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-const ChannelMembers = () => {
+const ChannelMembers = (props) => {
+
+
+    
 
     //TODO: Get this from API after Server PR merge
     const members = [
