@@ -5,6 +5,8 @@ import {
   unsubscribeToChannelsEvent,
 } from './events';
 
+import { generateObjectID, create } from '../Repositories/genericRepository';
+import { messageModel } from '../Model';
 import { io } from '../index';
 
 const createWorkspaceNamespace = namespace => io.of(`/${namespace}`);
@@ -14,14 +16,22 @@ const configureEventHandlersForWorkspace = (namespace) => {
     socket.emit(connectionConfirmationEvent);
 
     /**
-    * @param msgObj Object containing msg relevant data.
-    * @param msgObj.channel Name of the channels the msg is coming from.
-    * @param msgObj.msg Content of the message.
-    * @param msgObj.user Name of the user sending the message.
-    * @param msgObj.timestamp Time when the message was sent.
-    */
-    socket.on(messageEvent, (msgObj) => {
-      socket.broadcast.emit(messageEvent, msgObj);
+     * @param messageObj Object containing msg relevant data.
+     * @param messageObj.channel ID of the channels the msg is coming from.
+     * @param messageObj.message Content of the message.
+     * @param messageObj.from Id of the user sending the message.
+     * @param messageObj.to Id of channel/user the message is being sent to.
+     * @param messageObj.workspace Id of the workspace message is sent from.
+     * @param messageObj.fromUser Name of the user sending the message.
+     */
+    socket.on(messageEvent, (messageObj) => {
+      const messageId = generateObjectID();
+      const messageWithId = {
+        ...messageObj,
+        _id: messageId,
+      };
+      namespace.emit(messageEvent, messageWithId);
+      create(messageModel, messageWithId);
     });
 
     /**
@@ -44,7 +54,4 @@ const configureEventHandlersForWorkspace = (namespace) => {
   });
 };
 
-export {
-  createWorkspaceNamespace,
-  configureEventHandlersForWorkspace,
-};
+export { createWorkspaceNamespace, configureEventHandlersForWorkspace };

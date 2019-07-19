@@ -5,13 +5,17 @@ import { useAppContext } from '../App/AppContext';
 import { modules, methods, endpoints } from '../../constants/constants';
 
 import Container from '../../components/Container/Container';
+import Profile from '../Profile/Profile';
+
 import InputField from '../../components/InputField/InputField';
 import SidebarList from '../../components/SidebarList/SidebarList';
 import Spinner from '../../components/Spinner/Spinner';
 import AddWorkspaceModal from './AddWorkspace';
+import NavBar from '../../components/NavBar/NavBar'
 
 const Workspaces = () => {
   const [modalVisibility, setModalVisibility] = useState(false);
+  const [profileModalVisibility, setProfileModalVisibility] = useState(false);
 
   const user = useAppContext();
 
@@ -33,19 +37,21 @@ const Workspaces = () => {
     : [];
 
   const joinedWS = fetchJoinedWorkspaces.response
-  ? fetchJoinedWorkspaces.response.data.data
-  : [];
-  
+    ? fetchJoinedWorkspaces.response.data.data
+    : [];
+
   const ownedWorkspaces = ownedWS.map(workspace => (
     <Link key={workspace._id} to={`/workspaces/${workspace._id}`}>{workspace.name}</Link>
   ))
-  
+
   const joinedWorkspaces = joinedWS.map(workspace => (
     <Link key={workspace._id} to={`/workspaces/${workspace._id}`}>{workspace.name}</Link>
   ))
 
   const showModal = () => { setModalVisibility(true); };
   const closeModal = () => { setModalVisibility(false); };
+  const closeProfileModal = () => { setProfileModalVisibility(false); };
+
 
   const renderWorkSpaces = () => {
     const { isLoading: isOwnedWSLoading } = fetchOwnedWorkspaces;
@@ -71,29 +77,47 @@ const Workspaces = () => {
 
   const { name } = user.loginStatus.user;
 
+  const viewProfileHandler = () => {
+    setProfileModalVisibility(true);
+  }
+
+  const logoutHandler = () => {
+
+  }
+
   return (
-    <Container>
-      <div className="level content">
-        <div className="level-left">
-          <h1 className="level-item">Welcome, {name}</h1>
+    <div>
+      <NavBar navItems={[{ name: "View Profile", handler: viewProfileHandler }, { name: "Logout" }]} />
+      <Container>
+        <div className="level content">
+          <div className="level-left">
+            <h1 className="level-item">Welcome, {name}</h1>
+          </div>
+          <div className="level-right">
+            <form className="level-item">
+              <InputField
+                className="is-primary is-rounded"
+                placeholder="Search Workspace"
+              />
+            </form>
+          </div>
         </div>
-        <div className="level-right">
-          <form className="level-item">
-            <InputField
-              className="is-primary is-rounded"
-              placeholder="Search Workspace"
-            />
-          </form>
-        </div>
-      </div>
-      {renderWorkSpaces()}
-      <AddWorkspaceModal
-        show={modalVisibility}
-        showClose={false}
-        onClose={closeModal}
-        modal={{ closeOnEsc: true }}
-      />
-    </Container>
+        {renderWorkSpaces()}
+        <AddWorkspaceModal
+          show={modalVisibility}
+          showClose={false}
+          onClose={closeModal}
+          modal={{ closeOnEsc: true }}
+        />
+        <Profile show={profileModalVisibility}
+          showClose={false}
+          onClose={closeProfileModal}
+          modal={{ closeOnEsc: true }}
+        />
+      </Container>
+
+    </div>
+
   )
 }
 

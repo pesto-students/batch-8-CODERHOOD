@@ -1,11 +1,11 @@
 import React from "react";
 import { shallow } from "enzyme";
-import ThreadMessage from "../ThreadMessage";
+import Message from "../Message";
 
-describe("<ThreadMessage />", () => {
+describe("<Message />", () => {
 
   it("should render exactly 1 component", () => {
-    const threadForm = shallow(<ThreadMessage />);
+    const threadForm = shallow(<Message />);
     expect(threadForm.children.length).toBe(1);
   });
 
