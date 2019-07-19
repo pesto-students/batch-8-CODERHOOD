@@ -22,14 +22,15 @@ const Workspaces = () => {
   const { post } = methods;
   const { workspace } = modules;
   const { getAll } = endpoints;
+  const { _id } = user.loginStatus.user;
 
   const fetchOwnedWorkspaces = useFetch(post, `/${workspace}/${getAll}`, {
-    user: '5d296628efda5a73faa563cb',
+    user: _id,
   });
 
   const fetchJoinedWorkspaces = useFetch(post, `/${workspace}/${getAll}`, {
-    members: '5d296628efda5a73faa563cb',
-    user: { '$ne': '5d296628efda5a73faa563cb' },
+    members: _id,
+    user: { '$ne': _id },
   })
 
   const ownedWS = fetchOwnedWorkspaces.response

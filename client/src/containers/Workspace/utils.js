@@ -1,4 +1,5 @@
 import callApi from '../../libs/axios';
+import { methods, modules, endpoints} from '../../constants/constants';
 
 function updateMessageHeight() {
   try {
@@ -39,7 +40,10 @@ const fetchChannelMessages = async (channelID) => {
 };
 
 const fetchMembersData = async (members) => {
-  const result = await callApi('post', '/user', { members });
+  const { user } = modules;
+  const { getSelected } = endpoints;
+  const { post } = methods;
+  const result = await callApi(post, `/${user}/${getSelected}`, { members });
   console.log(result);
   if (result.data) {
     const { data } = result.data.data;
