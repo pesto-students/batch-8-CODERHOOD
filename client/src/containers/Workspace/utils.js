@@ -42,28 +42,28 @@ const fetchChannelMessages = async (channelID) => {
 };
 
 const fetchMembersData = async (members) => {
-  const { user } = modules;
-  const { getSelected } = endpoints;
-  const { post } = methods;
-  const result = await callApi(post, `/${user}/${getSelected}`, { members });
-  if (result.data) {
-    const { data } = result.data.data;
-    return data;
-  }
-  return [];
-};
+    const { user } = modules;
+    const { getSelected } = endpoints;
+    const { post } = methods;
+    const result = await callApi(post, `/${user}/${getSelected}`, { members });
+    if (result.data) {
+      const { data } = result.data.data;
+      return data;
+    }
+    return [];
+  };
 
-const fetchConversation = async (participantOne, participantTwo, workspaceId) => {
-  const { message } = modules;
-  const { getConversation } = endpoints;
-  const result = await callApi('post', `/${message}/${getConversation}`, {
-    userA: participantOne,
-    userB: participantTwo,
-    workspace: workspaceId,
-  });
+  const fetchConversation = async (participantOne, participantTwo, workspaceId) => {
+    const { message } = modules;
+    const { getConversation } = endpoints;
+    const result = await callApi('post', `/${message}/${getConversation}`, {
+      userA: participantOne,
+      userB: participantTwo,
+      workspace: workspaceId,
+    });
   if (result.data) {
     const { data } = result.data.data;
-    return data;
+       data;
   }
   return [];
 };
@@ -75,14 +75,14 @@ const loadChannelMessagesIntoStore = async (channelId, setStoreFunc) => {
     [channelId]: {
       isUser: false,
       unread: false,
-      messages: [...channelMessages]
+    messages: [...channelMessages]
     }
   }));
 };
 
 const loadUserMessagesIntoStore = async (
   workspaceId,
-  channelId,
+      lId,
   currentUser,
   otherUser,
   setStoreFunc
