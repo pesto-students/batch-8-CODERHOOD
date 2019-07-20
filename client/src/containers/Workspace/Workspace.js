@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import socketIOClient from 'socket.io-client';
 import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
+import { ChannelMembers } from '../../containers';
 import {
   Container,
   Sidebar,
@@ -11,7 +12,7 @@ import {
   Spinner,
   ChannelHeader,
   Message,
-  ThreadForm
+  ThreadForm,
 } from '../../components';
 import {
   prettifyMessage,
@@ -44,6 +45,9 @@ function Workspace({ match }) {
 
   const [messageStore, setMessageStore] = useState({});
   const [members, setMembers] = useState([]);
+  const [membersPanel, setMembersPanel] = useState(false);
+  const [profilePanel, setProfilePanel] = useState(false);
+
 
   const changeActiveChannel = async (channelId, name, isUser) => {
     if (!messageStore[channelId]) {
@@ -101,6 +105,10 @@ function Workspace({ match }) {
     }));
   };
 
+  const handleViewMembers = () => {
+    setMembersPanel(true);
+  }
+
   const setUpSocket = (socket) => {
     socket.on(messageEvent, (obj) => handleIncomingMessage(obj));
     socket.on(connectedEvent, () =>
@@ -145,14 +153,14 @@ function Workspace({ match }) {
   const channels = channelsData ? channelsData.data.data : [];
   const prettyChannels = channelsData
     ? channels.map(({ _id, name }) => (
-        <SideTab
-          key={_id}
-          content={name}
-          id={_id}
-          workspace={workspaceId}
-          onClick={changeActiveChannel}
-        />
-      ))
+      <SideTab
+        key={_id}
+        content={name}
+        id={_id}
+        workspace={workspaceId}
+        onClick={changeActiveChannel}
+      />
+    ))
     : [];
   const prettyMembers = members.map(({ _id, name }) => (
     <SideTab
@@ -192,6 +200,10 @@ function Workspace({ match }) {
     return <Spinner cls="la-2x" />;
   }
 
+  const getMessageContainerSize = () => {
+    return membersPanel ? "is-5" : "is-9";
+  }
+
   const renderMessages = () => {
     if (messageStore[activeChannel.id]) {
       return (
@@ -202,45 +214,48 @@ function Workspace({ match }) {
         </div>
       );
     }
-    return (
-      <div id="messages">
-        <Spinner />
-      </div>
-    );
-  };
-  return (
-    <Container>
-      <div className="level">
-        <div className="level-left content">
-          <h1>{workspace.name}</h1>
-        </div>
-        <div className="level-right content">
-          <h3>{currentUser.name}</h3>
-        </div>
-      </div>
-      <Columns>
-        <Sidebar>
-          <SidebarList list={prettyChannels} heading="Channels" action="+" />
-          <SidebarList list={prettyMembers} heading="Users" action="+" />
-        </Sidebar>
+        return <div id="messages"><Spinner /></div>;
 
-        <div className="column is-9 channel-body">
-          {activeChannel.id ? (
-            <>
-              <ChannelHeader heading={`#${activeChannel.name}`} actions={[]} />
-              {renderMessages()}
-              <div className="fixed form">
-                <ThreadForm onClick={handleSend} />
+      }
+      return (
+    <div>
+          <Container>
+            <div className="level">
+              <div className="level-left content">
+                <h1>{workspace.name}</h1>
               </div>
-            </>
-          ) : (
-            <div className="content">
-              <h1>Welcome to slack-clone </h1>
-            </div>
-          )}
+
         </div>
-      </Columns>
-    </Container>
+        <Columns>
+          <Sidebar>
+            <SidebarList list={prettyChannels} heading="Channels" action="+" />
+            <SidebarList list={prettyMembers} heading="Users" action="+" />
+          </Sidebar>
+
+          <div className={"column channel-body " + getMessageContainerSize()}>
+            {activeChannel.id ? (
+              <>
+                <ChannelHeader heading={`#${activeChannel.name}`} actions={[]} handleViewMembers={handleViewMembers} />
+                {renderMessages()}
+                <div className="fixed form">
+                  <ThreadForm onClick={handleSend} />
+                </div>
+              </>
+            ) : (
+                <div className="content">
+                  <h1>Welcome to slack-clone </h1>
+                </div>
+              )}
+          </div>
+
+          <div className="column is-4">
+            {activeChannel.id && membersPanel ?
+              <ChannelMembers channelId={activeChannel.id} workspaceMembers={members}
+                handleClose={() => { setMembersPanel(false) }} /> : null}
+          </div>
+        </Columns >
+      </Container >
+    </div>
   );
 }
 

@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
 import { modules, methods, endpoints } from '../../constants/constants';
-
 import Container from '../../components/Container/Container';
 import Profile from '../Profile/Profile';
-
 import InputField from '../../components/InputField/InputField';
 import SidebarList from '../../components/SidebarList/SidebarList';
 import Spinner from '../../components/Spinner/Spinner';
@@ -88,7 +86,7 @@ const Workspaces = () => {
 
   return (
     <div>
-      <NavBar navItems={[{ name: "View Profile", handler: viewProfileHandler }, { name: "Logout" }]} />
+      <NavBar navItems={[{ name: "View Profile", handler: viewProfileHandler }, { name: "Logout", handler: logoutHandler }]} />
       <Container>
         <div className="level content">
           <div className="level-left">
