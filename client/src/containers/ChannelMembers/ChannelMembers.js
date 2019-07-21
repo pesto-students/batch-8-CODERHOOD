@@ -24,16 +24,22 @@ const ChannelMembers = (props) => {
             setMembers(result);
         });    
     }
-    const updateMember = async (memberId, operation="add") => {
-        await callApi(put, `/${channel}/${member}`, { operation: operation, id: props.channelId, memberId });
+    const updateMember = async (memberDetails, operation="add") => {
+        await callApi(put, `/${channel}/${member}`, { operation: operation, id: props.channelId, memberId: memberDetails._id });
+        const channelData = await callApi(get, `/${channel}/${props.channelId}`, {});
+        console.log(channelData);
+        fetchMembersData(channelData.data.data.members).then((result) =>{
+            setMembers(result);
+        });    
     }
+
     return (
         <nav className="panel">
             <div className="panel-heading">
                 {channelDetails.response.data.name}
                 <a className="is-small is-size-7 is-vcentered" 
                     style={{padding: "8px"}}
-                    onClick={() => {updateMember(loginStatus.user._id, channelDetails.response.data.members.includes(loginStatus.user._id) ? "delete" : "add")}}>
+                    onClick={() => {updateMember(loginStatus.user, channelDetails.response.data.members.includes(loginStatus.user._id) ? "delete" : "add")}}>
                     {channelDetails.response.data.members.includes(loginStatus.user._id) ?
                     `Leave Channel`: `Join Channel`}
                     
@@ -52,7 +58,7 @@ const ChannelMembers = (props) => {
                     {member.name}
                     {channelDetails.response.data.user === loginStatus.user._id ? 
                     <button className="button is-outlined is-pulled-right is-small" 
-                    onClick = {() => {updateMember(member._id, "delete")}}>
+                    onClick = {() => {updateMember(member, "delete")}}>
                         Remove Member
                     </button> : null}
                 </div>)

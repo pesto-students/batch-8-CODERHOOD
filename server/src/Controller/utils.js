@@ -22,7 +22,7 @@ const updateMembers = async (
       _id: id,
       members: memberId,
     });
-    if (member) {
+    if (member && operation === 'add') {
       const error = new Error(memberAlreadyExistsResponse);
       error.status = 400;
       return next(error);

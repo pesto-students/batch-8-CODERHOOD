@@ -5,3 +5,5 @@ export { default as Profile } from './Profile/Profile';
 export { default as ViewProfile } from './Profile/ViewProfile';
 export { default as ChannelMembers } from './ChannelMembers/ChannelMembers';
 export { default as Workspace } from './Workspace/Workspace';
+export { default as AddChannel } from './AddChannel/AddChannel';
+
