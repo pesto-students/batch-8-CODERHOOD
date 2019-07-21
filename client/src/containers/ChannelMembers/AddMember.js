@@ -53,8 +53,7 @@ const AddMember = (props) => {
                 style={{ marginLeft: "20px" }}
                 onClick={() => {
                     props.handleAdd(members
-                        .filter(member => member.name === value)[0]
-                        ._id)
+                        .filter(member => member.name === value)[0])
                 }}>Add</button>
         </div >
     );
