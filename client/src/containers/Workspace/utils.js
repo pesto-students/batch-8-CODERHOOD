@@ -61,31 +61,31 @@ const fetchMembersData = async (members) => {
       userB: participantTwo,
       workspace: workspaceId,
     });
-  if (result.data) {
+    if (result.data) {
     const { data } = result.data.data;
-       data;
-  }
-  return [];
+      return data;
+    }
+        return [];
 };
 
 const loadChannelMessagesIntoStore = async (channelId, setStoreFunc) => {
   const channelMessages = await fetchChannelMessages(channelId);
   setStoreFunc((store) => ({
     ...store,
-    [channelId]: {
-      isUser: false,
-      unread: false,
-    messages: [...channelMessages]
-    }
+  [channelId]: {
+    isUser: false,
+    unread: false,
+  messages: [...channelMessages]
+  }
   }));
-};
+}
 
-const loadUserMessagesIntoStore = async (
-  workspaceId,
-      lId,
-  currentUser,
-  otherUser,
-  setStoreFunc
+  
+  const loadUserMessagesIntoStore = async (workspaceId,
+    channelId,
+    currentUser,
+    otherUser,
+    setStoreFunc
 ) => {
   const conversation = await fetchConversation(currentUser, otherUser, workspaceId);
   setStoreFunc((store) => ({
