@@ -49,6 +49,7 @@ function Workspace({ match }) {
     if (!messageStore[channelId]) {
       if (isUser) {
         loadUserMessagesIntoStore(
+          workspaceId,
           channelId,
           currentUser._id,
           channelId,
@@ -80,6 +81,7 @@ function Workspace({ match }) {
     if (!channelsLoaded.current.includes(channel)) {
       if (isConversation && isUserParticipant) {
         loadUserMessagesIntoStore(
+          workspaceId,
           channel,
           currentUser._id,
           channel,
