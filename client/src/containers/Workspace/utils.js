@@ -88,7 +88,6 @@ const loadUserMessagesIntoStore = async (
   setStoreFunc
 ) => {
   const conversation = await fetchConversation(currentUser, otherUser, workspaceId);
-  console.log(setStoreFunc);
   setStoreFunc((store) => ({
     ...store,
     [channelId]: {

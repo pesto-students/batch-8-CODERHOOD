@@ -24,8 +24,7 @@ import './Workspace.css';
 
 function Workspace({ match }) {
   const workspaceId = match.params.id;
-  // TODO: Change later
-  const endpoint = 'http://localhost:8000/';
+  const endpoint = process.env.REACT_APP_SOCKET_ENDPOINT;
 
   const clientSocket = useRef(null);
   const channelsLoaded = useRef([]);
