@@ -15,8 +15,5 @@ export const handleSubmit = async (e, user, history, dispatch) => {
     dispatch({ type: 'login', user: data });
     localStorage.setItem('user', user);
     history.push('/workspaces');
-  } else {
-    // TODO: add component (Toast) to display errors;
-    alert(result);
   }
 };
