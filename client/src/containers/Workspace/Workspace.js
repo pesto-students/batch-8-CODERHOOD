@@ -114,8 +114,7 @@ function Workspace({ match }) {
             setMembersPanel(true);
   } 
 
-    co
-  nst setUpSocket = (socket) => {
+  const setUpSocket = (socket) => {
   socket.on(messageEvent, (obj) => handleIncomingMessage(obj));
   socket.on(connectedEvent, () =>
       console.log(`Connected to server! - id: ${socket.id}`)
@@ -143,21 +142,20 @@ function Workspace({ match }) {
   
   const fetchedWorkspaceData = useFetch('get', `/workspace/${workspaceId}`);
   const {
-  is Loading: isWorkspaceLoading,
+    isLoading: isWorkspaceLoading,
     response: workspaceResponse
   } = fetchedWorkspaceData;
-const workspace = workspaceResponse ? workspaceResponse.data : null;
-  
-    const fetchedChannels = useFetch('post', '/channel/all', {
+  const workspace = workspaceResponse ? workspaceResponse.data : null;
+  const fetchedChannels = useFetch('post', '/channel/all', {
     workspace: workspaceId
   });    
     
-const {    
-isLoading :   isChannelsLoading, 
-  response: channelsData
+  const {    
+    isLoading :   isChannelsLoading, 
+    response: channelsData
   } = fetchedChannels;
   const channels = channelsData ? channelsData.data.data : [];
-const prettyChannels = channelsData
+  const prettyChannels = channelsData
   ? channels.map(({ _id, name }) => (
     <SideTab
       key={_id}
@@ -181,15 +179,14 @@ const prettyMembers = members.map(({ _id, name }) => (
 
   // To setup socket and load channel from URL
 useEffect(() => {
-  let socket = socketIOClient(endpoint + workspaceId, { path: '/sockets/' });
-  clientSocket.current = socket;
+    let socket = socketIOClient(endpoint + workspaceId, { path: '/sockets/' });
+    clientSocket.current = socket;
     setUpSocket(socket);
 
-  const { id, name, isUser } = activeChannel;
-    if (chanels && id) {
-      ch a nnelsL o aded.curre nt.push(id);
-      chang
-        eActiveChannel(id, name, isUser);
+    const { id, name, isUser } = activeChannel;
+    if (channels && id) {
+      channelsLoaded.current.push(id);
+      changeActiveChannel(id, name, isUser);
     }    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); 
@@ -215,7 +212,7 @@ if (workspace) {
         if (messageStore[activeChannel.id]) {
           return (
             <div id="messages">
-          {messa g eS t o re[activeChann el.id].messages.map((message) => (
+          {messageStore[activeChannel.id].messages.map((message) => (
             <Message {...prettifyMessage(message)} />
           ))}
         </div>
