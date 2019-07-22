@@ -3,6 +3,8 @@ import {
   connectionConfirmationEvent,
   subscribeToChannelsEvent,
   unsubscribeToChannelsEvent,
+  typingIndicationEvent,
+  clearTypingIndicationEvent,
 } from './events';
 
 import { generateObjectID, create } from '../Repositories/genericRepository';
@@ -52,6 +54,17 @@ const configureEventHandlersForWorkspace = (namespace) => {
       for (let i = 0; i < channels.length; i += 1) {
         socket.leave(channels[i]);
       }
+    });
+
+    let typingIndicationTimeout = null;
+    socket.on(typingIndicationEvent, (dataObject) => {
+      if (typingIndicationTimeout) {
+        clearTimeout(typingIndicationTimeout);
+      }
+      socket.broadcast.emit(typingIndicationEvent, dataObject);
+      typingIndicationTimeout = setTimeout(() => {
+        namespace.emit(clearTypingIndicationEvent);
+      }, 3000);
     });
   });
 };

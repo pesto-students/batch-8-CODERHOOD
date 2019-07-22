@@ -27,5 +27,7 @@ export const endpoints = {
 
 export const messageEvent = 'message';
 export const connectedEvent = 'connected';
+export const typingEvent = 'typing';
+export const clearTypingEvent = 'clear typing';
 
 export default logo;
