@@ -24,6 +24,7 @@ export const channelResponse = {
   channelUpdated: 'Channel updated successfully',
   channelDeleted: 'Channel deleted successfully',
   memberUpdated: 'Member updated successfully',
+  memberAlreadyExists: 'Member already exists in this Channel',
 };
 
 // User
@@ -48,6 +49,7 @@ export const workspaceResponse = {
   workspaceUpdated: 'Workspace updated successfully',
   workspaceDeleted: 'Workspace deleted successfully',
   memberUpdated: 'Member updated successfully',
+  memberAlreadyExists: 'Member already exists in this Workspace',
 };
 
 // Message

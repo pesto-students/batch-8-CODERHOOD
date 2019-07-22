@@ -6,6 +6,7 @@ const updateMembers = async (
   next,
   model,
   notFoundResponse,
+  memberAlreadyExistsResponse,
   updateResponse,
   successHandler,
 ) => {
@@ -14,7 +15,16 @@ const updateMembers = async (
     const channel = await findOne(model, { _id: id });
     if (!channel) {
       const error = new Error(notFoundResponse);
-      error.status(400);
+      error.status = 400;
+      return next(error);
+    }
+    const member = await findOne(model, {
+      _id: id,
+      members: memberId,
+    });
+    if (member) {
+      const error = new Error(memberAlreadyExistsResponse);
+      error.status = 400;
       return next(error);
     }
     const result = await updateArrayField(model, operation, { _id: id }, memberId);

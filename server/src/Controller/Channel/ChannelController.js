@@ -98,13 +98,14 @@ const updateChannel = async (req, res, next) => {
 };
 
 const updateChannelMembers = async (req, res, next) => {
-  const { channelNotFound, memberUpdated } = channelResponse;
+  const { channelNotFound, memberUpdated, memberAlreadyExists } = channelResponse;
   const result = await updateMembers(
     req,
     res,
     next,
     channelModel,
     channelNotFound,
+    memberAlreadyExists,
     memberUpdated,
     successHandler,
   );
