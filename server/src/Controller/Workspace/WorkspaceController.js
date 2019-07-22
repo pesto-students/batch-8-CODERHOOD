@@ -86,13 +86,14 @@ const updateWorkspace = async (req, res, next) => {
 };
 
 const updateWorkspaceMembers = async (req, res, next) => {
-  const { workspaceNotFound, memberUpdated } = workspaceResponse;
+  const { workspaceNotFound, memberUpdated, memberAlreadyExists } = workspaceResponse;
   const result = await updateMembers(
     req,
     res,
     next,
     workspaceModel,
     workspaceNotFound,
+    memberAlreadyExists,
     memberUpdated,
     successHandler,
   );
