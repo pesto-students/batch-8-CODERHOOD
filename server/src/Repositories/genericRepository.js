@@ -9,9 +9,6 @@ const generateObjectID = () => mongoose.Types.ObjectId();
 const findOne = async (model, data) => {
   try {
     const result = await model.findOne(data);
-    if (!result) {
-      throw new Error('No data found');
-    }
     return result;
   } catch (error) {
     throw error;
