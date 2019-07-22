@@ -104,17 +104,19 @@ const updateMessage = async (req, res, next) => {
 
 const getConversation = async (req, res, next) => {
   try {
-    const { userA, userB } = req.body;
+    const { userA, userB, workspace } = req.body;
     const { foundAllMessages } = messageResponse;
     const query = {
       $or: [
         {
           from: userA,
           to: userB,
+          workspace,
         },
         {
           from: userB,
           to: userA,
+          workspace,
         },
       ],
     };

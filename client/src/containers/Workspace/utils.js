@@ -53,12 +53,13 @@ const fetchMembersData = async (members) => {
   return [];
 };
 
-const fetchConversation = async (participantOne, participantTwo) => {
+const fetchConversation = async (participantOne, participantTwo, workspaceId) => {
   const { message } = modules;
   const { getConversation } = endpoints;
   const result = await callApi('post', `/${message}/${getConversation}`, {
     userA: participantOne,
     userB: participantTwo,
+    workspace: workspaceId,
   });
   if (result.data) {
     const { data } = result.data.data;
@@ -80,12 +81,14 @@ const loadChannelMessagesIntoStore = async (channelId, setStoreFunc) => {
 };
 
 const loadUserMessagesIntoStore = async (
+  workspaceId,
   channelId,
   currentUser,
   otherUser,
   setStoreFunc
 ) => {
-  const conversation = await fetchConversation(currentUser, otherUser);
+  const conversation = await fetchConversation(currentUser, otherUser, workspaceId);
+  console.log(setStoreFunc);
   setStoreFunc((store) => ({
     ...store,
     [channelId]: {
