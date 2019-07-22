@@ -20,16 +20,23 @@ import {
   loadChannelMessagesIntoStore,
   fetchMembersData,
   loadUserMessagesIntoStore
-} from "./utils";
-import { messageEvent, connectedEvent } from "../../constants/constants";
-import "./Workspace.css";
+} from './utils';
+import {
+  messageEvent,
+  connectedEvent,
+  typingEvent,
+  clearTypingEvent
+} from '../../constants/constants';
+import './Workspace.css';
 
 function Workspace({ match }) {
   const workspaceId = match.params.id;
   const endpoint = process.env.REACT_APP_SOCKET_ENDPOINT;
 
+  const userTypingStatusTimeout = useRef(false);
   const clientSocket = useRef(null);
   const channelsLoaded = useRef([]);
+  const currentChannel = useRef(null);
   const userData = useAppContext();
   const currentUser = userData.loginStatus.user;
 
@@ -42,6 +49,8 @@ function Workspace({ match }) {
     name: params.channelName,
     isUser: isActiveChannelAUser
   });
+  // To keep track of activeChannel in socket handler functions
+  currentChannel.current = activeChannel;
 
   const [messageStore, setMessageStore] = useState({});
   const [members, setMembers] = useState([]);
@@ -49,6 +58,8 @@ function Workspace({ match }) {
   // const [profilePanel, setProfilePanel] = useState(false);
   const [isUserTabOpened, setUserTabOpened] = useState(false);
   const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
+  const [profilePanel, setProfilePanel] = useState(false);
+  const [typingNotification, setTypingNotification] = useState(null);
 
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
@@ -60,6 +71,7 @@ function Workspace({ match }) {
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
+    setTypingNotification(null);
     if (!messageStore[channelId]) {
       if (isUser) {
         loadUserMessagesIntoStore(
@@ -106,7 +118,7 @@ function Workspace({ match }) {
       }
       return null;
     }
-    setMessageStore(store => ({
+    setMessageStore((store) => ({
       ...store,
       [channel]: {
         ...store[channel],
@@ -119,19 +131,21 @@ function Workspace({ match }) {
     setMembersPanel(true);
   };
 
-  const setUpSocket = socket => {
-    socket.on(messageEvent, obj => handleIncomingMessage(obj));
+  const setUpSocket = (socket) => {
+    socket.on(messageEvent, (obj) => handleIncomingMessage(obj));
     socket.on(connectedEvent, () =>
       console.log(`Connected to server! - id: ${socket.id}`)
     );
+    socket.on(typingEvent, (data) => handleIncomingTypingIndication(data));
+    socket.on(clearTypingEvent, () => handleClearTyping());
   };
 
-  const handleSend = e => {
+  const handleSend = (e) => {
     e.preventDefault();
     const socket = clientSocket.current;
     // FIXME: Change when MessageForm is refactored
-    const content = document.getElementsByClassName("textarea")[0].value;
-    document.getElementsByClassName("textarea")[0].value = "";
+    const content = document.getElementsByClassName('textarea')[0].value;
+    document.getElementsByClassName('textarea')[0].value = '';
     const messageObj = {
       from: currentUser._id,
       to: activeChannel.id,
@@ -145,7 +159,75 @@ function Workspace({ match }) {
     socket.emit(messageEvent, messageObj);
   };
 
-  const fetchedWorkspaceData = useFetch("get", `/workspace/${workspaceId}`);
+  const startUserTypingTimeout = () => {
+    userTypingStatusTimeout.current = true;
+    setTimeout(() => {
+      userTypingStatusTimeout.current = false;
+    }, 2000);
+  };
+
+  const handleTyping = (e) => {
+    const socket = clientSocket.current;
+    const wasUserTypingAlready = userTypingStatusTimeout.current;
+    if (e.keyCode === 13) {
+      // Enter key
+      handleSend(e);
+    } else if (!wasUserTypingAlready) {
+      const isConversation = activeChannel.isUser;
+      socket.emit(typingEvent, {
+        user: currentUser.name,
+        channel: activeChannel.id,
+        from: currentUser._id,
+        to: activeChannel.id,
+        isConversation
+      });
+      startUserTypingTimeout();
+    }
+  };
+
+  const handleIncomingTypingIndication = ({
+    user,
+    channel,
+    from,
+    to,
+    isConversation
+  }) => {
+    const activeChannel = currentChannel.current;
+    const isUserParticipant =
+      currentUser._id === to || currentUser._id === from;
+
+    if (isConversation && isUserParticipant) {
+      let channelId = channel === currentUser._id ? from : channel;
+      if (channelId === activeChannel.id) {
+        setTypingNotification({
+          user,
+          channel: channelId
+        });
+      }
+    } else if (channel === activeChannel.id) {
+      setTypingNotification({
+        user,
+        channel
+      });
+    }
+  };
+
+  const handleClearTyping = () => {
+    setTypingNotification(null);
+  };
+
+  const prepareForSideBar = (id, name, isUser) => (
+    <SideTab
+      isUser={isUser ? isUser : false}
+      key={id}
+      content={name}
+      id={id}
+      workspace={workspaceId}
+      onClick={changeActiveChannel}
+    />
+  );
+
+  const fetchedWorkspaceData = useFetch('get', `/workspace/${workspaceId}`);
   const {
     isLoading: isWorkspaceLoading,
     response: workspaceResponse
@@ -166,30 +248,15 @@ function Workspace({ match }) {
   } = fetchedChannels;
   const channels = channelsData ? channelsData.data.data : [];
   const prettyChannels = channelsData
-    ? channels.map(({ _id, name }) => (
-        <SideTab
-          key={_id}
-          content={name}
-          id={_id}
-          workspace={workspaceId}
-          onClick={changeActiveChannel}
-        />
-      ))
+    ? channels.map(({ _id: id, name }) => prepareForSideBar(id, name, false))
     : [];
-  const prettyMembers = members.map(({ _id, name }) => (
-    <SideTab
-      isUser={true}
-      key={_id}
-      content={name}
-      id={_id}
-      workspace={workspaceId}
-      onClick={changeActiveChannel}
-    />
-  ));
+  const prettyMembers = members.map(({ _id: id, name }) =>
+    prepareForSideBar(id, name, true)
+  );
 
   // To setup socket and load channel from URL
   useEffect(() => {
-    let socket = socketIOClient(endpoint + workspaceId, { path: "/sockets/" });
+    let socket = socketIOClient(endpoint + workspaceId, { path: '/sockets/' });
     clientSocket.current = socket;
     setUpSocket(socket);
 
@@ -204,7 +271,9 @@ function Workspace({ match }) {
   useEffect(() => {
     if (workspace) {
       const { members } = workspace;
-      fetchMembersData(members, setMembers).then(result => setMembers(result));
+      fetchMembersData(members, setMembers).then((result) =>
+        setMembers(result)
+      );
     }
   }, [workspace]);
 
@@ -213,14 +282,14 @@ function Workspace({ match }) {
   }
 
   const getMessageContainerSize = () => {
-    return membersPanel ? "is-5" : "is-9";
+    return membersPanel ? 'is-5' : 'is-9';
   };
 
   const renderMessages = () => {
     if (messageStore[activeChannel.id]) {
       return (
         <div id="messages">
-          {messageStore[activeChannel.id].messages.map(message => (
+          {messageStore[activeChannel.id].messages.map((message) => (
             <Message {...prettifyMessage(message)} />
           ))}
         </div>
@@ -244,6 +313,7 @@ function Workspace({ match }) {
           <div className="level-left content">
             <h1>{workspace.name}</h1>
           </div>
+          <div className="level-right content">{currentUser.name}</div>
         </div>
         <Columns>
           <Sidebar>
@@ -256,7 +326,7 @@ function Workspace({ match }) {
             <SidebarList list={prettyMembers} heading="Users" action="+" />
           </Sidebar>
 
-          <div className={"column channel-body " + getMessageContainerSize()}>
+          <div className={'column channel-body ' + getMessageContainerSize()}>
             {activeChannel.id ? (
               <>
                 <ChannelHeader
@@ -267,7 +337,15 @@ function Workspace({ match }) {
                 />
                 {renderMessages()}
                 <div className="fixed form">
-                  <ThreadForm onClick={handleSend} />
+                  <ThreadForm
+                    onClick={handleSend}
+                    textAreaProps={{ onKeyDown: handleTyping }}
+                  />
+                  <div id="typing-indicator">
+                    {typingNotification
+                      ? `${typingNotification.user} typing...`
+                      : null}
+                  </div>
                 </div>
               </>
             ) : (
