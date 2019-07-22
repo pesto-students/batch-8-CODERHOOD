@@ -7,10 +7,7 @@ export const handleSubmit = async (event, values, history) => {
   const { post } = methods;
   const { user } = modules;
   const result = await callApi(post, `/${user}`, { name, email, password });
-  if (result.data) {
+  if (result && result.data) {
     history.push('/signin');
-  } else {
-    // TODO: Create a component (Toast) to display errors
-    alert(result);
   }
 }
