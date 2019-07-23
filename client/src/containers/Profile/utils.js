@@ -14,6 +14,4 @@ export const handleSubmit = async (e, user, history, dispatch, props) => {
     // TODO: add component (Toast) to display errors;
     alert(result);
   }
-
-  console.log(user);
 };

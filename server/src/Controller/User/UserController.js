@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import * as gravatar from 'gravatar';
 import {
   create,
   deleteDoc,
@@ -67,7 +68,17 @@ const createUser = async (req, res, next) => {
       error.status = 400;
       return next(error);
     }
-    const result = await create(userModel, { name, email, password });
+    const avatar = gravatar.url(req.body.email, {
+      s: '200',
+      r: 'pg',
+      d: 'wavatar',
+    });
+    const result = await create(userModel, {
+      name,
+      email,
+      password,
+      avatar,
+    });
     return res
       .status(201)
       .send(successHandler(userCreated, result));
