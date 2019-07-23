@@ -24,3 +24,6 @@ article .media:last-child {
   width: 100%;
 }
 
+.messages {
+  height: 100%;
+}

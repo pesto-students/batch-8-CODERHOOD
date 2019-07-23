@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 import useFetch from "../../hooks/useFetch";
 import { useAppContext } from "../App/AppContext";
-import { ChannelMembers } from "../../containers";
+import { ChannelMembers, ViewProfile } from "../../containers";
 import AddChannelModal from "../../containers/AddChannel/AddChannelModal";
 import {
   Container,
@@ -28,6 +28,7 @@ import {
   clearTypingEvent
 } from '../../constants/constants';
 import './Workspace.css';
+import ScrollToBottom from "react-scroll-to-bottom";
 
 function Workspace({ match }) {
   const workspaceId = match.params.id;
@@ -57,7 +58,7 @@ function Workspace({ match }) {
   const [messageStore, setMessageStore] = useState({});
   const [members, setMembers] = useState([]);
   const [membersPanel, setMembersPanel] = useState(false);
-  // const [profilePanel, setProfilePanel] = useState(false);
+  const [profilePanel, setProfilePanel] = useState(false);
   const [isUserTabOpened, setUserTabOpened] = useState(false);
   const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
   const [profilePanel, setProfilePanel] = useState(false);
@@ -75,6 +76,7 @@ function Workspace({ match }) {
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
+<<<<<<< HEAD
     setTypingNotification(null);
  
     // See if user is a part of this current channel
@@ -89,6 +91,9 @@ function Workspace({ match }) {
       setInputFieldDisabled(false);
     }
     
+=======
+    setProfilePanel(false);
+>>>>>>> Makes messages smaller
     if (!messageStore[channelId]) {
       if (isUser) {
         loadUserMessagesIntoStore(
@@ -145,7 +150,13 @@ function Workspace({ match }) {
   };
 
   const handleViewMembers = () => {
-    setMembersPanel(true);
+    if (isUserTabOpened) {
+      setProfilePanel(true);
+      setMembersPanel(false);
+    } else {
+      setMembersPanel(true);
+      setProfilePanel(false);
+    }
   };
 
   const setUpSocket = (socket) => {
@@ -303,7 +314,11 @@ function Workspace({ match }) {
   };
 
   const getMessageContainerSize = () => {
+<<<<<<< HEAD
     return membersPanel ? 'is-5' : 'is-9';
+=======
+    return membersPanel || profilePanel ? "is-5" : "is-9";
+>>>>>>> Makes messages smaller
   };
 
   if (isWorkspaceLoading || isChannelsLoading) {
@@ -313,10 +328,19 @@ function Workspace({ match }) {
   const renderMessages = () => {
     if (messageStore[activeChannel.id]) {
       return (
+<<<<<<< HEAD
         <div id="messages">
           {messageStore[activeChannel.id].messages.map((message) => (
             <Message {...prettifyMessage(message)} />
           ))}
+=======
+        <div id="messages" style={{ marginBottom: "10px" }}>
+          <ScrollToBottom className="messages">
+            {messageStore[activeChannel.id].messages.map(message => (
+              <Message {...prettifyMessage(message)} />
+            ))}
+          </ScrollToBottom>
+>>>>>>> Makes messages smaller
         </div>
       );
     }
@@ -384,6 +408,15 @@ function Workspace({ match }) {
                 workspaceMembers={members}
                 handleClose={() => {
                   setMembersPanel(false);
+                }}
+              />
+            ) : null}
+
+            {profilePanel ? (
+              <ViewProfile
+                userId={activeChannel.id}
+                handleClose={() => {
+                  setProfilePanel(false);
                 }}
               />
             ) : null}
