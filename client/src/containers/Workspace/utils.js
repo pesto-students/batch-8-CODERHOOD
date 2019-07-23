@@ -1,5 +1,6 @@
 import callApi from '../../libs/axios';
 import { methods, modules, endpoints } from '../../constants/constants';
+import * as moment from 'moment';
 
 function updateMessageHeight() {
   try {
@@ -17,12 +18,22 @@ function updateMessageHeight() {
   }
 }
 
+const formatDate = (date) => {
+  const now = moment(Date.now()).format('MMMM Do YYYY');
+  if (moment(date).format('MMMM Do YYYY') === now) {
+    const day = 'Today';
+    const time = moment(date).format('h:mm a');
+    return `${day}, ${time}`;
+  }
+  return moment(date).format('MMMM Do YYYY, h:mm a');
+}
+
 const prettifyMessage = (messageObj) => {
   const { _id, fromUser, updated_At, message } = messageObj;
   const prettyMessage = {
     messageId: _id,
     username: fromUser,
-    timeSince: updated_At || Date.now(),
+    timeSince: formatDate(updated_At) || formatDate(Date.now()),
     message
   };
   return prettyMessage;
