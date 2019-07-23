@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import callApi from "../libs/axios";
 
-const useFetch = (method, url, data) => {
+const useFetch = (method, url, data, callDependencies) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +18,7 @@ const useFetch = (method, url, data) => {
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [callDependencies]);
   return { response, error, isLoading };
 };
 

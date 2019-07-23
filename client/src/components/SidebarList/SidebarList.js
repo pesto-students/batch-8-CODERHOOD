@@ -1,12 +1,34 @@
-import React from 'react';
-import './SidebarList.css';
+import React from "react";
+import "./SidebarList.css";
 
-const SidebarList = ({ heading, action, headingTag = 'h4', list = [], actionClicked = () => {}, ...props }) => {
+const SidebarList = ({
+  heading,
+  action,
+  headingTag = "h4",
+  list = [],
+  actionClicked,
+  ...props
+}) => {
   const HTag = headingTag;
-  const actionContent = action ? <span onClick={() => { actionClicked() }}>{action}</span> : '';
-  const headingContent = heading
-    ? <HTag>{heading} {actionContent}</HTag>
-    : <HTag>{actionContent}</HTag>;
+  const actionContent = action ? (
+    <span
+      style={{ cursor: "pointer" }}
+      onClick={() => {
+        actionClicked();
+      }}
+    >
+      {action}
+    </span>
+  ) : (
+    ""
+  );
+  const headingContent = heading ? (
+    <HTag>
+      {heading} {actionContent}
+    </HTag>
+  ) : (
+    <HTag>{actionContent}</HTag>
+  );
 
   return (
     <div className="content">

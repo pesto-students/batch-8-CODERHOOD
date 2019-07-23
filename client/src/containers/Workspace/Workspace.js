@@ -47,14 +47,19 @@ function Workspace({ match }) {
   const [members, setMembers] = useState([]);
   const [membersPanel, setMembersPanel] = useState(false);
   // const [profilePanel, setProfilePanel] = useState(false);
+  const [isUserTabOpened, setUserTabOpened] = useState(false);
+  const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
 
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
   );
   const closeAddChannelModal = () => {
     setAddChannelModalVisibility(false);
+    setFetchChannelTrigger(fetchChannelTrigger + 1);
   };
   const changeActiveChannel = async (channelId, name, isUser) => {
+    setUserTabOpened(isUser);
+    setMembersPanel(false);
     if (!messageStore[channelId]) {
       if (isUser) {
         loadUserMessagesIntoStore(
@@ -146,9 +151,14 @@ function Workspace({ match }) {
     response: workspaceResponse
   } = fetchedWorkspaceData;
   const workspace = workspaceResponse ? workspaceResponse.data : null;
-  const fetchedChannels = useFetch("post", "/channel/all", {
-    workspace: workspaceId
-  });
+  const fetchedChannels = useFetch(
+    "post",
+    "/channel/all",
+    {
+      workspace: workspaceId
+    },
+    fetchChannelTrigger
+  );
 
   const {
     isLoading: isChannelsLoading,
@@ -253,6 +263,7 @@ function Workspace({ match }) {
                   heading={`#${activeChannel.name}`}
                   actions={[]}
                   handleViewMembers={handleViewMembers}
+                  isUser={isUserTabOpened}
                 />
                 {renderMessages()}
                 <div className="fixed form">
