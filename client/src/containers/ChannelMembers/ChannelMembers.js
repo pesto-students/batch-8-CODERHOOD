@@ -7,8 +7,8 @@ import callApi from "../../libs/axios";
 import { fetchMembersData } from "../../containers/Workspace/utils";
 import { useAppContext } from "../../containers/App/AppContext";
 import AddMember from "./AddMember";
-import isEqual from "lodash/isEqual";
-import uniq from "lodash/uniq";
+import isEqual from "lodash-es/isEqual";
+import uniq from "lodash-es/uniq";
 
 const ChannelMembers = props => {
   const { channel } = modules;
@@ -28,8 +28,6 @@ const ChannelMembers = props => {
     return <Spinner />;
   }
   const memberIds = members.map(member => member._id);
-  console.log(uniq(memberIds).sort());
-  console.log(uniq(channelDetails.response.data.members).sort());
   if (
     !isEqual(
       uniq(memberIds).sort(),
