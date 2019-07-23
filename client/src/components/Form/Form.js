@@ -24,7 +24,7 @@ const Form = props => {
     linkToLabel,
     dispatch,
     initialData,
-    alwaysEnableButton
+    alwaysEnableButton,
   } = props;
 
   const [user, setUser] = useState(initialData ? initialData : {});
@@ -55,7 +55,7 @@ const Form = props => {
     <form className="has-text-centered">
       <figure className="image is-128x128">
         <img
-          src={logo.src}
+          src={user.avatar || logo.src}
           alt={logo.alt}
           className="brand-logo is-rounded"
         />
