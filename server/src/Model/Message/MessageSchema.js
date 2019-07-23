@@ -6,6 +6,7 @@ const messageSchema = new Schema(
     from: String,
     to: String,
     fromUser: String,
+    avatar: String,
     message: String,
     workspace: String,
     channel: String,

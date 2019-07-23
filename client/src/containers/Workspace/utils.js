@@ -29,12 +29,13 @@ const formatDate = (date) => {
 }
 
 const prettifyMessage = (messageObj) => {
-  const { _id, fromUser, updated_At, message } = messageObj;
+  const { _id, fromUser, updated_At, message, avatar } = messageObj;
   const prettyMessage = {
     messageId: _id,
     username: fromUser,
     timeSince: formatDate(updated_At) || formatDate(Date.now()),
-    message
+    message,
+    userPic: avatar,
   };
   return prettyMessage;
 };

@@ -177,6 +177,7 @@ function Workspace({ match }) {
       from: currentUser._id,
       to: activeChannel.id,
       fromUser: currentUser.name,
+      avatar: currentUser.avatar,
       message: content,
       channel: activeChannel.id,
       workspace: workspaceId,
