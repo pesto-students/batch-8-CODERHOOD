@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import socketIOClient from "socket.io-client";
-import useFetch from "../../hooks/useFetch";
-import { useAppContext } from "../App/AppContext";
-import { ChannelMembers, ViewProfile } from "../../containers";
-import AddChannelModal from "../../containers/AddChannel/AddChannelModal";
+import React, { useState, useEffect, useRef } from 'react';
+import socketIOClient from 'socket.io-client';
+import useFetch from '../../hooks/useFetch';
+import { useAppContext } from '../App/AppContext';
+import { ChannelMembers, ViewProfile } from '../../containers';
+import AddChannelModal from '../../containers/AddChannel/AddChannelModal';
 import {
   Container,
   Sidebar,
@@ -13,7 +13,8 @@ import {
   Spinner,
   ChannelHeader,
   Message,
-  ThreadForm
+  ThreadForm,
+  ChannelNotification
 } from '../../components';
 import {
   prettifyMessage,
@@ -25,10 +26,12 @@ import {
   messageEvent,
   connectedEvent,
   typingEvent,
-  clearTypingEvent
+  clearTypingEvent,
+  userJoiningEvent,
+  userLeavingEvent
 } from '../../constants/constants';
 import './Workspace.css';
-import ScrollToBottom from "react-scroll-to-bottom";
+import ScrollToBottom from 'react-scroll-to-bottom';
 
 function Workspace({ match }) {
   const workspaceId = match.params.id;
@@ -40,7 +43,7 @@ function Workspace({ match }) {
   const userData = useAppContext();
   const currentUser = userData.loginStatus.user;
 
-  const typeUser = "usr";
+  const typeUser = 'usr';
   const { params } = match;
   const isActiveChannelAUser = params.type ? params.type === typeUser : false;
 
@@ -71,15 +74,17 @@ function Workspace({ match }) {
     setAddChannelModalVisibility(false);
     setFetchChannelTrigger(fetchChannelTrigger + 1);
   };
-  
+
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
     setTypingNotification(null);
- 
+
     // See if user is a part of this current channel
     if (!isUser && channels) {
-      const currentChannelData = channels.current.filter(({ _id }) => _id === channelId)[0];
+      const currentChannelData = channels.current.filter(
+        ({ _id }) => _id === channelId
+      )[0];
       if (currentChannelData.members.includes(currentUser._id)) {
         setInputFieldDisabled(false);
       } else {
@@ -88,7 +93,7 @@ function Workspace({ match }) {
     } else {
       setInputFieldDisabled(false);
     }
-    
+
     setProfilePanel(false);
     if (!messageStore[channelId]) {
       if (isUser) {
@@ -162,6 +167,8 @@ function Workspace({ match }) {
     );
     socket.on(typingEvent, (data) => handleIncomingTypingIndication(data));
     socket.on(clearTypingEvent, () => handleClearTyping());
+    socket.on(userJoiningEvent, (data) => handleUserJoinedNotification(data));
+    socket.on(userLeavingEvent, (data) => handleUserLeftNotification(data));
   };
 
   const handleSend = (e) => {
@@ -244,6 +251,68 @@ function Workspace({ match }) {
     setTypingNotification(null);
   };
 
+  const handleUserJoinedNotification = (notification) => {
+    const { user, userId, channelId } = notification;
+    if (!channelsLoaded.current.includes(channelId)) {
+      return null;
+    }
+
+    let content;
+    if (userId === currentUser._id) {
+      content = 'You joined the channel';
+      setInputFieldDisabled(false);
+    } else {
+      content = `${user} joined the channel`;
+    }
+
+    const notificationObject = {
+      notification: true,
+      content
+    };
+    const channel = channels.current.filter(
+      ({ _id }) => _id === channelId
+    )[0];
+    channel.members.push(userId);
+    setMessageStore((store) => ({
+      ...store,
+      [channelId]: {
+        ...store[channelId],
+        messages: [...store[channelId].messages, { ...notificationObject }]
+      }
+    }));
+  };
+
+  const handleUserLeftNotification = (notification) => {
+    const { user, userId, channelId } = notification;
+    if (!channelsLoaded.current.includes(channelId)) {
+      return null;
+    }
+
+    let content;
+    if (userId === currentUser._id) {
+      content = 'You left the channel'; 
+      setInputFieldDisabled(true);
+    } else {
+      content = `${user} left the channel`;
+    }
+
+    const notificationObject = {
+      notification: true,
+      content
+    };
+    const channel = channels.current.filter(
+      ({ _id }) => _id === channelId
+    )[0];
+    channel.members = channel.members.filter((member) => member !== userId);
+    setMessageStore((store) => ({
+      ...store,
+      [channelId]: {
+        ...store[channelId],
+        messages: [...store[channelId].messages, { ...notificationObject }]
+      }
+    }));
+  };
+
   const prepareForSideBar = (id, name, isUser) => (
     <SideTab
       isUser={isUser ? isUser : false}
@@ -262,8 +331,8 @@ function Workspace({ match }) {
   } = fetchedWorkspaceData;
   const workspace = workspaceResponse ? workspaceResponse.data : null;
   const fetchedChannels = useFetch(
-    "post",
-    "/channel/all",
+    'post',
+    '/channel/all',
     {
       workspace: workspaceId
     },
@@ -276,7 +345,9 @@ function Workspace({ match }) {
   } = fetchedChannels;
   channels.current = channelsData ? channelsData.data.data : [];
   const prettyChannels = channelsData
-    ? channels.current.map(({ _id: id, name }) => prepareForSideBar(id, name, false))
+    ? channels.current.map(({ _id: id, name }) =>
+        prepareForSideBar(id, name, false)
+      )
     : [];
   const prettyMembers = members.map(({ _id: id, name }) =>
     prepareForSideBar(id, name, true)
@@ -288,7 +359,6 @@ function Workspace({ match }) {
     clientSocket.current = socket;
     setUpSocket(socket);
 
-    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -304,6 +374,7 @@ function Workspace({ match }) {
       channelsLoaded.current.push(id);
       changeActiveChannel(id, name, isUser);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workspace, isChannelsLoading]);
 
   const addChannel = () => {
@@ -311,7 +382,7 @@ function Workspace({ match }) {
   };
 
   const getMessageContainerSize = () => {
-    return membersPanel || profilePanel ? "is-5" : "is-9";
+    return membersPanel || profilePanel ? 'is-5' : 'is-9';
   };
 
   if (isWorkspaceLoading || isChannelsLoading) {
@@ -321,11 +392,14 @@ function Workspace({ match }) {
   const renderMessages = () => {
     if (messageStore[activeChannel.id]) {
       return (
-        <div id="messages" style={{ marginBottom: "10px" }}>
+        <div id="messages" style={{ marginBottom: '10px' }}>
           <ScrollToBottom className="messages">
-            {messageStore[activeChannel.id].messages.map(message => (
-              <Message {...prettifyMessage(message)} />
-            ))}
+            {messageStore[activeChannel.id].messages.map((message) => {
+              if (message.notification) {
+                return <ChannelNotification {...message} />;
+              }
+              return <Message {...prettifyMessage(message)} />;
+            })}
           </ScrollToBottom>
         </div>
       );
@@ -391,7 +465,9 @@ function Workspace({ match }) {
             {activeChannel.id && membersPanel ? (
               <ChannelMembers
                 channelId={activeChannel.id}
+                channels={channels.current}
                 workspaceMembers={members}
+                socket={clientSocket.current}
                 handleClose={() => {
                   setMembersPanel(false);
                 }}

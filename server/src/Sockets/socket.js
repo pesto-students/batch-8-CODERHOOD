@@ -5,6 +5,8 @@ import {
   unsubscribeToChannelsEvent,
   typingIndicationEvent,
   clearTypingIndicationEvent,
+  userJoiningEvent,
+  userLeavingEvent,
 } from './events';
 
 import { generateObjectID, create } from '../Repositories/genericRepository';
@@ -65,6 +67,14 @@ const configureEventHandlersForWorkspace = (namespace) => {
       typingIndicationTimeout = setTimeout(() => {
         namespace.emit(clearTypingIndicationEvent);
       }, 3000);
+    });
+
+    socket.on(userJoiningEvent, (notificationObj) => {
+      namespace.emit(userJoiningEvent, notificationObj);
+    });
+
+    socket.on(userLeavingEvent, (notificationObj) => {
+      namespace.emit(userLeavingEvent, notificationObj);
     });
   });
 };

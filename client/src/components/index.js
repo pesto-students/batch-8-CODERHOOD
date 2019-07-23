@@ -11,4 +11,4 @@ export { default as Sidebar } from './Sidebar/Sidebar';
 export { default as InputField } from './InputField/InputField';
 export { default as Spinner } from './Spinner/Spinner';
 export { default as NavBar } from './NavBar/NavBar';
-
+export { default as ChannelNotification } from './ChannelNotification/ChannelNotification';
