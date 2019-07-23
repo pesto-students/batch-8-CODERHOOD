@@ -61,7 +61,6 @@ function Workspace({ match }) {
   const [profilePanel, setProfilePanel] = useState(false);
   const [isUserTabOpened, setUserTabOpened] = useState(false);
   const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
-  const [profilePanel, setProfilePanel] = useState(false);
   const [typingNotification, setTypingNotification] = useState(null);
   const [inputFieldDisabled, setInputFieldDisabled] = useState(true);
 
@@ -76,7 +75,6 @@ function Workspace({ match }) {
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
-<<<<<<< HEAD
     setTypingNotification(null);
  
     // See if user is a part of this current channel
@@ -91,9 +89,7 @@ function Workspace({ match }) {
       setInputFieldDisabled(false);
     }
     
-=======
     setProfilePanel(false);
->>>>>>> Makes messages smaller
     if (!messageStore[channelId]) {
       if (isUser) {
         loadUserMessagesIntoStore(
@@ -314,11 +310,7 @@ function Workspace({ match }) {
   };
 
   const getMessageContainerSize = () => {
-<<<<<<< HEAD
-    return membersPanel ? 'is-5' : 'is-9';
-=======
     return membersPanel || profilePanel ? "is-5" : "is-9";
->>>>>>> Makes messages smaller
   };
 
   if (isWorkspaceLoading || isChannelsLoading) {
@@ -328,19 +320,12 @@ function Workspace({ match }) {
   const renderMessages = () => {
     if (messageStore[activeChannel.id]) {
       return (
-<<<<<<< HEAD
-        <div id="messages">
-          {messageStore[activeChannel.id].messages.map((message) => (
-            <Message {...prettifyMessage(message)} />
-          ))}
-=======
         <div id="messages" style={{ marginBottom: "10px" }}>
           <ScrollToBottom className="messages">
             {messageStore[activeChannel.id].messages.map(message => (
               <Message {...prettifyMessage(message)} />
             ))}
           </ScrollToBottom>
->>>>>>> Makes messages smaller
         </div>
       );
     }
