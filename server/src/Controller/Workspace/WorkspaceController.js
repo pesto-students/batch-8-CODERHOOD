@@ -46,7 +46,7 @@ const createWorkspace = async (req, res, next) => {
   try {
     const { name, user, members } = req.body;
     const { workspaceCreated } = workspaceResponse;
-    const data = { name, user, members };
+    const data = { name, user, members: [...members, user] };
     const result = await create(workspaceModel, data);
 
     res
