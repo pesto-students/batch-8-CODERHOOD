@@ -56,7 +56,7 @@ const createChannel = async (req, res, next) => {
       workspace,
       user,
       isPrivate,
-      members,
+      members: [...members, user],
     };
     const result = await create(channelModel, data);
     const { channelCreated } = channelResponse;

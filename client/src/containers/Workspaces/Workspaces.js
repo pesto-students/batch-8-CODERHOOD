@@ -65,6 +65,7 @@ const Workspaces = (props) => {
         <SidebarList
           heading="Owned Workspaces"
           list={ownedWorkspaces}
+          actionClicked={createWorkspaceSubmit}
           action={<i className="fas fa-plus" onClick={showModal}></i>}
         />
         <SidebarList
@@ -74,6 +75,8 @@ const Workspaces = (props) => {
       </>
     )
   }
+
+  const createWorkspaceSubmit = () => {};
 
   const { name } = user.loginStatus.user;
 

@@ -19,12 +19,20 @@ function AddWorkspaceModal(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { post } = methods;
-    const { workspace } = modules;
+    const { workspace, channel } = modules;
     
     const response = await callApi(post, `/${workspace}/`, {
       name: workspaceName,
       members: [],
       user: loginStatus.user._id
+    });
+
+    await callApi(post, `/${channel}`, {
+      name: 'General',
+      members: [loginStatus.user._id],
+      workspace: response.data.data._id,
+      user: loginStatus.user._id,
+      isPrivate: false,
     });
 
     if (props && props.onClose) {
