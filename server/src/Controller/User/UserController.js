@@ -1,31 +1,22 @@
 import mongoose from 'mongoose';
 import * as gravatar from 'gravatar';
-import {
-  create,
-  deleteDoc,
-  findOne,
-  findMany,
-  update,
-} from '../../Repositories/genericRepository';
+import { create, deleteDoc, findOne, findMany, update } from '../../Repositories/genericRepository';
 import successHandler from '../../libs/routes/successHandler';
 import { userResponse } from '../../Constants/constants';
 import { userModel } from '../../Model';
 import getExistingUser from './utils';
 
-
 const getUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { userFound, userNotFound } = userResponse;
-    const result = await findOne(userModel, id);
+    const result = await findOne(userModel, { _id: id });
     if (!result) {
       const err = new Error(userNotFound);
       err.status = 404;
       next(err);
     }
-    res
-      .status(200)
-      .send(successHandler(userFound, result));
+    res.status(200).send(successHandler(userFound, result));
   } catch (error) {
     next(error);
   }
@@ -35,9 +26,7 @@ const getAllUsers = async (req, res, next) => {
   try {
     const { foundAllUsers } = userResponse;
     const result = await findMany(userModel);
-    res
-      .status(200)
-      .send(successHandler(foundAllUsers, result));
+    res.status(200).send(successHandler(foundAllUsers, result));
   } catch (error) {
     next(error);
   }
@@ -50,9 +39,7 @@ const getSelectedUsers = async (req, res, next) => {
     const memberObjectIds = members.map(id => mongoose.Types.ObjectId(id));
     const query = { _id: { $in: memberObjectIds } };
     const result = await findMany(userModel, query);
-    res
-      .status(200)
-      .send(successHandler(foundAllUsers, result));
+    res.status(200).send(successHandler(foundAllUsers, result));
   } catch (error) {
     next(error);
   }
@@ -79,9 +66,7 @@ const createUser = async (req, res, next) => {
       password,
       avatar,
     });
-    return res
-      .status(201)
-      .send(successHandler(userCreated, result));
+    return res.status(201).send(successHandler(userCreated, result));
   } catch (error) {
     return next(error);
   }
@@ -93,9 +78,7 @@ const deleteUser = async (req, res, next) => {
     const { userDeleted } = userResponse;
     const result = await deleteDoc(userModel, id);
 
-    res
-      .status(200)
-      .send(successHandler(userDeleted, result));
+    res.status(200).send(successHandler(userDeleted, result));
   } catch (error) {
     next(error);
   }
@@ -107,9 +90,7 @@ const updateUser = async (req, res, next) => {
     const { userUpdated } = userResponse;
     const result = await update(userModel, id, dataToUpdate);
 
-    res
-      .status(200)
-      .send(successHandler(userUpdated, result));
+    res.status(200).send(successHandler(userUpdated, result));
   } catch (error) {
     next(error);
   }
@@ -130,20 +111,10 @@ const login = async (req, res, next) => {
       error.status = 400;
       return next(error);
     }
-    return res
-      .status(200)
-      .send(successHandler('Successfully logged in', user));
+    return res.status(200).send(successHandler('Successfully logged in', user));
   } catch (error) {
     return next(error);
   }
 };
 
-export {
-  getUser,
-  createUser,
-  getAllUsers,
-  getSelectedUsers,
-  deleteUser,
-  updateUser,
-  login,
-};
+export { getUser, createUser, getAllUsers, getSelectedUsers, deleteUser, updateUser, login };
