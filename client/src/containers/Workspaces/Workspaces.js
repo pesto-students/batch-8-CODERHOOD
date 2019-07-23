@@ -16,6 +16,7 @@ const Workspaces = (props) => {
   const [profileModalVisibility, setProfileModalVisibility] = useState(false);
 
   const user = useAppContext();
+  const { dispatch } = useAppContext();
 
   const { post } = methods;
   const { workspace } = modules;
@@ -81,7 +82,10 @@ const Workspaces = (props) => {
   }
 
   const logoutHandler = () => {
-
+    const { history } = props;
+    dispatch({ type: 'logout' });
+    localStorage.removeItem('user');
+    history.push('/signin');
   }
 
   return (
