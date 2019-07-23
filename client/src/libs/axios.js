@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { toast } from 'bulma-toast'
+import axios from "axios";
+import { toast } from "bulma-toast";
 
 const baseURL = process.env.REACT_APP_API_ENDPOINT;
 
@@ -8,17 +8,17 @@ const callApi = async (method, url, data) => {
     return await axios({
       method,
       url: `${baseURL}${url}`,
-      data: data,
+      data: data
     });
   } catch (error) {
-    const { message } = error.response.data;    
+    const { message } = error.response.data;
     toast({
       message,
-      type: 'is-danger',
+      type: "is-danger",
       duration: 4000,
       dismissible: true,
       closeOnClick: true,
-      position: 'bottom-left',
+      position: "bottom-left"
     });
   }
 };
