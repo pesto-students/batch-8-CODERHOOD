@@ -5,16 +5,16 @@ const NavBar = (props) => {
   const [state, setState] = useState('')
 
   return (
-    <nav class="navbar" role="navigation" aria-label="dropdown navigation">
-      <div class="navbar-menu">
-        <div class="navbar-end">
-          <div class={"navbar-item has-dropdown " + state}>
-            <a class="navbar-link" onClick={() => { setState(state === '' ? "is-active" : '') }}>
+    <nav className="navbar" role="navigation" aria-label="dropdown navigation">
+      <div className="navbar-menu">
+        <div className="navbar-end">
+          <div className={"navbar-item has-dropdown " + state}>
+            <a className="navbar-link" onClick={() => { setState(state === '' ? "is-active" : '') }}>
               Settings
             </a>
-            <div class="navbar-dropdown is-right">
-              {props.navItems.map(navItem =>
-                <a class="navbar-item" onClick={() => {
+            <div className="navbar-dropdown is-right">
+              {props.navItems.map((navItem, index) =>
+                <a key={`${navItem}-${index}`} className="navbar-item" onClick={() => {
                   setState('');
                   navItem.handler();
                 }}>
