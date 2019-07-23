@@ -14,7 +14,7 @@ import {
   ChannelHeader,
   Message,
   ThreadForm
-} from "../../components";
+} from '../../components';
 import {
   prettifyMessage,
   loadChannelMessagesIntoStore,
@@ -35,7 +35,6 @@ function Workspace({ match }) {
 
   const userTypingStatusTimeout = useRef(false);
   const clientSocket = useRef(null);
-  const channelsLoaded = useRef([]);
   const currentChannel = useRef(null);
   const userData = useAppContext();
   const currentUser = userData.loginStatus.user;
@@ -52,6 +51,9 @@ function Workspace({ match }) {
   // To keep track of activeChannel in socket handler functions
   currentChannel.current = activeChannel;
 
+  const channelsLoaded = useRef([]);
+  const channels = useRef([]);
+
   const [messageStore, setMessageStore] = useState({});
   const [members, setMembers] = useState([]);
   const [membersPanel, setMembersPanel] = useState(false);
@@ -60,6 +62,7 @@ function Workspace({ match }) {
   const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
   const [profilePanel, setProfilePanel] = useState(false);
   const [typingNotification, setTypingNotification] = useState(null);
+  const [inputFieldDisabled, setInputFieldDisabled] = useState(true);
 
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
@@ -68,10 +71,24 @@ function Workspace({ match }) {
     setAddChannelModalVisibility(false);
     setFetchChannelTrigger(fetchChannelTrigger + 1);
   };
+  
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
     setTypingNotification(null);
+ 
+    // See if user is a part of this current channel
+    if (!isUser && channels) {
+      const currentChannelData = channels.current.filter(({ _id }) => _id === channelId)[0];
+      if (currentChannelData.members.includes(currentUser._id)) {
+        setInputFieldDisabled(false);
+      } else {
+        setInputFieldDisabled(true);
+      }
+    } else {
+      setInputFieldDisabled(false);
+    }
+    
     if (!messageStore[channelId]) {
       if (isUser) {
         loadUserMessagesIntoStore(
@@ -144,7 +161,10 @@ function Workspace({ match }) {
     e.preventDefault();
     const socket = clientSocket.current;
     // FIXME: Change when MessageForm is refactored
-    const content = document.getElementsByClassName('textarea')[0].value;
+    const content = document.getElementsByClassName('textarea')[0].value.trim();
+    if (content.length === 0) {
+      return null;
+    }
     document.getElementsByClassName('textarea')[0].value = '';
     const messageObj = {
       from: currentUser._id,
@@ -246,9 +266,9 @@ function Workspace({ match }) {
     isLoading: isChannelsLoading,
     response: channelsData
   } = fetchedChannels;
-  const channels = channelsData ? channelsData.data.data : [];
+  channels.current = channelsData ? channelsData.data.data : [];
   const prettyChannels = channelsData
-    ? channels.map(({ _id: id, name }) => prepareForSideBar(id, name, false))
+    ? channels.current.map(({ _id: id, name }) => prepareForSideBar(id, name, false))
     : [];
   const prettyMembers = members.map(({ _id: id, name }) =>
     prepareForSideBar(id, name, true)
@@ -260,11 +280,7 @@ function Workspace({ match }) {
     clientSocket.current = socket;
     setUpSocket(socket);
 
-    const { id, name, isUser } = activeChannel;
-    if (channels && id) {
-      channelsLoaded.current.push(id);
-      changeActiveChannel(id, name, isUser);
-    }
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -275,15 +291,24 @@ function Workspace({ match }) {
         setMembers(result)
       );
     }
-  }, [workspace]);
+    const { id, name, isUser } = activeChannel;
+    if (!isChannelsLoading && id) {
+      channelsLoaded.current.push(id);
+      changeActiveChannel(id, name, isUser);
+    }
+  }, [workspace, isChannelsLoading]);
 
-  if (isWorkspaceLoading || isChannelsLoading) {
-    return <Spinner cls="la-2x" />;
-  }
+  const addChannel = () => {
+    setAddChannelModalVisibility(true);
+  };
 
   const getMessageContainerSize = () => {
     return membersPanel ? 'is-5' : 'is-9';
   };
+
+  if (isWorkspaceLoading || isChannelsLoading) {
+    return <Spinner cls="la-2x" />;
+  }
 
   const renderMessages = () => {
     if (messageStore[activeChannel.id]) {
@@ -300,10 +325,6 @@ function Workspace({ match }) {
         <Spinner />
       </div>
     );
-  };
-
-  const addChannel = () => {
-    setAddChannelModalVisibility(true);
   };
 
   return (
@@ -340,6 +361,7 @@ function Workspace({ match }) {
                   <ThreadForm
                     onClick={handleSend}
                     textAreaProps={{ onKeyDown: handleTyping }}
+                    isDisabled={inputFieldDisabled}
                   />
                   <div id="typing-indicator">
                     {typingNotification
