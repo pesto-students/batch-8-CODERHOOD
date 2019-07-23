@@ -11,7 +11,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import AddWorkspaceModal from './AddWorkspace';
 import NavBar from '../../components/NavBar/NavBar'
 
-const Workspaces = () => {
+const Workspaces = (props) => {
   const [modalVisibility, setModalVisibility] = useState(false);
   const [profileModalVisibility, setProfileModalVisibility] = useState(false);
 
@@ -107,6 +107,7 @@ const Workspaces = () => {
           showClose={false}
           onClose={closeModal}
           modal={{ closeOnEsc: true }}
+          {...props}
         />
         <Profile show={profileModalVisibility}
           showClose={false}

@@ -1,7 +1,7 @@
 import React from 'react';
 import './SidebarList.css';
 
-const SidebarList = ({ heading, action, headingTag = 'h4', list = [], actionClicked, ...props }) => {
+const SidebarList = ({ heading, action, headingTag = 'h4', list = [], actionClicked = () => {}, ...props }) => {
   const HTag = headingTag;
   const actionContent = action ? <span onClick={() => { actionClicked() }}>{action}</span> : '';
   const headingContent = heading
@@ -12,7 +12,7 @@ const SidebarList = ({ heading, action, headingTag = 'h4', list = [], actionClic
     <div className="content">
       {headingContent}
       <ul {...props}>
-        {list.map(ListItem => <li key={ListItem}>{ListItem}</li>)}
+        {list.map((listItem, index) => <li key={`${listItem.toString()}-${index}`}>{listItem}</li>)}
       </ul>
     </div>
   );
