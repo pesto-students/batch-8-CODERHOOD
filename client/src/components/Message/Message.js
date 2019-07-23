@@ -2,7 +2,7 @@ import React from "react";
 
 const Message = ({
   messageId,
-  userPic = "https://dummyimage.com/64x64/000/fff&text=MrAnderson",
+  userPic,
   username,
   timeSince,
   message,
