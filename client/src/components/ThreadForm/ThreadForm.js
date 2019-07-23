@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../Button/Button';
 
-const ThreadForm = ({textAreaProps, ...props}) => {
+const ThreadForm = ({textAreaProps, isDisabled, ...props}) => {
   return (
     <article className="media">
       <div className="media-content">
@@ -12,6 +12,7 @@ const ThreadForm = ({textAreaProps, ...props}) => {
               className="textarea"
               placeholder="Add a comment..."
               {...textAreaProps}
+              disabled={isDisabled}
             ></textarea>
           </p>
         </div>
