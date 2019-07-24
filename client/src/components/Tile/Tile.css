@@ -1,4 +1,5 @@
 .tile{
+  padding: 1em;
   background-color: #00aba9;
   width: 30vh;
   height: 30vh;
@@ -6,6 +7,7 @@
   word-break: break-word;
   transition-duration: 0.5s;
   transition-property: all;
+  box-sizing: border-box;
 }
 
 .tile:hover{
@@ -14,8 +16,13 @@
 
 .tile__content {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.tile__content__link {
+  flex: 1 0 auto;
 }
 
 .tile__content button:focus{
@@ -23,7 +30,7 @@
 }
 
 .tile__children {
-  margin: auto;
+  margin: 0 auto;
 }
 
 .tile__content__option {
