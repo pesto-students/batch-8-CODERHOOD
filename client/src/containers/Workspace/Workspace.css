@@ -1,10 +1,14 @@
 .channel-body {
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 100vh;
+  padding-left: 0px;
 }
 .has-bottom-border-2 {
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid gray;
+  padding: 10px;
+  margin-left: 0px;
+  margin-bottom: 0px !important;
 }
 .channel-body h3 {
   font-size: 1.5em;
@@ -13,6 +17,7 @@
   flex: 1;
   overflow: scroll;
   overflow-x: hidden;
+  padding: 10px;
 }
 article .media:last-child {
   flex-shrink: 0;
@@ -25,4 +30,9 @@ article .media:last-child {
 
 .messages {
   height: 100%;
+}
+
+.content h6 {
+  color: white;
+  margin-left: 12px;
 }
