@@ -12,7 +12,9 @@ const AddChannel = (props) => {
   const { loginStatus } = useAppContext();
 
   const updateMember = (member) => {
-    setMembers([...members, member]);
+    if (member !== undefined) {
+      setMembers([...members, member]);
+    }
   };
 
   const removeMember = (member) => {};
@@ -25,7 +27,7 @@ const AddChannel = (props) => {
     await callApi(post, `/${channel}/`, {
       name: channelName,
       workspace: props.workspaceId,
-      members: members,
+      members: members.map((member) => member._id),
       isPrivate: false,
       user: loginStatus.user._id
     });
@@ -65,7 +67,7 @@ const AddChannel = (props) => {
               onClick={() => {
                 setMembers(
                   members.filter(
-                    (removedMember) => member._id != removedMember._id
+                    (removedMember) => member._id !== removedMember._id
                   )
                 );
               }}
