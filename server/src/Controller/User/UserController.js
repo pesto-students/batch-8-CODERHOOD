@@ -5,6 +5,7 @@ import successHandler from '../../libs/routes/successHandler';
 import { userResponse } from '../../Constants/constants';
 import { userModel } from '../../Model';
 import getExistingUser from './utils';
+import { acceptAllWorkspaceInvites } from "../Invitation/utils";
 
 const getUser = async (req, res, next) => {
   try {
@@ -66,6 +67,12 @@ const createUser = async (req, res, next) => {
       password,
       avatar,
     });
+    
+    if (result) {
+      // eslint-disable-next-line no-underscore-dangle
+      acceptAllWorkspaceInvites(result._id, email);
+    }
+
     return res.status(201).send(successHandler(userCreated, result));
   } catch (error) {
     return next(error);

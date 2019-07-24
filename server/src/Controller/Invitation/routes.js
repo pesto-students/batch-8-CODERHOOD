@@ -1,12 +1,14 @@
-import * as express from "express";
+import * as express from 'express';
 import {
   createInvitation,
   getAllInvitations,
-} from "./InvitationController";
+  approveInvitations,
+} from './InvitationController';
 
 const invitationRouter = express.Router();
 
-invitationRouter.post("/all", getAllInvitations);
-invitationRouter.post("/", createInvitation);
+invitationRouter.post('/all', getAllInvitations);
+invitationRouter.post('/', createInvitation);
+invitationRouter.get('/approve/:userId', approveInvitations);
 
 export default invitationRouter;

@@ -72,4 +72,5 @@ export const invitationResponse = {
   invitationCreated: 'Invitation created successfully',
   invitationUpdated: 'Invitation updated successfully',
   invitationDeleted: 'Invitation deleted successfully',
+  invitationAccepted: 'Invitations accepted successfully',
 };
