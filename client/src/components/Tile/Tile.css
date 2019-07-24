@@ -26,7 +26,7 @@
   margin: auto;
 }
 
-.tile__option {
+.tile__content__option {
   font-size: 1.5em;
   border: 0;
   color: rgb(221, 220, 220);
@@ -35,8 +35,9 @@
   border-radius: 0px;
 }
 
-.tile__option:hover {
+.tile__content__option:hover {
   color: white;
+  cursor: pointer;
 }
 .tile a {
   width: 100%;
