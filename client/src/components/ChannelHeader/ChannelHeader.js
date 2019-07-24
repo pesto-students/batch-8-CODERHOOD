@@ -9,7 +9,7 @@ const ChannelHeader = ({
   return (
     <div className="level has-bottom-border-2">
       <div className="level-left">
-        <h3>{heading}</h3>
+        <h5>{heading}</h5>
         <button
           className="button is-pulled-right is-small is-dark is-outlined"
           style={{ marginLeft: "10px" }}

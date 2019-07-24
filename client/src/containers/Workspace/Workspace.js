@@ -426,14 +426,15 @@ function Workspace({ match }) {
   return (
     <div>
       <Container>
-        <div className="level">
-          <div className="level-left content">
-            <h1>{workspace.name}</h1>
-          </div>
-          <div className="level-right content">{currentUser.name}</div>
-        </div>
+        
         <Columns>
           <Sidebar>
+          <div className="level">
+          <div className="level-left content channel-name">
+            <h6>{workspace.name}</h6>
+          </div>
+          {/* <div className="level-right content">{currentUser.name}</div> */}
+        </div>
             <SidebarList
               list={prettyChannels}
               heading="Channels"
@@ -445,6 +446,9 @@ function Workspace({ match }) {
               heading="Users"
               action={<i className="fa fa-plus-circle" />}
             />
+            <div className="level-left content channel-name" style={{cursor: "pointer"}}>
+            <h6>Switch Workspace</h6>
+          </div>
           </Sidebar>
 
           <div className={"column channel-body " + getMessageContainerSize()}>
