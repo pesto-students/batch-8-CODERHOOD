@@ -32,6 +32,7 @@ import {
   userJoiningEvent,
   userLeavingEvent
 } from '../../constants/constants';
+import Welcome from '../Welcome/Welcome';
 import './Workspace.css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
@@ -438,6 +439,39 @@ function Workspace({ match }) {
     );
   };
 
+  const renderChannelInfo = () => {
+    if (activeChannel.name === 'General') {
+      return (
+        <>
+          <p style={{margin: '2%', marginRight: '3%'}}>
+            We created this channel for you. 
+            This is the very beginning of the <span><b>#general</b></span> channel. 
+            Purpose: This channel is for workspace-wide communication and announcements. 
+            All members are in this channel.
+          </p>
+        </>
+      )
+    }
+    if (activeChannel.name === currentUser.name) {
+      return (
+        <>
+          <p style={{margin: '2%', marginRight: '3%'}}>
+            <b>This is your space. </b> 
+            Draft messages, list your to-dos, or keep links and files handy. 
+            You can also talk to yourself here, 
+            but please bear in mind you’ll have to supply both sides of the conversation.
+          </p>
+        </>
+      )
+    }
+    return (
+      <p style={{margin: '2%', marginRight: '3%'}}>
+        This is very beginning of your message history. 
+        Say <b>'Hi'</b> to start the conversation.
+      </p>
+    );
+  }
+
   return (
     <div className="workspace">
       <Container>
@@ -452,18 +486,14 @@ function Workspace({ match }) {
             <SidebarList
               list={prettyChannels}
               heading="Channels"
-              action={<i className="fa fa-plus-circle" />}
+              action={<i title="Add Channel" className="fa fa-plus-circle" />}
               actionClicked={addChannel}
             />
             <SidebarList
               list={prettyMembers}
               heading="Users"
               action={
-                <button className="button is-info is-small is-outlined">
-                  <span className="icon">
-                    <i title="Invite User" class="fas fa-user-plus" />
-                  </span>
-                </button>
+                <i title="Invite User" className="fa fa-plus-circle" />
               }
               actionClicked={addUser}
             />
@@ -487,6 +517,7 @@ function Workspace({ match }) {
                   handleViewMembers={handleViewMembers}
                   isUser={isUserTabOpened}
                 />
+                {renderChannelInfo()}
                 {renderMessages()}
                 <div className="fixed form">
                   <ThreadForm
@@ -502,9 +533,11 @@ function Workspace({ match }) {
                 </div>
               </>
             ) : (
-              <div className="content has-text-centered welcome">
-                <h1>Welcome to slack-clone </h1>
-              </div>
+              <Welcome 
+                firstVisit={(channels.length === 1)}
+                openHandle={addChannel}
+                openUser={addUser}
+              />
             )}
           </div>
 
