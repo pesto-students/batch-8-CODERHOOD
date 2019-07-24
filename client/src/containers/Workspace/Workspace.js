@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
@@ -426,9 +427,9 @@ function Workspace({ match }) {
   };
 
   return (
-    <div>
+    <div className="workspace">
       <Container>
-        <Columns>
+        <Columns className="workspace-column">
           <Sidebar>
             <div className="level">
               <div className="content channel-name">
@@ -445,13 +446,16 @@ function Workspace({ match }) {
             <SidebarList
               list={prettyMembers}
               heading="Users"
+              actionClicked={() => {}}
               action={<i className="fa fa-plus-circle" />}
             />
             <div
               className="level-left content channel-name"
               style={{ cursor: 'pointer' }}
             >
-              <h6>Switch Workspace</h6>
+              <Link to="/workspaces">
+                <h6 style={{ color: 'white' }}>Switch Workspace</h6>
+              </Link>
             </div>
           </Sidebar>
 
@@ -479,7 +483,7 @@ function Workspace({ match }) {
                 </div>
               </>
             ) : (
-              <div className="content">
+              <div className="content has-text-centered welcome">
                 <h1>Welcome to slack-clone </h1>
               </div>
             )}
@@ -487,7 +491,7 @@ function Workspace({ match }) {
 
           <div
             className="column is-4 has-top-border-2"
-            style={{ height: '100vh', paddingLeft: '0em', marginTop: '10vh' }}
+            style={{ height: '92.7vh', paddingLeft: '0em', marginTop: '9.1vh' }}
           >
             {activeChannel.id && membersPanel ? ( 
               <ChannelMembers

@@ -24,18 +24,20 @@ const Grid = ({ heading, list, actionClicked, action }) => {
   };
 
   return (
-    <div className="grid">
-      <div className="title">
+    <>
+      <div className="title heading">
         {heading}
         <hr />
       </div>
-      <div className="columns">
-        {list.map((tile) => (
-          <div className="column is-narrow">{tile}</div>
-        ))}
-        {renderDefaultTile()}
+      <div className="grid">
+        <div className="columns">
+          {renderDefaultTile()}
+          {list.map((tile) => (
+            <div className="column is-narrow">{tile}</div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

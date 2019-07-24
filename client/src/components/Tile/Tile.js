@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 
 const Tile = ({ name, handleInvite, ...props }) => {
   return (
-    <div className="box tile">
+    <div className="box tile has-text-centered">
       {props.to ? (
         <div className="tile__content">
           <Link {...props}>
-            <span className="title">{name}</span>
+            <span className="title is-centered">{name}</span>
           </Link>
           <button className="tile__option" onClick={handleInvite}>
             <span className="content">Invite</span>
