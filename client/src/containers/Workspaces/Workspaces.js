@@ -66,7 +66,9 @@ const Workspaces = (props) => {
           heading="Owned Workspaces"
           list={ownedWorkspaces}
           actionClicked={createWorkspaceSubmit}
-          action={<i className="fas fa-plus" onClick={showModal}></i>}
+          action={<i 
+            className="fa fa-plus-circle" 
+            onClick={showModal}></i>}
         />
         <SidebarList
           heading="Joined Workspaces"
@@ -98,14 +100,6 @@ const Workspaces = (props) => {
         <div className="level content">
           <div className="level-left">
             <h1 className="level-item">Welcome, {name}</h1>
-          </div>
-          <div className="level-right">
-            <form className="level-item">
-              <InputField
-                className="is-primary is-rounded"
-                placeholder="Search Workspace"
-              />
-            </form>
           </div>
         </div>
         {renderWorkSpaces()}

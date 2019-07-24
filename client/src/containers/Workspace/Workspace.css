@@ -1,5 +1,4 @@
 .channel-body {
-  border-left: 2px solid black;
   display: flex;
   flex-direction: column;
   height: 80vh;

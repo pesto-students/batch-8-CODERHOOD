@@ -22,6 +22,7 @@ const SideTab = ({
       activeClassName={'tab--selected'}
       onClick={() => onClick(id, content, isUser)}
       {...props}
+      style={{color: '#cfbfcd'}}
     >
       <span className={unreadClass}>
         {isUser ? content : `#${content}`}
