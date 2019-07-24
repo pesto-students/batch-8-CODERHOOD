@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const ChannelHeader = ({
   heading,
@@ -12,12 +12,12 @@ const ChannelHeader = ({
         <h5>{heading}</h5>
         <button
           className="button is-pulled-right is-small is-dark is-outlined"
-          style={{ marginLeft: "10px" }}
+          style={{ marginLeft: '0.8em' }}
           onClick={() => {
             handleViewMembers();
           }}
         >
-          {!props.isUser ? "View Members" : "View Profile"}
+          {!props.isUser ? 'View Members' : 'View Profile'}
         </button>
       </div>
       <div className="level level-right">

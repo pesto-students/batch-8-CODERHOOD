@@ -1,10 +1,10 @@
-import React from "react";
-import "./SidebarList.css";
+import React from 'react';
+import './SidebarList.css';
 
 const SidebarList = ({
   heading,
   action,
-  headingTag = "h4",
+  headingTag = 'h4',
   list = [],
   actionClicked,
   ...props
@@ -12,7 +12,7 @@ const SidebarList = ({
   const HTag = headingTag;
   const actionContent = action ? (
     <span
-      style={{ cursor: "pointer" }}
+      style={{ cursor: 'pointer' }}
       onClick={() => {
         actionClicked();
       }}
@@ -20,10 +20,10 @@ const SidebarList = ({
       {action}
     </span>
   ) : (
-    ""
+    ''
   );
   const headingContent = heading ? (
-    <HTag style={{ color: "white", paddingLeft: "12px" }}>
+    <HTag style={{ color: 'white', paddingLeft: '1em' }}>
       {heading} {actionContent}
     </HTag>
   ) : (
@@ -33,10 +33,10 @@ const SidebarList = ({
   return (
     <div className="content">
       <div className="menu-label is-small">{headingContent}</div>
-      <ul className="menu-list" {...props} style={{ color: "white" }}>
+      <ul className="menu-list" {...props} style={{ color: 'white' }}>
         {list.map((listItem, index) => (
           <li
-            style={{ whiteSpace: "nowrap", listStyle: "none" }}
+            style={{ whiteSpace: 'nowrap', listStyle: 'none' }}
             key={`${listItem.toString()}-${index}`}
           >
             {listItem}

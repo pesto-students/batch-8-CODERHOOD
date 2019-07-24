@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Message = ({
   messageId,
@@ -12,15 +12,15 @@ const Message = ({
   return (
     <article
       className="media"
-      style={{ paddingTop: "10px", paddingBottom: "10px" }}
+      style={{ paddingTop: '0.8em', paddingBottom: '0.8em' }}
     >
       <figure className="media-left">
-        <p className="image is-32x32" style={{ paddingTop: "5px" }}>
+        <p className="image is-32x32" style={{ paddingTop: '.4em' }}>
           <img src={userPic} alt={username} />
         </p>
       </figure>
       <div className="media-content">
-        <div className="content" style={{ height: "10px" }}>
+        <div className="content" style={{ height: '1em' }}>
           <div>
             <strong>{username}</strong> <small>{timeSince}</small>
             <br /> {message}
@@ -28,7 +28,7 @@ const Message = ({
         </div>
         <nav className="level is-mobile">
           <div className="level-left">
-            {messageActions.map(action => (
+            {messageActions.map((action) => (
               <span className="level-item">{action}</span>
             ))}
           </div>
