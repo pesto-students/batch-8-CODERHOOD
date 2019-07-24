@@ -15,7 +15,7 @@ const ViewProfile = props => {
   const member = memberDetails.response.data;
 
   return (
-    <div className="card" style={{ minHeight: "100vh" }}>
+    <div className="card" style={{ minHeight: "92vh" }}>
       <div className="panel-heading">
         {member.name}
         <button

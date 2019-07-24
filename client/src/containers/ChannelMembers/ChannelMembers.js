@@ -55,22 +55,27 @@ const ChannelMembers = (props) => {
     <nav className="panel">
       <div className="panel-heading">
         {channelDetails.name}
-        <a
-          className="is-small is-size-7 is-vcentered"
-          style={{ padding: '8px' }}
-          onClick={() => {
-            updateMember(
-              loginStatus.user,
-              channelDetails.members.includes(loginStatus.user._id)
-                ? 'delete'
-                : 'add'
-            );
-          }}
-        >
-          {channelDetails.members.includes(loginStatus.user._id)
-            ? `Leave Channel`
-            : `Join Channel`}
-        </a>
+        {
+          channelDetails.user !== loginStatus.user._id
+          ?
+            <a
+              className="is-small is-size-7 is-vcentered"
+              style={{ padding: '8px' }}
+              onClick={() => {
+                updateMember(
+                  loginStatus.user,
+                  channelDetails.members.includes(loginStatus.user._id)
+                    ? 'delete'
+                    : 'add'
+                );
+              }}
+            >
+              {channelDetails.members.includes(loginStatus.user._id)
+                ? `Leave Channel`
+                : `Join Channel`}
+            </a>
+          : null
+        }
         <button
           className="button is-outlined is-pulled-right is-small"
           onClick={() => {
@@ -93,7 +98,11 @@ const ChannelMembers = (props) => {
                 />
               </span>
               {member.name}
-              {channelDetails.user === loginStatus.user._id ? (
+              {(
+                channelDetails.user === loginStatus.user._id
+                &&
+                member._id !== loginStatus.user._id
+              ) ? (
                 <button
                   className="button is-outlined is-pulled-right is-small is-danger"
                   onClick={() => {

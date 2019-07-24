@@ -1,5 +1,15 @@
 .grid {
     padding: 2em;
-
+    padding-top: 0em;
+    overflow-x: scroll;
 }
 
+div.heading {
+    margin: 0;
+    margin-left: 2vw;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
