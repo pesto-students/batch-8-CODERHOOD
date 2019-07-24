@@ -66,6 +66,7 @@ function Workspace({ match }) {
   const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
   const [typingNotification, setTypingNotification] = useState(null);
   const [inputFieldDisabled, setInputFieldDisabled] = useState(true);
+  const [unreadChannels, setUnreadChannels] = useState([]);
 
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
@@ -114,6 +115,8 @@ function Workspace({ match }) {
       name,
       isUser
     });
+    // Remove from unread if there
+    setUnreadChannels((store) => store.filter((id) => id !== channelId));
   };
 
   const handleIncomingMessage = ({ isConversation, ...messageObj }) => {
@@ -126,9 +129,16 @@ function Workspace({ match }) {
 
     const isUserParticipant =
       currentUser._id === to || currentUser._id === from;
-    
+
     if (isConversation && !isUserParticipant) {
       return null;
+    }
+
+    if (
+      channel !== currentChannel.current.id &&
+      !unreadChannels.includes(channel)
+    ) {
+      setUnreadChannels((store) => [...store, channel]);
     }
 
     if (!channelsLoaded.current.includes(channel)) {
@@ -276,9 +286,7 @@ function Workspace({ match }) {
       notification: true,
       content
     };
-    const channel = channels.current.filter(
-      ({ _id }) => _id === channelId
-    )[0];
+    const channel = channels.current.filter(({ _id }) => _id === channelId)[0];
     channel.members.push(userId);
     setMessageStore((store) => ({
       ...store,
@@ -297,7 +305,7 @@ function Workspace({ match }) {
 
     let content;
     if (userId === currentUser._id) {
-      content = 'You left the channel'; 
+      content = 'You left the channel';
       setInputFieldDisabled(true);
     } else {
       content = `${user} left the channel`;
@@ -307,9 +315,7 @@ function Workspace({ match }) {
       notification: true,
       content
     };
-    const channel = channels.current.filter(
-      ({ _id }) => _id === channelId
-    )[0];
+    const channel = channels.current.filter(({ _id }) => _id === channelId)[0];
     channel.members = channel.members.filter((member) => member !== userId);
     setMessageStore((store) => ({
       ...store,
@@ -328,6 +334,7 @@ function Workspace({ match }) {
       id={id}
       workspace={workspaceId}
       onClick={changeActiveChannel}
+      unread={unreadChannels.includes(id)}
     />
   );
 

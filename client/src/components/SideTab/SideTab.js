@@ -10,9 +10,12 @@ const SideTab = ({
   onClick,
   workspace,
   isUser = false,
+  unread,
   ...props
 }) => {
   const channelType = isUser ? 'usr' : 'ch';
+  const unreadClass = unread ? 'unread' : '';
+  // console.log('in Sidebar unread:: ', unread);
   return (
     <NavLink
       to={`/workspaces/${workspace}/${id}/${channelType}/${content}`}
@@ -20,7 +23,9 @@ const SideTab = ({
       onClick={() => onClick(id, content, isUser)}
       {...props}
     >
-      {isUser ? content : `#${content}`}
+      <span className={unreadClass}>
+        {isUser ? content : `#${content}`}
+      </span>
     </NavLink>
   );
 };
