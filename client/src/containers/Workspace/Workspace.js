@@ -126,6 +126,10 @@ function Workspace({ match }) {
 
     const isUserParticipant =
       currentUser._id === to || currentUser._id === from;
+    
+    if (isConversation && !isUserParticipant) {
+      return null;
+    }
 
     if (!channelsLoaded.current.includes(channel)) {
       if (isConversation && isUserParticipant) {
@@ -231,7 +235,10 @@ function Workspace({ match }) {
     const isUserParticipant =
       currentUser._id === to || currentUser._id === from;
 
-    if (isConversation && isUserParticipant) {
+    if (isConversation) {
+      if (!isUserParticipant) {
+        return null;
+      }
       let channelId = channel === currentUser._id ? from : channel;
       if (channelId === activeChannel.id) {
         setTypingNotification({
