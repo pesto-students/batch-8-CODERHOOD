@@ -23,7 +23,7 @@ const SidebarList = ({
     ""
   );
   const headingContent = heading ? (
-    <HTag>
+    <HTag style={{color: 'black'}}>
       {heading} {actionContent}
     </HTag>
   ) : (
@@ -32,9 +32,17 @@ const SidebarList = ({
 
   return (
     <div className="content">
-      {headingContent}
-      <ul {...props}>
-        {list.map((listItem, index) => <li key={`${listItem.toString()}-${index}`}>{listItem}</li>)}
+      <div className="menu-label is-small">
+        {headingContent}
+      </div>
+      <ul className="menu-list" {...props} style={{color: "white"}}>
+        {list.map((listItem, index) => 
+          <li 
+            style={{whiteSpace: "nowrap", listStyle: 'none'}}
+            key={`${listItem.toString()}-${index}`}
+          >
+            {listItem}
+          </li>)}
       </ul>
     </div>
   );

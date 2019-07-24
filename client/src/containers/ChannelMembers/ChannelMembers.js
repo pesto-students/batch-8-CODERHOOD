@@ -89,7 +89,7 @@ const ChannelMembers = (props) => {
               {member.name}
               {channelDetails.user === loginStatus.user._id ? (
                 <button
-                  className="button is-outlined is-pulled-right is-small"
+                  className="button is-outlined is-pulled-right is-small is-danger"
                   onClick={() => {
                     updateMember(member, 'delete');
                   }}

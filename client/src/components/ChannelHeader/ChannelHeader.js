@@ -11,7 +11,7 @@ const ChannelHeader = ({
       <div className="level-left">
         <h3>{heading}</h3>
         <button
-          className="button is-pulled-right is-small"
+          className="button is-pulled-right is-small is-dark is-outlined"
           style={{ marginLeft: "10px" }}
           onClick={() => {
             handleViewMembers();
