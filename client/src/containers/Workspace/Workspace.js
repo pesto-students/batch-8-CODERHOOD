@@ -335,11 +335,12 @@ function Workspace({ match }) {
     }));
   };
 
-  const prepareForSideBar = (id, name, isUser) => (
+  const prepareForSideBar = (id, name, avatar, isUser) => (
     <SideTab
       isUser={isUser ? isUser : false}
       key={id}
       content={name}
+      avatar={avatar}
       id={id}
       workspace={workspaceId}
       onClick={changeActiveChannel}
@@ -372,9 +373,9 @@ function Workspace({ match }) {
         prepareForSideBar(id, name, false)
       )
     : [];
-  const prettyMembers = members.map(({ _id: id, name }) =>
-    prepareForSideBar(id, name, true)
-  );
+  const prettyMembers = members.map(({ _id: id, name, avatar }) => (
+    prepareForSideBar(id, name, avatar, true)
+  ));
 
   // To setup socket and load channel from URL
   useEffect(() => {

@@ -11,11 +11,36 @@ const SideTab = ({
   workspace,
   isUser = false,
   unread,
+  avatar,
   ...props
 }) => {
   const channelType = isUser ? 'usr' : 'ch';
   const unreadClass = unread ? 'unread' : '';
   // console.log('in Sidebar unread:: ', unread);
+  const renderUser = () => {
+    return (
+      <div style={{ display: 'flex'}}>
+        <div 
+          style={{ 
+            width: '4vh', 
+            height: '4vh', 
+            marginRight: '0.5vw',
+            position: 'relative',
+            bottom: '0.4vh',
+          }}
+        >
+          <img 
+            src={avatar} 
+            alt={content} 
+            // style={{ width: '2vw', height: '4vh' }}
+          />
+        </div>
+        <div>
+          {content}
+        </div>
+      </div>
+    )
+  }
   return (
     <NavLink
       to={`/workspaces/${workspace}/${id}/${channelType}/${content}`}
@@ -25,7 +50,7 @@ const SideTab = ({
       style={{color: '#cfbfcd'}}
     >
       <span className={unreadClass}>
-        {isUser ? content : `#${content}`}
+        {isUser ? renderUser() : `#${content}`}
       </span>
     </NavLink>
   );
