@@ -15,6 +15,7 @@ export const modules = {
     user: 'user',
     channel: 'channel',
     message: 'message',
+    invitation: 'invitation',
 }
 
 export const endpoints = {
