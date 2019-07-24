@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import socketIOClient from "socket.io-client";
 import useFetch from "../../hooks/useFetch";
 import { useAppContext } from "../App/AppContext";
@@ -394,7 +394,7 @@ function Workspace({ match }) {
   };
 
   const getMessageContainerSize = () => {
-    return membersPanel || profilePanel ? "is-5" : "is-10";
+    return membersPanel || profilePanel ? "is-6" : "is-10";
   };
 
   if (isWorkspaceLoading || isChannelsLoading) {
@@ -426,15 +426,14 @@ function Workspace({ match }) {
   return (
     <div>
       <Container>
-        
         <Columns>
           <Sidebar>
-          <div className="level">
-          <div className="level-left content channel-name">
-            <h6>{workspace.name}</h6>
-          </div>
-          {/* <div className="level-right content">{currentUser.name}</div> */}
-        </div>
+            <div className="level">
+              <div className="content channel-name">
+                <h4>{workspace.name}</h4>
+                <h6>{currentUser.name}</h6>
+              </div>
+            </div>
             <SidebarList
               list={prettyChannels}
               heading="Channels"
@@ -446,9 +445,12 @@ function Workspace({ match }) {
               heading="Users"
               action={<i className="fa fa-plus-circle" />}
             />
-            <div className="level-left content channel-name" style={{cursor: "pointer"}}>
-            <h6>Switch Workspace</h6>
-          </div>
+            <div
+              className="level-left content channel-name"
+              style={{ cursor: "pointer" }}
+            >
+              <h6>Switch Workspace</h6>
+            </div>
           </Sidebar>
 
           <div className={"column channel-body " + getMessageContainerSize()}>
@@ -481,7 +483,10 @@ function Workspace({ match }) {
             )}
           </div>
 
-          <div className="column is-4">
+          <div
+            className="column is-4 has-top-border-2"
+            style={{ height: "100vh", paddingLeft: "0px", marginTop: "9.6vh" }}
+          >
             {activeChannel.id && membersPanel ? (
               <ChannelMembers
                 channelId={activeChannel.id}

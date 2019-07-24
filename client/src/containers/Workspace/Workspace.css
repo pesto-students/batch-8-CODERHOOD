@@ -3,6 +3,7 @@
   flex-direction: column;
   height: 100vh;
   padding-left: 0px;
+  padding-right: 0px;
 }
 .has-bottom-border-2 {
   border-bottom: 1px solid gray;
@@ -10,6 +11,11 @@
   margin-left: 0px;
   margin-bottom: 0px !important;
 }
+.has-top-border-2 {
+  border-top: 1px solid gray;
+  padding-top: 0px;
+}
+
 .channel-body h3 {
   font-size: 1.5em;
 }
@@ -32,7 +38,17 @@ article .media:last-child {
   height: 100%;
 }
 
-.content h6 {
+.channel-name h4 {
   color: white;
+  margin-left: 12px;
+}
+
+.channel-name p {
+  color: rgb(207, 191, 205);
+  margin-left: 12px;
+}
+
+.channel-name h6 {
+  color: rgb(195, 180, 195);
   margin-left: 12px;
 }
