@@ -1,0 +1,50 @@
+.tile{
+  background-color: #00aba9;
+  width: 30vh;
+  height: 30vh;
+  border-radius: 0;
+  word-break: break-word;
+  transition-duration: 0.5s;
+  transition-property: all;
+}
+
+.tile:hover{
+  background-color: #019693;
+}
+
+.tile__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile__content button:focus{
+  outline: 0;
+}
+
+.tile__children {
+  margin: auto;
+}
+
+.tile__option {
+  font-size: 1.5em;
+  border: 0;
+  color: rgb(221, 220, 220);
+  background: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+.tile__option:hover {
+  color: white;
+}
+.tile a {
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+.tile__content a .title {
+  color: rgb(235, 235, 235);
+}
+
+/* teal: #00aba9; */
