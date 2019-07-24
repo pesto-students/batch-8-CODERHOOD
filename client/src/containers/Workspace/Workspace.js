@@ -5,6 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
 import { ChannelMembers, ViewProfile } from '../../containers';
 import AddChannelModal from '../../containers/AddChannel/AddChannelModal';
+import AddUserModal from "../../containers/AddUser/AddUserModal";
 import {
   Container,
   Sidebar,
@@ -31,6 +32,7 @@ import {
   userJoiningEvent,
   userLeavingEvent
 } from '../../constants/constants';
+import Welcome from '../Welcome/Welcome';
 import './Workspace.css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
@@ -65,6 +67,7 @@ function Workspace({ match }) {
   const [profilePanel, setProfilePanel] = useState(false);
   const [isUserTabOpened, setUserTabOpened] = useState(false);
   const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
+  const [fetchUserTrigger, setFetchUserTrigger] = useState(0);
   const [typingNotification, setTypingNotification] = useState(null);
   const [inputFieldDisabled, setInputFieldDisabled] = useState(true);
   const [unreadChannels, setUnreadChannels] = useState([]);
@@ -72,11 +75,18 @@ function Workspace({ match }) {
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
   );
+  const [addUserModalVisibility, setAddUserModalVisibility] = useState(
+    false
+  );
   const closeAddChannelModal = () => {
     setAddChannelModalVisibility(false);
     setFetchChannelTrigger(fetchChannelTrigger + 1);
   };
-
+  const closeAddUserModal = () => {
+    setAddUserModalVisibility(false);
+    setFetchUserTrigger(fetchUserTrigger + 1);
+  };
+  
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
@@ -395,6 +405,9 @@ function Workspace({ match }) {
   const addChannel = () => {
     setAddChannelModalVisibility(true);
   };
+  const addUser = () => {
+    setAddUserModalVisibility(true);
+  };
 
   const getMessageContainerSize = () => {
     return membersPanel || profilePanel ? 'is-6' : 'is-10';
@@ -426,6 +439,39 @@ function Workspace({ match }) {
     );
   };
 
+  const renderChannelInfo = () => {
+    if (activeChannel.name === 'General') {
+      return (
+        <>
+          <p style={{margin: '2%', marginRight: '3%'}}>
+            We created this channel for you. 
+            This is the very beginning of the <span><b>#general</b></span> channel. 
+            Purpose: This channel is for workspace-wide communication and announcements. 
+            All members are in this channel.
+          </p>
+        </>
+      )
+    }
+    if (activeChannel.name === currentUser.name) {
+      return (
+        <>
+          <p style={{margin: '2%', marginRight: '3%'}}>
+            <b>This is your space. </b> 
+            Draft messages, list your to-dos, or keep links and files handy. 
+            You can also talk to yourself here, 
+            but please bear in mind you’ll have to supply both sides of the conversation.
+          </p>
+        </>
+      )
+    }
+    return (
+      <p style={{margin: '2%', marginRight: '3%'}}>
+        This is very beginning of your message history. 
+        Say <b>'Hi'</b> to start the conversation.
+      </p>
+    );
+  }
+
   return (
     <div className="workspace">
       <Container>
@@ -440,15 +486,18 @@ function Workspace({ match }) {
             <SidebarList
               list={prettyChannels}
               heading="Channels"
-              action={<i className="fa fa-plus-circle" />}
+              action={<i title="Add Channel" className="fa fa-plus-circle" />}
               actionClicked={addChannel}
             />
             <SidebarList
               list={prettyMembers}
               heading="Users"
-              actionClicked={() => {}}
-              action={<i className="fa fa-plus-circle" />}
+              action={
+                <i title="Invite User" className="fa fa-plus-circle" />
+              }
+              actionClicked={addUser}
             />
+            
             <div
               className="level-left content channel-name"
               style={{ cursor: 'pointer' }}
@@ -459,7 +508,7 @@ function Workspace({ match }) {
             </div>
           </Sidebar>
 
-          <div className={'column channel-body ' + getMessageContainerSize()}>
+          <div className={"column channel-body " + getMessageContainerSize()}>
             {activeChannel.id ? (
               <>
                 <ChannelHeader
@@ -468,6 +517,7 @@ function Workspace({ match }) {
                   handleViewMembers={handleViewMembers}
                   isUser={isUserTabOpened}
                 />
+                {renderChannelInfo()}
                 {renderMessages()}
                 <div className="fixed form">
                   <ThreadForm
@@ -483,9 +533,11 @@ function Workspace({ match }) {
                 </div>
               </>
             ) : (
-              <div className="content has-text-centered welcome">
-                <h1>Welcome to slack-clone </h1>
-              </div>
+              <Welcome 
+                firstVisit={(channels.length === 1)}
+                openHandle={addChannel}
+                openUser={addUser}
+              />
             )}
           </div>
 
@@ -522,6 +574,13 @@ function Workspace({ match }) {
         members={members}
         showClose={false}
         onClose={closeAddChannelModal}
+        modal={{ closeOnEsc: true }}
+      />
+      <AddUserModal
+        show={addUserModalVisibility}
+        workspaceId={workspaceId}
+        showClose={false}
+        onClose={closeAddUserModal}
         modal={{ closeOnEsc: true }}
       />
     </div>

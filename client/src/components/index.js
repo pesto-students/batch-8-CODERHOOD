@@ -14,3 +14,4 @@ export { default as NavBar } from './NavBar/NavBar';
 export { default as ChannelNotification } from './ChannelNotification/ChannelNotification';
 export { default as Tile } from './Tile/Tile';
 export { default as Grid } from './Grid/Grid';
+export { default as Button } from './Button/Button';
