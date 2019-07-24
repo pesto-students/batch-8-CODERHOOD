@@ -463,10 +463,13 @@ function Workspace({ match }) {
       )
     }
     return (
+      <>
+      {messageStore[activeChannel.id] !== undefined && messageStore[activeChannel.id].messages.length < 4 ? 
       <p style={{margin: '2%', marginRight: '3%'}}>
         This is very beginning of your message history. 
         Say <b>'Hi'</b> to start the conversation.
-      </p>
+      </p> : null}
+      </>
     );
   }
 
