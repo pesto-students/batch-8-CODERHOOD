@@ -6,7 +6,12 @@ const Sidebar = ({ width = 2, ...props }) => {
   return (
     <div
       className={className}
-      style={{ background: "#3e103f", minHeight: "100%", paddingTop: "30px" }}
+      style={{
+        background: "#3e103f",
+        minHeight: "100%",
+        paddingTop: "30px",
+        paddingBottom: "0px"
+      }}
       {...props}
     >
       {props.children}
