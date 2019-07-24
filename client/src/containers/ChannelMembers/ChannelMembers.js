@@ -33,49 +33,47 @@ const ChannelMembers = (props) => {
   }
 
   const updateMember = (memberDetails, operation = 'add') => {
-    callApi('put', `/${channel}/${member}`, {
-      operation: operation,
-      id: props.channelId,
-      memberId: memberDetails._id
-    });
-
-    const notificationObject = {
-      user: memberDetails.name,
-      userId: memberDetails._id,
-      channelId: channelDetails._id
-    };
-    if (operation === 'add') {
-      props.socket.emit(userJoiningEvent, notificationObject);
-    } else {
-      props.socket.emit(userLeavingEvent, notificationObject);
+    if (memberDetails !== undefined && memberDetails._id !== undefined) {
+      callApi('put', `/${channel}/${member}`, {
+        operation: operation,
+        id: props.channelId,
+        memberId: memberDetails._id
+      });
+      const notificationObject = {
+        user: memberDetails.name,
+        userId: memberDetails._id,
+        channelId: channelDetails._id
+      };
+      if (operation === 'add') {
+        props.socket.emit(userJoiningEvent, notificationObject);
+      } else {
+        props.socket.emit(userLeavingEvent, notificationObject);
+      }
+      setTrigger(trigger + 1);
     }
-    setTrigger(trigger + 1);
   };
   return (
     <nav className="panel">
       <div className="panel-heading">
         {channelDetails.name}
-        {
-          channelDetails.user !== loginStatus.user._id
-          ?
-            <a
-              className="is-small is-size-7 is-vcentered"
-              style={{ padding: '8px' }}
-              onClick={() => {
-                updateMember(
-                  loginStatus.user,
-                  channelDetails.members.includes(loginStatus.user._id)
-                    ? 'delete'
-                    : 'add'
-                );
-              }}
-            >
-              {channelDetails.members.includes(loginStatus.user._id)
-                ? `Leave Channel`
-                : `Join Channel`}
-            </a>
-          : null
-        }
+        {channelDetails.user !== loginStatus.user._id ? (
+          <a
+            className="is-small is-size-7 is-vcentered"
+            style={{ padding: '8px' }}
+            onClick={() => {
+              updateMember(
+                loginStatus.user,
+                channelDetails.members.includes(loginStatus.user._id)
+                  ? 'delete'
+                  : 'add'
+              );
+            }}
+          >
+            {channelDetails.members.includes(loginStatus.user._id)
+              ? `Leave Channel`
+              : `Join Channel`}
+          </a>
+        ) : null}
         <button
           className="button is-outlined is-pulled-right is-small"
           onClick={() => {
@@ -98,11 +96,8 @@ const ChannelMembers = (props) => {
                 />
               </span>
               {member.name}
-              {(
-                channelDetails.user === loginStatus.user._id
-                &&
-                member._id !== loginStatus.user._id
-              ) ? (
+              {channelDetails.user === loginStatus.user._id &&
+              member._id !== loginStatus.user._id ? (
                 <button
                   className="button is-outlined is-pulled-right is-small is-danger"
                   onClick={() => {

@@ -14,7 +14,7 @@ const ThreadForm = ({ textAreaProps, isDisabled, ...props }) => {
               placeholder="Type a message"
               {...textAreaProps}
               disabled={isDisabled}
-            />
+            />a
           </p>
         </div>
       </div>

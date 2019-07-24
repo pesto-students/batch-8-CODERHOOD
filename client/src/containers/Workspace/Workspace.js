@@ -5,7 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
 import { ChannelMembers, ViewProfile } from '../../containers';
 import AddChannelModal from '../../containers/AddChannel/AddChannelModal';
-import AddUserModal from "../../containers/AddUser/AddUserModal";
+import AddUserModal from '../../containers/AddUser/AddUserModal';
 import {
   Container,
   Sidebar,
@@ -74,9 +74,7 @@ function Workspace({ match }) {
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
   );
-  const [addUserModalVisibility, setAddUserModalVisibility] = useState(
-    false
-  );
+  const [addUserModalVisibility, setAddUserModalVisibility] = useState(false);
   const closeAddChannelModal = () => {
     setAddChannelModalVisibility(false);
     setFetchChannelTrigger(fetchChannelTrigger + 1);
@@ -85,7 +83,7 @@ function Workspace({ match }) {
     setAddUserModalVisibility(false);
     setFetchUserTrigger(fetchUserTrigger + 1);
   };
-  
+
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
@@ -467,7 +465,7 @@ function Workspace({ match }) {
               }
               actionClicked={addUser}
             />
-            
+
             <div
               className="level-left content channel-name"
               style={{ cursor: 'pointer' }}
@@ -478,7 +476,7 @@ function Workspace({ match }) {
             </div>
           </Sidebar>
 
-          <div className={"column channel-body " + getMessageContainerSize()}>
+          <div className={'column channel-body ' + getMessageContainerSize()}>
             {activeChannel.id ? (
               <>
                 <ChannelHeader
@@ -512,7 +510,7 @@ function Workspace({ match }) {
             className="column is-4 has-top-border-2"
             style={{ height: '92.7vh', paddingLeft: '0em', marginTop: '9.1vh' }}
           >
-            {activeChannel.id && membersPanel ? ( 
+            {activeChannel.id && membersPanel ? (
               <ChannelMembers
                 channelId={activeChannel.id}
                 channels={channels.current}
