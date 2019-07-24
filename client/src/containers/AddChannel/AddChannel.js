@@ -1,22 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
-import { InputField } from "../../components";
-import AddMember from "../ChannelMembers/AddMember";
-import callApi from "../../libs/axios";
-import { modules, methods } from "../../constants/constants";
-import { useAppContext } from "../App/AppContext";
+import React, { useState } from 'react';
+import { InputField } from '../../components';
+import AddMember from '../ChannelMembers/AddMember';
+import callApi from '../../libs/axios';
+import { modules, methods } from '../../constants/constants';
+import { useAppContext } from '../App/AppContext';
 
-const AddChannel = props => {
+const AddChannel = (props) => {
   const [members, setMembers] = useState([]);
-  const [channelName, setChannelName] = useState("");
+  const [channelName, setChannelName] = useState('');
   const { loginStatus } = useAppContext();
 
-  const updateMember = member => {
+  const updateMember = (member) => {
     setMembers([...members, member]);
   };
 
-  const removeMember = member => {};
-  const handleChannelNameChange = e => {
+  const removeMember = (member) => {};
+  const handleChannelNameChange = (e) => {
     setChannelName(e.target.value);
   };
   const createChannel = async () => {
@@ -40,7 +40,7 @@ const AddChannel = props => {
         value={channelName}
         onChange={handleChannelNameChange}
       />
-      <div style={{ marginBottom: "8px" }}>
+      <div style={{ marginBottom: '0.8em' }}>
         <strong>Add People</strong>
       </div>
       <AddMember members={props.members} handleAdd={updateMember} />
@@ -51,12 +51,12 @@ const AddChannel = props => {
         </div>
       ) : null}
       <div className="list is-hoverable">
-        {members.map(member => (
+        {members.map((member) => (
           <div
             className="list-item"
             style={{
-              display: "flex",
-              justifyContent: "space-between"
+              display: 'flex',
+              justifyContent: 'space-between'
             }}
           >
             <div>{member.name}</div>
@@ -65,11 +65,11 @@ const AddChannel = props => {
               onClick={() => {
                 setMembers(
                   members.filter(
-                    removedMember => member._id != removedMember._id
+                    (removedMember) => member._id != removedMember._id
                   )
                 );
               }}
-              style={{ marginRight: "2%" }}
+              style={{ marginRight: '2%' }}
             />
           </div>
         ))}

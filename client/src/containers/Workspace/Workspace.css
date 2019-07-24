@@ -6,13 +6,13 @@
   padding-right: 0px;
 }
 .has-bottom-border-2 {
-  border-bottom: 1px solid gray;
-  padding: 10px;
+  border-bottom: 0.05em solid gray;
+  padding: 0.7em;
   margin-left: 0px;
   margin-bottom: 0px !important;
 }
 .has-top-border-2 {
-  border-top: 1px solid gray;
+  border-top: 0.05em solid gray;
   padding-top: 0px;
 }
 
@@ -23,7 +23,7 @@
   flex: 1;
   overflow: scroll;
   overflow-x: hidden;
-  padding: 10px;
+  padding: 1em;
 }
 article .media:last-child {
   flex-shrink: 0;
@@ -40,15 +40,15 @@ article .media:last-child {
 
 .channel-name h4 {
   color: white;
-  margin-left: 12px;
+  margin-left: 0.6em;
 }
 
 .channel-name p {
   color: rgb(207, 191, 205);
-  margin-left: 12px;
+  margin-left: 0.8em;
 }
 
 .channel-name h6 {
   color: rgb(195, 180, 195);
-  margin-left: 12px;
+  margin-left: 0.8em;
 }

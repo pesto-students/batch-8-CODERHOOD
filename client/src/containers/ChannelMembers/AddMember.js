@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import Autosuggest from "react-autosuggest";
-import "./AddMember.css";
+import React, { useState } from 'react';
+import Autosuggest from 'react-autosuggest';
+import './AddMember.css';
 
-const AddMember = props => {
+const AddMember = (props) => {
   const members = props.members;
 
   function escapeRegexCharacters(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
   function getSuggestions(value) {
     const escapedValue = escapeRegexCharacters(value.trim());
-    if (escapedValue === "") {
+    if (escapedValue === '') {
       return [];
     }
-    const regex = new RegExp("^" + escapedValue, "i");
-    return members.filter(member => regex.test(member.name));
+    const regex = new RegExp('^' + escapedValue, 'i');
+    return members.filter((member) => regex.test(member.name));
   }
   function getSuggestionValue(suggestion) {
     return suggestion.name;
@@ -22,7 +22,7 @@ const AddMember = props => {
   function renderSuggestion(suggestion) {
     return <span>{suggestion.name}</span>;
   }
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const onChange = (event, { newValue, method }) => {
     setValue(newValue);
@@ -34,12 +34,12 @@ const AddMember = props => {
     setSuggestions([]);
   };
   const inputProps = {
-    placeholder: "Add People",
+    placeholder: 'Add People',
     value,
     onChange: onChange
   };
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: 'flex' }}>
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -50,10 +50,10 @@ const AddMember = props => {
       />
       <button
         className="button is-small"
-        style={{ marginLeft: "20px" }}
+        style={{ marginLeft: '1.6em' }}
         onClick={() => {
-          props.handleAdd(members.filter(member => member.name === value)[0]);
-          setValue("");
+          props.handleAdd(members.filter((member) => member.name === value)[0]);
+          setValue('');
         }}
       >
         Add
