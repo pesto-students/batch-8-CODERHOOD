@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const mg = require("nodemailer-mailgun-transport");
 
 const gmailEmail = process.env.GMAIL_PASSWORD || '';
 const gmailPassword = process.env.GMAIL_EMAIL || '';
@@ -16,10 +15,10 @@ const sendEmail = async ({
     service:  'Mailgun',
     host: "smtp.mailgun.org",
     port: 587,
-    secure: false, 
-    auth: { user, pass }
+    secure: true, 
+    auth: { user, pass, },
   };
-
+  
   const transporter = nodemailer.createTransport(smtpConfig);
   const emailSentResponse = await transporter.sendMail({
     to, from, subject, text, html,
