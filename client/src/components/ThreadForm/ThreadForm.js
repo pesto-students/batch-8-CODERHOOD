@@ -1,24 +1,30 @@
-import React from "react";
-import Button from "../Button/Button";
+import React from 'react';
+import Button from '../Button/Button';
 
 const ThreadForm = ({ textAreaProps, isDisabled, ...props }) => {
   return (
-    <article className="media" style={{ padding: "1%", paddingBottom: '0', boxSizing: 'border-box' }}>
+    <article
+      className="media"
+      style={{ padding: '1%', paddingBottom: '0', boxSizing: 'border-box' }}
+    >
       <div className="media-content">
         <div className="field">
           <p className="control">
             <textarea
-              style={{border: '1px solid gray'}}
+              style={{ border: '1px solid gray' }}
               rows="1"
               className="textarea"
               placeholder="Type a message"
               {...textAreaProps}
               disabled={isDisabled}
-            />a
+            />
           </p>
         </div>
       </div>
-      <div className="media-right" style={{ position: 'relative', right: '1%' }}>
+      <div
+        className="media-right"
+        style={{ position: 'relative', right: '1%' }}
+      >
         <Button type="primary is-medium" outlined {...props}>
           Send
         </Button>
