@@ -1,30 +1,31 @@
 const logo = {
-    src: 'https://dummyimage.com/100x100/000/fff&text=CoderHood',
-    alt: 'CoderHood Logo',
+  src:
+    'https://wdr-test-icti.cdn.prismic.io/wdr-test-icti/3f9387b0e53fb535624c3a559964e5f3871345ac_connect-logo3x.png',
+  alt: 'CoderHood Logo'
 };
 
 export const methods = {
-    post: 'post',
-    get: 'get',
-    put: 'put',
-    delete: 'delete',
+  post: 'post',
+  get: 'get',
+  put: 'put',
+  delete: 'delete'
 };
 
 export const modules = {
-    workspace: 'workspace',
-    user: 'user',
-    channel: 'channel',
-    message: 'message',
-    invitation: 'invitation',
-}
+  workspace: 'workspace',
+  user: 'user',
+  channel: 'channel',
+  message: 'message',
+  invitation: 'invitation'
+};
 
 export const endpoints = {
-    getAll: 'all',
-    getSelected: 'selected',
-    login: 'login',
-    getConversation: 'conversation',
-    member: 'member',
-}
+  getAll: 'all',
+  getSelected: 'selected',
+  login: 'login',
+  getConversation: 'conversation',
+  member: 'member'
+};
 
 export const messageEvent = 'message';
 export const connectedEvent = 'connected';

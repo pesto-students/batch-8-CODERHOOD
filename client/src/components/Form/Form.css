@@ -1,9 +1,9 @@
 form > figure {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 figure.image {
-  margin: 0px auto 30px;
+  margin: 20px auto 30px;
 }
 
 .formFooter {
