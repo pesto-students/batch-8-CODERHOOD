@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Tile = ({ name, handleInvite, ...props }) => {
   return (
-    <div className="box tile has-text-centered">
+    <div className="tile has-text-centered">
       {props.to ? (
         <div className="tile__content">
           <div className="tile__content__link">
