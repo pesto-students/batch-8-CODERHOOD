@@ -6,7 +6,7 @@ const Grid = ({ heading, list, actionClicked, action }) => {
   const renderDefaultTile = () => {
     if (action) {
       return (
-        <div className="column is-narrow">
+        <div className="grid__item">
           <Tile>
             <span
               style={{ cursor: 'pointer' }}
@@ -30,12 +30,10 @@ const Grid = ({ heading, list, actionClicked, action }) => {
         <hr />
       </div>
       <div className="grid">
-        <div className="columns">
           {renderDefaultTile()}
           {list.map((tile) => (
-            <div className="column is-narrow">{tile}</div>
+            <div className="grid__item">{tile}</div>
           ))}
-        </div>
       </div>
     </>
   );

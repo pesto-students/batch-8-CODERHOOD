@@ -7,10 +7,12 @@ const Tile = ({ name, handleInvite, ...props }) => {
     <div className="box tile has-text-centered">
       {props.to ? (
         <div className="tile__content">
+          <div className="tile__content__link">
           <Link {...props}>
             <span className="title is-centered">{name}</span>
           </Link>
-          <button className="tile__option" onClick={handleInvite}>
+          </div>
+          <button className="tile__content__option" onClick={handleInvite}>
             <span className="content">Invite</span>
           </button>
         </div>
