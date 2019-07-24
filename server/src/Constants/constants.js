@@ -3,12 +3,14 @@ export const USER_SCHEMA = 'UserSchema';
 export const CHANNEL_SCHEMA = 'ChannelSchema';
 export const WORKSPACE_SCHEMA = 'WorkspaceSchema';
 export const MESSAGE_SCHEMA = 'MessageSchema';
+export const INVITATION_SCHEMA = 'InvitationSchema';
 
 // Route Prefixes
 export const USER_PREFIX = 'user';
 export const CHANNEL_PREFIX = 'channel';
 export const WORKSPACE_PREFIX = 'workspace';
 export const MESSAGE_PREFIX = 'message';
+export const INVITATION_PREFIX = 'invitation';
 
 // bcrypt salt factor
 export const SALT_WORK_FACTOR = 10;
@@ -60,4 +62,14 @@ export const messageResponse = {
   messageCreated: 'Message created successfully',
   messageUpdated: 'Message updated successfully',
   messageDeleted: 'Message deleted successfully',
+};
+
+// Invitation
+export const invitationResponse = {
+  invitationFound: 'Invitation is here',
+  invitationNotFound: 'Invitation does not exists',
+  foundAllInvitations: 'Invitations are here',
+  invitationCreated: 'Invitation created successfully',
+  invitationUpdated: 'Invitation updated successfully',
+  invitationDeleted: 'Invitation deleted successfully',
 };

@@ -1,1 +1,1 @@
-export { default as sendEmail } from './email';
+export { sendEmail, sendWorkspaceInvite } from './email';

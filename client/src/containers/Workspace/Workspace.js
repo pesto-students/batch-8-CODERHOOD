@@ -5,6 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
 import { ChannelMembers, ViewProfile } from '../../containers';
 import AddChannelModal from '../../containers/AddChannel/AddChannelModal';
+import AddUserModal from "../../containers/AddUser/AddUserModal";
 import {
   Container,
   Sidebar,
@@ -65,6 +66,7 @@ function Workspace({ match }) {
   const [profilePanel, setProfilePanel] = useState(false);
   const [isUserTabOpened, setUserTabOpened] = useState(false);
   const [fetchChannelTrigger, setFetchChannelTrigger] = useState(0);
+  const [fetchUserTrigger, setFetchUserTrigger] = useState(0);
   const [typingNotification, setTypingNotification] = useState(null);
   const [inputFieldDisabled, setInputFieldDisabled] = useState(true);
   const [unreadChannels, setUnreadChannels] = useState([]);
@@ -72,11 +74,18 @@ function Workspace({ match }) {
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
   );
+  const [addUserModalVisibility, setAddUserModalVisibility] = useState(
+    false
+  );
   const closeAddChannelModal = () => {
     setAddChannelModalVisibility(false);
     setFetchChannelTrigger(fetchChannelTrigger + 1);
   };
-
+  const closeAddUserModal = () => {
+    setAddUserModalVisibility(false);
+    setFetchUserTrigger(fetchUserTrigger + 1);
+  };
+  
   const changeActiveChannel = async (channelId, name, isUser) => {
     setUserTabOpened(isUser);
     setMembersPanel(false);
@@ -395,6 +404,9 @@ function Workspace({ match }) {
   const addChannel = () => {
     setAddChannelModalVisibility(true);
   };
+  const addUser = () => {
+    setAddUserModalVisibility(true);
+  };
 
   const getMessageContainerSize = () => {
     return membersPanel || profilePanel ? 'is-6' : 'is-10';
@@ -446,9 +458,16 @@ function Workspace({ match }) {
             <SidebarList
               list={prettyMembers}
               heading="Users"
-              actionClicked={() => {}}
-              action={<i className="fa fa-plus-circle" />}
+              action={
+                <button className="button is-info is-small is-outlined">
+                  <span className="icon">
+                    <i title="Invite User" class="fas fa-user-plus" />
+                  </span>
+                </button>
+              }
+              actionClicked={addUser}
             />
+            
             <div
               className="level-left content channel-name"
               style={{ cursor: 'pointer' }}
@@ -459,7 +478,7 @@ function Workspace({ match }) {
             </div>
           </Sidebar>
 
-          <div className={'column channel-body ' + getMessageContainerSize()}>
+          <div className={"column channel-body " + getMessageContainerSize()}>
             {activeChannel.id ? (
               <>
                 <ChannelHeader
@@ -522,6 +541,13 @@ function Workspace({ match }) {
         members={members}
         showClose={false}
         onClose={closeAddChannelModal}
+        modal={{ closeOnEsc: true }}
+      />
+      <AddUserModal
+        show={addUserModalVisibility}
+        workspaceId={workspaceId}
+        showClose={false}
+        onClose={closeAddUserModal}
         modal={{ closeOnEsc: true }}
       />
     </div>
