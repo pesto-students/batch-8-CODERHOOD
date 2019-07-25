@@ -58,3 +58,10 @@ article .media:last-child {
 .welcome {
   margin-top: 3vh;
 }
+
+.workspace-dropdown {
+  position: absolute;
+  right: '2em';
+  top: '0em';
+  z-index: 1000;
+}

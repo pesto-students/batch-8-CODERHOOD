@@ -1,34 +1,41 @@
-const dropdown = (props) => {
-  // return (
-  //     <div class="dropdown is-active">
-  //   <div class="dropdown-trigger">
-  //     <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-  //       <span>{props.title}</span>
-  //       <span class="icon is-small">
-  //         <i class="fas fa-angle-down" aria-hidden="true"></i>
-  //       </span>
-  //     </button>
-  //   </div>
-  //   <div class="dropdown-menu" id="dropdown-menu" role="menu">
-  //     <div class="dropdown-content">
-  //       <a href="#" class="dropdown-item">
-  //         Dropdown item
-  //       </a>
-  //       <a class="dropdown-item">
-  //         Other dropdown item
-  //       </a>
-  //       <a href="#" class="dropdown-item is-active">
-  //         Active dropdown item
-  //       </a>
-  //       <a href="#" class="dropdown-item">
-  //         Other dropdown item
-  //       </a>
-  //       <hr class="dropdown-divider">
-  //       <a href="#" class="dropdown-item">
-  //         With a divider
-  //       </a>
-  //     </div>
-  //   </div>
-  // </div>
-  // )
+import React, { useState } from 'react';
+const Dropdown = (props) => {
+  const [state, setState] = useState('');
+
+  return (
+    <div class={'dropdown is-right ' + state}>
+      <div class="dropdown-trigger">
+        <button
+          class="button"
+          aria-haspopup="true"
+          aria-controls="dropdown-menu"
+          onClick={() => {
+            setState(state === '' ? 'is-active' : '');
+          }}
+        >
+          <span>{props.title}</span>
+          <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true" />
+          </span>
+        </button>
+      </div>
+      <div class="dropdown-menu" id="dropdown-menu" role="menu">
+        <div class="dropdown-content">
+          {props.items.map((item) => (
+            <a
+              class="dropdown-item"
+              onClick={() => {
+                setState('');
+                item.handler();
+              }}
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
+
+export default Dropdown;

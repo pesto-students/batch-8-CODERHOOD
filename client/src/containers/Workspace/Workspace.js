@@ -6,6 +6,9 @@ import { useAppContext } from '../App/AppContext';
 import { ChannelMembers, ViewProfile } from '../../containers';
 import AddChannelModal from '../../containers/AddChannel/AddChannelModal';
 import AddUserModal from '../../containers/AddUser/AddUserModal';
+import Dropdown from '../../components/Dropdown/Dropdown';
+import Profile from '../Profile/Profile';
+
 import {
   Container,
   Sidebar,
@@ -36,7 +39,7 @@ import Welcome from '../Welcome/Welcome';
 import './Workspace.css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 
-function Workspace({ match }) {
+function Workspace({ history, match }) {
   const workspaceId = match.params.id;
   const endpoint = process.env.REACT_APP_SOCKET_ENDPOINT;
 
@@ -71,6 +74,8 @@ function Workspace({ match }) {
   const [typingNotification, setTypingNotification] = useState(null);
   const [inputFieldDisabled, setInputFieldDisabled] = useState(true);
   const [unreadChannels, setUnreadChannels] = useState([]);
+  const [profileModalVisibility, setProfileModalVisibility] = useState(false);
+  const { dispatch } = useAppContext();
 
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
@@ -437,41 +442,60 @@ function Workspace({ match }) {
     );
   };
 
+  const viewProfileHandler = () => {
+    setProfileModalVisibility(true);
+  };
+
+  const logoutHandler = () => {
+    // const { history } = match;
+    dispatch({ type: 'logout' });
+    localStorage.removeItem('user');
+    history.push('/signin');
+  };
+
+  const closeProfileModal = () => {
+    setProfileModalVisibility(false);
+  };
+
   const renderChannelInfo = () => {
     if (activeChannel.name === 'General') {
       return (
         <>
-          <p style={{margin: '2%', marginRight: '3%'}}>
-            We created this channel for you. 
-            This is the very beginning of the <span><b>#general</b></span> channel. 
-            Purpose: This channel is for workspace-wide communication and announcements. 
-            All members are in this channel.
+          <p style={{ margin: '2%', marginRight: '3%' }}>
+            We created this channel for you. This is the very beginning of the{' '}
+            <span>
+              <b>#general</b>
+            </span>{' '}
+            channel. Purpose: This channel is for workspace-wide communication
+            and announcements. All members are in this channel.
           </p>
         </>
-      )
+      );
     }
     if (activeChannel.name === currentUser.name) {
       return (
         <>
-          <p style={{margin: '2%', marginRight: '3%'}}>
-            <b>This is your space. </b> 
-            Draft messages, list your to-dos, or keep links and files handy. 
-            You can also talk to yourself here, 
-            but please bear in mind you’ll have to supply both sides of the conversation.
+          <p style={{ margin: '2%', marginRight: '3%' }}>
+            <b>This is your space. </b>
+            Draft messages, list your to-dos, or keep links and files handy. You
+            can also talk to yourself here, but please bear in mind you’ll have
+            to supply both sides of the conversation.
           </p>
         </>
-      )
+      );
     }
     return (
       <>
-      {messageStore[activeChannel.id] !== undefined && messageStore[activeChannel.id].messages.length < 4 ? 
-      <p style={{margin: '2%', marginRight: '3%'}}>
-        This is very beginning of your message history. 
-        Say <b>'Hi'</b> to start the conversation.
-      </p> : null}
+        {messageStore[activeChannel.id] !== undefined &&
+        messageStore[activeChannel.id].messages.length < 4 ? (
+          <p style={{ margin: '2%', marginRight: '3%' }}>
+            This is very beginning of your message history. Say <b>'Hi'</b> to
+            start the conversation.
+          </p>
+        ) : null}
       </>
     );
-  }
+  };
 
   return (
     <div className="workspace">
@@ -493,9 +517,7 @@ function Workspace({ match }) {
             <SidebarList
               list={prettyMembers}
               heading="Users"
-              action={
-                <i title="Invite User" className="fa fa-plus-circle" />
-              }
+              action={<i title="Invite User" className="fa fa-plus-circle" />}
               actionClicked={addUser}
             />
 
@@ -534,8 +556,8 @@ function Workspace({ match }) {
                 </div>
               </>
             ) : (
-              <Welcome 
-                firstVisit={(channels.length === 1)}
+              <Welcome
+                firstVisit={channels.length === 1}
                 openHandle={addChannel}
                 openUser={addUser}
               />
@@ -584,6 +606,28 @@ function Workspace({ match }) {
         onClose={closeAddUserModal}
         modal={{ closeOnEsc: true }}
       />
+      <div
+        style={{
+          position: 'absolute',
+          right: '1em',
+          top: '0.5em',
+          zIndex: '2'
+        }}
+      >
+        <Profile
+          show={profileModalVisibility}
+          showClose={false}
+          onClose={closeProfileModal}
+          modal={{ closeOnEsc: true }}
+        />
+        <Dropdown
+          title="Settings"
+          items={[
+            { name: 'View Profile', handler: viewProfileHandler },
+            { name: 'Logout', handler: logoutHandler }
+          ]}
+        />
+      </div>
     </div>
   );
 }
