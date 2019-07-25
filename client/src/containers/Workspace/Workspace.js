@@ -33,12 +33,15 @@ import {
   typingEvent,
   clearTypingEvent,
   userJoiningEvent,
-  userLeavingEvent
+  userLeavingEvent,
+  methods,
+  modules,
 } from '../../constants/constants';
 import Welcome from '../Welcome/Welcome';
 import './Workspace.css';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import callApi from '../../libs/axios';
 
 function Workspace({ history, match }) {
   const workspaceId = match.params.id;
@@ -188,6 +191,21 @@ function Workspace({ history, match }) {
       setProfilePanel(false);
     }
   };
+
+  const handleDeleteChannel = async () => {
+    const { delete: del } = methods;
+    const { channel } = modules;
+    const { id } = activeChannel;
+    const { _id, name } = channels.current[0];
+    changeActiveChannel(
+      _id,
+      name,
+      false,
+    )
+    await callApi(del, `/${channel}/${id}`);
+    setFetchChannelTrigger(fetchChannelTrigger + 1);
+    history.push(`/workspaces/${workspaceId}/${_id}/ch/${name}`);
+  }
 
   const setUpSocket = (socket) => {
     socket.on(messageEvent, (obj) => handleIncomingMessage(obj));
@@ -571,6 +589,12 @@ function Workspace({ history, match }) {
                 <ChannelHeader
                   heading={`#${activeChannel.name}`}
                   actions={[]}
+                  isAuthorized={
+                    channels.current
+                      .filter(({ _id }) => _id === activeChannel.id)[0]
+                        .user === currentUser._id
+                  }
+                  handleDeleteChannel={handleDeleteChannel}
                   handleViewMembers={handleViewMembers}
                   isUser={isUserTabOpened}
                 />

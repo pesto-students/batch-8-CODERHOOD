@@ -50,7 +50,7 @@ const AddMember = (props) => {
         style={{ flex: 5 }}
       />
       <button
-        className="button is-small"
+        className="button is-small is-outlined is-black"
         style={{ marginLeft: '1em', flex: 1 }}
         onClick={() => {
           props.handleAdd(members.filter((member) => member.name === value)[0]);

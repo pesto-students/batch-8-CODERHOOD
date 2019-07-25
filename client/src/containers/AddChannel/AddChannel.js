@@ -76,7 +76,7 @@ const AddChannel = (props) => {
           </div>
         ))}
       </div>
-      <button className="button" onClick={createChannel}>
+      <button className="button is-outlined is-black" onClick={createChannel}>
         Create Channel
       </button>
     </div>

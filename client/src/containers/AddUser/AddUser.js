@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import { InputField } from '../../components';
 import callApi from '../../libs/axios';
+import cn from 'classnames';
 import { modules, methods } from '../../constants/constants';
 import { useAppContext } from '../App/AppContext';
 
 const AddUser = (props) => {
   const [userEmail, setUserEmail] = useState(undefined);
   const [userName, setUserName] = useState(undefined);
+  const [isLoading, setLoading] = useState(false);
   const { loginStatus } = useAppContext();
 
   const handleUserEmailChange = (e) => {
@@ -17,6 +19,7 @@ const AddUser = (props) => {
     setUserName(e.target.value);
   };
   const inviteUser = async () => {
+    setLoading(true);
     const { post } = methods;
     const { invitation } = modules;
     const response = await callApi(post, `/${invitation}`, {
@@ -30,6 +33,8 @@ const AddUser = (props) => {
     props.onClose();
   };
 
+  const className = cn('button is-black is-outlined', isLoading ? 'is-loading' : '');
+
   return (
     <div>
       <InputField
@@ -42,7 +47,7 @@ const AddUser = (props) => {
         name="userEmail"
         onChange={handleUserEmailChange}
       />
-      <button className="button" onClick={inviteUser}>
+      <button className={className} onClick={inviteUser}>
         Invite User
       </button>
     </div>

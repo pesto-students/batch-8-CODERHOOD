@@ -1,0 +1,13 @@
+.modal {
+    width: 100%;
+}
+
+.modal__card {
+    width: 30%;
+}
+
+@media only screen and (max-width: 600px) {
+    .modal__card {
+        width: 80%;
+    }
+}

@@ -12,15 +12,15 @@ const Message = ({
   return (
     <article
       className="media"
-      style={{ paddingTop: '0.8em', paddingBottom: '0.8em' }}
+      style={{ paddingTop: '0.4em', paddingBottom: '0.4em' }}
     >
       <figure className="media-left">
-        <p className="image is-32x32" style={{ paddingTop: '.4em' }}>
+        <p className="image is-32x32" style={{ paddingTop: '.2em' }}>
           <img src={userPic} alt={username} />
         </p>
       </figure>
       <div className="media-content">
-        <div className="content" style={{ height: '1em' }}>
+        <div className="content" style={{ minHeight: '2em' }}>
           <div>
             <strong>{username}</strong> <small>{timeSince}</small>
             <br /> {message}
