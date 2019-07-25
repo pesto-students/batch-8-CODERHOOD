@@ -11,6 +11,7 @@ const Welcome = (props) => {
           <img
             style={{ width: '15vw', height: '30vh' }}
             src="https://wdr-test-icti.cdn.prismic.io/wdr-test-icti/3f9387b0e53fb535624c3a559964e5f3871345ac_connect-logo3x.png"
+            alt="welcome"
           />
           <h2>Your CoderHood workspace is all set</h2>
           <p>

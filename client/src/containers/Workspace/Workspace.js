@@ -478,7 +478,7 @@ function Workspace({ history, match }) {
         <>
           <p style={{ margin: '2%', marginRight: '3%' }}>
             <b>This is your space. </b>
-            Draft messages, list your to-dos, or keep links and files handy. You
+            Draft messages, list your to-dos. You
             can also talk to yourself here, but please bear in mind you’ll have
             to supply both sides of the conversation.
           </p>
@@ -558,7 +558,7 @@ function Workspace({ history, match }) {
               </>
             ) : (
               <Welcome
-                firstVisit={channels.length === 1}
+                firstVisit={prettifyMessage.length === 1}
                 openHandle={addChannel}
                 openUser={addUser}
               />
