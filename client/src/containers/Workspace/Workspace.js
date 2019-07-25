@@ -38,6 +38,7 @@ import {
 import Welcome from '../Welcome/Welcome';
 import './Workspace.css';
 import ScrollToBottom from 'react-scroll-to-bottom';
+import SearchBar from '../../components/SearchBar/SearchBar';
 
 function Workspace({ history, match }) {
   const workspaceId = match.params.id;
@@ -487,9 +488,9 @@ function Workspace({ history, match }) {
           <>
             <p style={{ margin: '2%', marginRight: '3%' }}>
               <b>This is your space. </b>
-              Draft messages, list your to-dos. You
-              can also talk to yourself here, but please bear in mind you’ll have
-              to supply both sides of the conversation.
+              Draft messages, list your to-dos. You can also talk to yourself
+              here, but please bear in mind you’ll have to supply both sides of
+              the conversation.
             </p>
           </>
         );
@@ -506,6 +507,29 @@ function Workspace({ history, match }) {
     return null;
   };
 
+  const getCombinedChannelsAndMembersData = () => {
+    const channelsSearchableData = fetchedChannels.response.data.data.map(
+      (channel) => {
+        return {
+          id: channel._id,
+          name: channel.name,
+          type: 'channel'
+        };
+      }
+    );
+    const membersSearchableData = members.map((member) => {
+      return {
+        id: member._id,
+        name: member.name,
+        type: 'member'
+      };
+    });
+    const combinedSearchableData = channelsSearchableData.concat(
+      membersSearchableData
+    );
+    return combinedSearchableData;
+  };
+
   return (
     <div className="workspace">
       <Container>
@@ -517,26 +541,27 @@ function Workspace({ history, match }) {
                 <h6>{currentUser.name}</h6>
               </div>
             </div>
-            <SidebarList
-              list={prettyChannels}
-              heading="Channels"
-              action={<i title="Add Channel" className="fa fa-plus-circle" />}
-              actionClicked={addChannel}
-            />
-            <SidebarList
-              list={prettyMembers}
-              heading="Users"
-              action={<i title="Invite User" className="fa fa-plus-circle" />}
-              actionClicked={addUser}
-            />
-
-            <div
-              className="level-left content channel-name"
-              style={{ cursor: 'pointer' }}
-            >
-              <Link to="/workspaces">
-                <h6 style={{ color: 'white' }}>Switch Workspace</h6>
-              </Link>
+            <div style={{ marginTop: '4em' }}>
+              <SidebarList
+                list={prettyChannels}
+                heading="Channels"
+                action={<i title="Add Channel" className="fa fa-plus-circle" />}
+                actionClicked={addChannel}
+              />
+              <SidebarList
+                list={prettyMembers}
+                heading="Users"
+                action={<i title="Invite User" className="fa fa-plus-circle" />}
+                actionClicked={addUser}
+              />
+              <div
+                className="level-left content channel-name"
+                style={{ cursor: 'pointer' }}
+              >
+                <Link to="/workspaces">
+                  <h6 style={{ color: 'white' }}>Switch Workspace</h6>
+                </Link>
+              </div>
             </div>
           </Sidebar>
 
@@ -635,6 +660,30 @@ function Workspace({ history, match }) {
             { name: 'View Profile', handler: viewProfileHandler },
             { name: 'Logout', handler: logoutHandler }
           ]}
+        />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          left: '0.2em',
+          top: '6em',
+          zIndex: '1000'
+        }}
+      >
+        <SearchBar
+          objects={getCombinedChannelsAndMembersData()}
+          idKey="id"
+          valueKey="name"
+          keysToFilter={['name']}
+          searchItemClicked={(object) => {
+            if (object) {
+              changeActiveChannel(
+                object.id,
+                object.name,
+                object.type === 'member'
+              );
+            }
+          }}
         />
       </div>
     </div>
