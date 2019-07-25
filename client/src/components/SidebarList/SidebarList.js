@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import './SidebarList.css';
 
 const SidebarList = ({
@@ -30,10 +31,11 @@ const SidebarList = ({
     <HTag>{actionContent}</HTag>
   );
 
+  const className = cn('menu-list', list.length > 4 ? 'sidebar__List' : '');
   return (
     <div className="content">
       <div className="menu-label is-small">{headingContent}</div>
-      <ul className="menu-list" {...props} style={{ color: 'white' }}>
+      <ul className={className} {...props} style={{ color: 'white' }}>
         {list.map((listItem, index) => (
           <li
             style={{ whiteSpace: 'nowrap', listStyle: 'none' }}
