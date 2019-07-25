@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { useAppContext } from '../App/AppContext';
 import { modules, methods, endpoints } from '../../constants/constants';
@@ -7,7 +6,6 @@ import {
   Tile,
   Container,
   NavBar,
-  SidebarList,
   Spinner,
   Grid
 } from '../../components';
