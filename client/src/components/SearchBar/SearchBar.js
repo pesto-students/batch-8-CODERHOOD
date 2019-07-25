@@ -39,11 +39,11 @@ const SearchBar = (props) => {
           <div
             key={object[props.idKey]}
             style={{
-              width: '14vw',
+              width: '11.3em',
               display: searchItemsVisibility,
               background: 'white',
               borderBottom: '1px solid lightgray',
-              marginLeft: '0.6em',
+              marginLeft: '0.45em',
               padding: '0.5em'
             }}
             onClick={() => searchItemClicked(object)}
