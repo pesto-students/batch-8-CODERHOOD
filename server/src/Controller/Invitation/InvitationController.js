@@ -1,8 +1,4 @@
-import {
-  create,
-  findMany,
-  findOne,
-} from '../../Repositories/genericRepository';
+import { create, findMany, findOne } from '../../Repositories/genericRepository';
 import successHandler from '../../libs/routes/successHandler';
 import { invitationResponse } from '../../Constants/constants';
 import { invitationModel, userModel } from '../../Model';
@@ -22,8 +18,8 @@ const getAllInvitations = async (req, res, next) => {
 
 const createInvitation = async (req, res, next) => {
   try {
-    const { 
-      name, email, user, type, workspace 
+    const {
+      name, email, user, type, workspace,
     } = req.body;
     const data = {
       name,
@@ -35,7 +31,11 @@ const createInvitation = async (req, res, next) => {
     const result = await create(invitationModel, data);
     const { invitationCreated } = invitationResponse;
     await sendWorkspaceInvite(data);
-
+    const invitedUser = await findOne(userModel, { email });
+    if (invitedUser !== undefined) {
+      const { _id } = invitedUser;
+      await acceptAllWorkspaceInvites(_id, email);
+    }
     res.status(201).send(successHandler(invitationCreated, result));
   } catch (error) {
     next(error);
@@ -49,10 +49,7 @@ const approveInvitations = async (req, res, next) => {
     const { invitationAccepted } = invitationResponse;
 
     if (Object.keys(invitedUser).length) {
-      await acceptAllWorkspaceInvites(
-        userId,
-        invitedUser.email,
-      );
+      await acceptAllWorkspaceInvites(userId, invitedUser.email);
       res.status(200).send(successHandler(invitationAccepted, []));
     } else {
       const errMessage = 'No invited user found';
@@ -64,8 +61,4 @@ const approveInvitations = async (req, res, next) => {
   }
 };
 
-export {
-  createInvitation,
-  getAllInvitations,
-  approveInvitations,
-};
+export { createInvitation, getAllInvitations, approveInvitations };

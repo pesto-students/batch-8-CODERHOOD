@@ -24,13 +24,15 @@ async function acceptWorkspaceInvite(wsModel, workspaceId, memberId) {
 async function acceptAllWorkspaceInvites(userId, userEmail) {
   const userInvitations = await findMany(invitationModel, { email: userEmail });
   const { data } = userInvitations;
-
-  data.forEach(async (invite) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const invite of data) {
+    // eslint-disable-next-line no-await-in-loop
     await acceptWorkspaceInvite(workspaceModel, invite.workspace, userId);
-  });
+  }
+
+  // data.forEach(async (invite) => {
+  //   await acceptWorkspaceInvite(workspaceModel, invite.workspace, userId);
+  // });
 }
 
-export {
-  acceptAllWorkspaceInvites,
-  acceptWorkspaceInvite,
-};
+export { acceptAllWorkspaceInvites, acceptWorkspaceInvite };

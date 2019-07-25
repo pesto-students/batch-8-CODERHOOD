@@ -1,15 +1,8 @@
-import {
-  create,
-  deleteDoc,
-  findOne,
-  findMany,
-  update,
-} from '../../Repositories/genericRepository';
+import { create, deleteDoc, findOne, findMany, update } from '../../Repositories/genericRepository';
 import successHandler from '../../libs/routes/successHandler';
 import { channelResponse } from '../../Constants/constants';
 import { channelModel } from '../../Model';
 import updateMembers from '../utils';
-
 
 const getChannel = async (req, res, next) => {
   try {
@@ -21,9 +14,7 @@ const getChannel = async (req, res, next) => {
       err.status = 404;
       next(err);
     }
-    res
-      .status(200)
-      .send(successHandler(channelFound, result));
+    res.status(200).send(successHandler(channelFound, result));
   } catch (error) {
     next(error);
   }
@@ -34,9 +25,7 @@ const getAllChannels = async (req, res, next) => {
     const data = req.body;
     const { foundAllChannels } = channelResponse;
     const result = await findMany(channelModel, data);
-    res
-      .status(200)
-      .send(successHandler(foundAllChannels, result));
+    res.status(200).send(successHandler(foundAllChannels, result));
   } catch (error) {
     next(error);
   }
@@ -45,11 +34,7 @@ const getAllChannels = async (req, res, next) => {
 const createChannel = async (req, res, next) => {
   try {
     const {
-      name,
-      workspace,
-      user,
-      isPrivate,
-      members,
+      name, workspace, user, isPrivate, members,
     } = req.body;
     const data = {
       name,
@@ -58,12 +43,14 @@ const createChannel = async (req, res, next) => {
       isPrivate,
       members: [...members, user],
     };
+    if (name === '') {
+      const error = new Error(channelResponse.channelNameEmpty);
+      error.status = 400;
+      next(error);
+    }
     const result = await create(channelModel, data);
     const { channelCreated } = channelResponse;
-
-    res
-      .status(201)
-      .send(successHandler(channelCreated, result));
+    res.status(201).send(successHandler(channelCreated, result));
   } catch (error) {
     next(error);
   }
@@ -75,9 +62,7 @@ const deleteChannel = async (req, res, next) => {
     const result = await deleteDoc(channelModel, id);
     const { channelDeleted } = channelResponse;
 
-    res
-      .status(200)
-      .send(successHandler(channelDeleted, result));
+    res.status(200).send(successHandler(channelDeleted, result));
   } catch (error) {
     next(error);
   }
@@ -89,9 +74,7 @@ const updateChannel = async (req, res, next) => {
     const result = await update(channelModel, id, dataToUpdate);
     const { channelUpdated } = channelResponse;
 
-    res
-      .status(200)
-      .send(successHandler(channelUpdated, result));
+    res.status(200).send(successHandler(channelUpdated, result));
   } catch (error) {
     next(error);
   }
