@@ -548,6 +548,15 @@ function Workspace({ history, match }) {
     return combinedSearchableData;
   };
 
+  const isAuthorized = () => {
+    if (!activeChannel.isUser) {
+      return channels.current
+        .filter(({ _id }) => _id === activeChannel.id)[0]
+          .user === currentUser._id
+    }
+    return false;
+  }
+
   return (
     <div className="workspace">
       <Container>
@@ -589,11 +598,7 @@ function Workspace({ history, match }) {
                 <ChannelHeader
                   heading={`#${activeChannel.name}`}
                   actions={[]}
-                  isAuthorized={
-                    channels.current
-                      .filter(({ _id }) => _id === activeChannel.id)[0]
-                        .user === currentUser._id
-                  }
+                  isAuthorized={isAuthorized()}
                   handleDeleteChannel={handleDeleteChannel}
                   handleViewMembers={handleViewMembers}
                   isUser={isUserTabOpened}
