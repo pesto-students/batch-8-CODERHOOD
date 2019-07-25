@@ -32,7 +32,7 @@ const Grid = ({ heading, list, actionClicked, action }) => {
       <div className="grid">
           {renderDefaultTile()}
           {
-            list.length
+            list.length || action
             ?
             list.map((tile) => (
               <div className="grid__item">{tile}</div>
