@@ -8,11 +8,12 @@ const Welcome = (props) => {
       {firstVisit ? (
         <>
           <h1>Welcome to CoderHood </h1>
-          <img
-            style={{ width: '15vw', height: '30vh' }}
-            src="https://wdr-test-icti.cdn.prismic.io/wdr-test-icti/3f9387b0e53fb535624c3a559964e5f3871345ac_connect-logo3x.png"
-            alt="welcome"
-          />
+          <figure class="image is-128x128">
+            <img
+              src="https://wdr-test-icti.cdn.prismic.io/wdr-test-icti/3f9387b0e53fb535624c3a559964e5f3871345ac_connect-logo3x.png"
+              alt="welcome"
+            />
+          </figure>
           <h2>Your CoderHood workspace is all set</h2>
           <p>
             We have added a basic channel for your team - try adding members to

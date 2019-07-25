@@ -2,8 +2,6 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-left: 0px;
-  padding-right: 0px;
 }
 .has-bottom-border-2 {
   border-bottom: 0.05em solid gray;
@@ -61,8 +59,8 @@ article .media:last-child {
 
 .workspace-dropdown {
   position: absolute;
-  right: '2em';
-  top: '0em';
+  right: "2em";
+  top: "0em";
   z-index: 1000;
 }
 
