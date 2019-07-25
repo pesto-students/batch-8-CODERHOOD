@@ -12,6 +12,9 @@ const Dropdown = (props) => {
           onClick={() => {
             setState(state === '' ? 'is-active' : '');
           }}
+          onBlur={() => {
+            setState(state === '' ? 'is-active' : '');
+          }}
         >
           <span>{props.title}</span>
           <span class="icon is-small">
