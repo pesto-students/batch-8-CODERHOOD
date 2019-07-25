@@ -4,6 +4,8 @@ const ChannelHeader = ({
   heading,
   actions = [],
   handleViewMembers,
+  handleDeleteChannel,
+  isAuthorized,
   ...props
 }) => {
   return (
@@ -19,6 +21,22 @@ const ChannelHeader = ({
         >
           {!props.isUser ? 'View Members' : 'View Profile'}
         </button>
+        {
+          isAuthorized && heading !== '#General'
+          ?
+          <button
+            className="button is-pulled-right is-small is-dark is-outlined"
+            style={{ marginLeft: '0.8em' }}
+            onClick={() => {
+              handleDeleteChannel();
+            }}
+          >
+            Delete Channel
+            {/* {!props.isUser ? 'View Members' : 'View Profile'} */}
+          </button>
+          :
+          null
+        }
       </div>
       <div className="level level-right">
         {actions.map((action, index) => (
