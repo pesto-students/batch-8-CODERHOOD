@@ -123,7 +123,8 @@ const Workspaces = (props) => {
       />
       <Container>
         <div className="welcome content">
-          <h1 className="level-item">Welcome, {name}</h1>
+          {/* <h1 className="level-item">Welcome, {name}</h1> */}
+          <h3 className="level-item">Select your workspace</h3>
         </div>
         <div class="tabs is-centered is-large is-mobile is-medium ">
           <ul>
@@ -131,13 +132,13 @@ const Workspaces = (props) => {
               className={activeTab.owned ? 'is-active' : ''}
               onClick={() => toggleTab({ owned: true })}
             >
-              <a className="tab__item">Owned Workspaces ({ownedWorkspaces.length})</a>
+              <a className="tab__item">Owned ({ownedWorkspaces.length})</a>
             </li>
             <li
               className={activeTab.owned ? '' : 'is-active'}
               onClick={() => toggleTab({ owned: false })}
             >
-              <a className="tab__item">Joined Workspaces ({joinedWorkspaces.length})</a>
+              <a className="tab__item">Joined ({joinedWorkspaces.length})</a>
             </li>
           </ul>
         </div>
