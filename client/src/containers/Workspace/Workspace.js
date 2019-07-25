@@ -464,43 +464,46 @@ function Workspace({ history, match }) {
   };
 
   const renderChannelInfo = () => {
-    if (activeChannel.name === 'General') {
+    if (
+      messageStore[activeChannel.id] !== undefined &&
+      messageStore[activeChannel.id].messages.length < 4
+    ) {
+      if (activeChannel.name === 'General') {
+        return (
+          <>
+            <p style={{ margin: '2%', marginRight: '3%' }}>
+              We created this channel for you. This is the very beginning of the{' '}
+              <span>
+                <b>#general</b>
+              </span>{' '}
+              channel. Purpose: This channel is for workspace-wide communication
+              and announcements. All members are in this channel.
+            </p>
+          </>
+        );
+      }
+      if (activeChannel.name === currentUser.name) {
+        return (
+          <>
+            <p style={{ margin: '2%', marginRight: '3%' }}>
+              <b>This is your space. </b>
+              Draft messages, list your to-dos. You
+              can also talk to yourself here, but please bear in mind you’ll have
+              to supply both sides of the conversation.
+            </p>
+          </>
+        );
+      }
       return (
         <>
-          <p style={{ margin: '2%', marginRight: '3%' }}>
-            We created this channel for you. This is the very beginning of the{' '}
-            <span>
-              <b>#general</b>
-            </span>{' '}
-            channel. Purpose: This channel is for workspace-wide communication
-            and announcements. All members are in this channel.
-          </p>
-        </>
-      );
-    }
-    if (activeChannel.name === currentUser.name) {
-      return (
-        <>
-          <p style={{ margin: '2%', marginRight: '3%' }}>
-            <b>This is your space. </b>
-            Draft messages, list your to-dos. You
-            can also talk to yourself here, but please bear in mind you’ll have
-            to supply both sides of the conversation.
-          </p>
-        </>
-      );
-    }
-    return (
-      <>
-        {messageStore[activeChannel.id] !== undefined &&
-        messageStore[activeChannel.id].messages.length < 4 ? (
           <p style={{ margin: '2%', marginRight: '3%' }}>
             This is very beginning of your message history. Say <b>'Hi'</b> to
             start the conversation.
           </p>
-        ) : null}
-      </>
-    );
+        </>
+      );
+    }
+    return null;
   };
 
   return (
