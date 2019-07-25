@@ -20,8 +20,9 @@
   flex-direction: column;
 }
 
-.tile__content__link {
+.tile__content a {
   flex: 1 0 auto;
+  cursor: pointer;
 }
 
 .tile__content button:focus{
@@ -45,10 +46,7 @@
   color: white;
   cursor: pointer;
 }
-.tile a {
-  width: 100%;
-  flex: 1 1 auto;
-}
+
 
 .tile__content a .title {
   color: rgb(235, 235, 235);
@@ -56,6 +54,17 @@
 
 .title {
   font-size: 1.5em;
+}
+
+@media only screen and (max-width: 600px) {
+  .tile {
+    height: auto;
+    width: 80vw;
+  }
+
+  .tile__children {
+    font-size: 0.5em;
+  }
 }
 
 /* teal: #00aba9; */
