@@ -18,6 +18,7 @@ import './Workspaces.css';
 const Workspaces = (props) => {
   const [modalVisibility, setModalVisibility] = useState(false);
   const [profileModalVisibility, setProfileModalVisibility] = useState(false);
+  const [activeTab, setActiveTab] = useState({ owned: true });
 
   const user = useAppContext();
   const { dispatch } = useAppContext();
@@ -70,6 +71,10 @@ const Workspaces = (props) => {
     setProfileModalVisibility(false);
   };
 
+  const toggleTab = (tab) => {
+    setActiveTab({ ...tab });
+  };
+
   const renderWorkSpaces = () => {
     const { isLoading: isOwnedWSLoading } = fetchOwnedWorkspaces;
     const { isLoading: isJoinedWSLoading } = fetchJoinedWorkspaces;
@@ -79,13 +84,16 @@ const Workspaces = (props) => {
 
     return (
       <>
-        <Grid
-          heading="Owned Workspaces"
-          list={ownedWorkspaces}
-          actionClicked={createWorkspaceSubmit}
-          action={<i className="fa fa-plus fa-8x" onClick={showModal} />}
-        />
-        <Grid heading="Joined Workspaces" list={joinedWorkspaces} />
+        {activeTab.owned ? (
+          <Grid
+            heading="Workspaces"
+            list={ownedWorkspaces}
+            actionClicked={createWorkspaceSubmit}
+            action={<i className="fa fa-plus fa-8x" onClick={showModal} />}
+          />
+        ) : (
+          <Grid heading="Workspaces" list={joinedWorkspaces} />
+        )}
       </>
     );
   };
@@ -115,7 +123,23 @@ const Workspaces = (props) => {
       />
       <Container>
         <div className="welcome content">
-        <h1 className="level-item">Welcome, {name}</h1>          
+          <h1 className="level-item">Welcome, {name}</h1>
+        </div>
+        <div class="tabs is-centered is-large is-mobile is-medium ">
+          <ul>
+            <li
+              className={activeTab.owned ? 'is-active' : ''}
+              onClick={() => toggleTab({ owned: true })}
+            >
+              <a className="tab__item">Owned</a>
+            </li>
+            <li
+              className={activeTab.owned ? '' : 'is-active'}
+              onClick={() => toggleTab({ owned: false })}
+            >
+              <a className="tab__item">Joined</a>
+            </li>
+          </ul>
         </div>
         {renderWorkSpaces()}
         <AddWorkspaceModal
