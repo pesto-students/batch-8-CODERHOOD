@@ -110,6 +110,12 @@ const ChannelMembers = (props) => {
                 </div>
                 <div>{member.name}</div>
                 <div style={{ flexGrow: 2 }}>
+                  <div 
+                    className="is-pulled-right" 
+                    style={{ marginRight: '2vw' }}
+                  >
+                    {member._id === channelDetails.user ? 'Admin' : ''}
+                  </div>
                   {channelDetails.user === loginStatus.user._id &&
                   member._id !== loginStatus.user._id ? (
                     <button
