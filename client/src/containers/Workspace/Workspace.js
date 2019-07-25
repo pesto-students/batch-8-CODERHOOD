@@ -353,7 +353,7 @@ function Workspace({ history, match }) {
     />
   );
 
-  const fetchedWorkspaceData = useFetch('get', `/workspace/${workspaceId}`);
+  const fetchedWorkspaceData = useFetch('get', `/workspace/${workspaceId}`,null, fetchUserTrigger);
   const {
     isLoading: isWorkspaceLoading,
     response: workspaceResponse
@@ -378,9 +378,9 @@ function Workspace({ history, match }) {
         prepareForSideBar(id, name, false)
       )
     : [];
-  const prettyMembers = members.map(({ _id: id, name, avatar }) => (
+  const prettyMembers = members.map(({ _id: id, name, avatar }) =>
     prepareForSideBar(id, name, avatar, true)
-  ));
+  );
 
   // To setup socket and load channel from URL
   useEffect(() => {

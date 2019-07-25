@@ -1,20 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
-import { InputField } from "../../components";
-import SmallContainer from "../../components/SmallContainer/SmallContainer";
-import callApi from "../../libs/axios";
-import { modules, methods } from "../../constants/constants";
-import { useAppContext } from "../App/AppContext";
+import React, { useState } from 'react';
+import { InputField } from '../../components';
+import callApi from '../../libs/axios';
+import { modules, methods } from '../../constants/constants';
+import { useAppContext } from '../App/AppContext';
 
-const AddUser = props => {
+const AddUser = (props) => {
   const [userEmail, setUserEmail] = useState(undefined);
   const [userName, setUserName] = useState(undefined);
   const { loginStatus } = useAppContext();
 
-  const handleUserEmailChange = e => {
+  const handleUserEmailChange = (e) => {
     setUserEmail(e.target.value);
   };
-  const handleUserNameChange = e => {
+  const handleUserNameChange = (e) => {
     setUserName(e.target.value);
   };
   const inviteUser = async () => {
@@ -25,14 +24,14 @@ const AddUser = props => {
       email: userEmail,
       workspace: props.workspaceId,
       type: 'WorkspaceInvite',
-      user: loginStatus.user._id,
+      user: loginStatus.user._id
     });
-    console.log({response});
+    console.log({ response });
     props.onClose();
   };
 
   return (
-    <SmallContainer>
+    <div>
       <InputField
         label="Name"
         name="userName"
@@ -46,7 +45,7 @@ const AddUser = props => {
       <button className="button" onClick={inviteUser}>
         Invite User
       </button>
-    </SmallContainer>
+    </div>
   );
 };
 
