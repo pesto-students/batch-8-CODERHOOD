@@ -86,13 +86,13 @@ const Workspaces = (props) => {
       <>
         {activeTab.owned ? (
           <Grid
-            heading="Workspaces"
+            heading=""
             list={ownedWorkspaces}
             actionClicked={createWorkspaceSubmit}
             action={<i className="fa fa-plus fa-8x" onClick={showModal} />}
           />
         ) : (
-          <Grid heading="Workspaces" list={joinedWorkspaces} />
+          <Grid heading="" list={joinedWorkspaces} />
         )}
       </>
     );
@@ -131,13 +131,13 @@ const Workspaces = (props) => {
               className={activeTab.owned ? 'is-active' : ''}
               onClick={() => toggleTab({ owned: true })}
             >
-              <a className="tab__item">Owned</a>
+              <a className="tab__item">Owned Workspaces ({ownedWorkspaces.length})</a>
             </li>
             <li
               className={activeTab.owned ? '' : 'is-active'}
               onClick={() => toggleTab({ owned: false })}
             >
-              <a className="tab__item">Joined</a>
+              <a className="tab__item">Joined Workspaces ({joinedWorkspaces.length})</a>
             </li>
           </ul>
         </div>
