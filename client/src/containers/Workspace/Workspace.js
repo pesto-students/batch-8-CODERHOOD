@@ -353,7 +353,12 @@ function Workspace({ history, match }) {
     />
   );
 
-  const fetchedWorkspaceData = useFetch('get', `/workspace/${workspaceId}`,null, fetchUserTrigger);
+  const fetchedWorkspaceData = useFetch(
+    'get',
+    `/workspace/${workspaceId}`,
+    null,
+    fetchUserTrigger
+  );
   const {
     isLoading: isWorkspaceLoading,
     response: workspaceResponse
@@ -567,7 +572,7 @@ function Workspace({ history, match }) {
 
           <div
             className="column is-4 has-top-border-2"
-            style={{ height: '92.7vh', paddingLeft: '0em', marginTop: '9.1vh' }}
+            style={{ height: '92.7vh', paddingLeft: '0em', marginTop: '3.8em' }}
           >
             {activeChannel.id && membersPanel ? (
               <ChannelMembers

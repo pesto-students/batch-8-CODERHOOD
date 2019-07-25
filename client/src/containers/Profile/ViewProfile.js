@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
-import useFetch from "../../hooks/useFetch";
-import { modules, methods } from "../../constants/constants";
-import Spinner from "../../components/Spinner/Spinner";
+import React from 'react';
+import useFetch from '../../hooks/useFetch';
+import { modules, methods } from '../../constants/constants';
+import Spinner from '../../components/Spinner/Spinner';
 
-const ViewProfile = props => {
+const ViewProfile = (props) => {
   const { user } = modules;
   const { get } = methods;
   const memberDetails = useFetch(get, `/${user}/${props.userId}`, {});
@@ -15,7 +15,7 @@ const ViewProfile = props => {
   const member = memberDetails.response.data;
 
   return (
-    <div className="card" style={{ minHeight: "92vh" }}>
+    <div className="card" style={{ minHeight: '92vh' }}>
       <div className="panel-heading">
         {member.name}
         <button
@@ -32,14 +32,14 @@ const ViewProfile = props => {
         <img
           src={member.avatar}
           alt="Profile"
-          style={{ borderRadius: "50%", marginTop: "1%", width: "10vw" }}
+          style={{ borderRadius: '50%', marginTop: '1%', width: '10vw' }}
         />
         {/* </figure> */}
       </div>
       <div className="card-content">
         <div className="media">
           <div className="media-left">
-            <figure className="image is-48x48">
+            <figure className="image is-48x48" style={{ marginTop: '0em' }}>
               <img src={member.avatar} alt="Profile" />
             </figure>
           </div>
@@ -49,7 +49,7 @@ const ViewProfile = props => {
           </div>
         </div>
         <div className="content">
-          {member.bio} <a>{member.email}</a>.
+          {member.bio} <br />
           <br />
         </div>
       </div>

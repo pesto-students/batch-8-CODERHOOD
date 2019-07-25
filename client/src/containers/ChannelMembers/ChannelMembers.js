@@ -55,7 +55,7 @@ const ChannelMembers = (props) => {
   return (
     <nav className="panel">
       <div className="panel-heading">
-        {channelDetails.name}
+        #{channelDetails.name}
         {channelDetails.user !== loginStatus.user._id ? (
           <a
             className="is-small is-size-7 is-vcentered"
@@ -83,30 +83,46 @@ const ChannelMembers = (props) => {
           Close
         </button>
       </div>
-      <div className="panel-block">
-        <div class="list" style={{ width: '100%' }}>
+      <div
+        className="panel-block"
+        style={{ padding: '0px', paddingRight: '0px' }}
+      >
+        <div
+          class="list"
+          style={{
+            width: '100%',
+            boxShadow: 'none'
+          }}
+        >
           {members.map((member) => (
-            <div className="list-item">
-              <span className="icon is-size-7" style={{ padding: 10 }}>
-                <i
-                  className="fas fa-circle"
-                  style={
-                    member.isOnline ? { color: 'green' } : { color: 'gray' }
-                  }
-                />
-              </span>
-              {member.name}
-              {channelDetails.user === loginStatus.user._id &&
-              member._id !== loginStatus.user._id ? (
-                <button
-                  className="button is-outlined is-pulled-right is-small is-danger"
-                  onClick={() => {
-                    updateMember(member, 'delete');
+            <div className="list-item" style={{ lineHeight: '2em' }}>
+              <div style={{ display: 'flex' }}>
+                <div
+                  style={{
+                    width: '4vh',
+                    height: '4vh',
+                    marginRight: '0.5vw',
+                    position: 'relative',
+                    bottom: '-0.5vh'
                   }}
                 >
-                  Remove Member
-                </button>
-              ) : null}
+                  <img src={member.avatar} alt={member.name} />
+                </div>
+                <div>{member.name}</div>
+                <div style={{ flexGrow: 2 }}>
+                  {channelDetails.user === loginStatus.user._id &&
+                  member._id !== loginStatus.user._id ? (
+                    <button
+                      className="button is-outlined is-pulled-right is-small is-danger"
+                      onClick={() => {
+                        updateMember(member, 'delete');
+                      }}
+                    >
+                      Remove Member
+                    </button>
+                  ) : null}
+                </div>
+              </div>
             </div>
           ))}
         </div>
