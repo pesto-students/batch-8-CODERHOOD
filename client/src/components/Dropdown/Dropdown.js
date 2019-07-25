@@ -3,16 +3,18 @@ const Dropdown = (props) => {
   const [state, setState] = useState('');
 
   return (
-    <div class={'dropdown is-right ' + state}>
+    <div 
+      class={'dropdown is-right ' + state}
+      onMouseLeave={() => {
+        setState('');
+      }}
+    >
       <div class="dropdown-trigger">
         <button
           class="button"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
           onClick={() => {
-            setState(state === '' ? 'is-active' : '');
-          }}
-          onBlur={() => {
             setState(state === '' ? 'is-active' : '');
           }}
         >
