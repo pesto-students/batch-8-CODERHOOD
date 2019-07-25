@@ -47,10 +47,11 @@ const AddMember = (props) => {
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
+        style={{ flex: 5 }}
       />
       <button
         className="button is-small"
-        style={{ marginLeft: '1.6em' }}
+        style={{ marginLeft: '1em', flex: 1 }}
         onClick={() => {
           props.handleAdd(members.filter((member) => member.name === value)[0]);
           setValue('');
