@@ -9,21 +9,22 @@ const ChannelHeader = ({
   ...props
 }) => {
   return (
-    <div className="level has-bottom-border-2">
-      <div className="level-left">
+    <div className="has-bottom-border-2">
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <h5>{heading}</h5>
-        <button
-          className="button is-pulled-right is-small is-dark is-outlined"
-          style={{ marginLeft: '0.8em' }}
-          onClick={() => {
-            handleViewMembers();
-          }}
-        >
-          {!props.isUser ? 'View Members' : 'View Profile'}
-        </button>
-        {
-          isAuthorized && heading !== '#General'
-          ?
+        {isAuthorized ? (
+          <button
+            className="button is-small is-dark is-outlined"
+            style={{ marginLeft: '0.8em' }}
+            onClick={() => {
+              handleViewMembers();
+            }}
+          >
+            ) : null}
+            {!props.isUser ? 'View Members' : 'View Profile'}
+          </button>
+        ) : null}
+        {isAuthorized && heading !== '#General' ? (
           <button
             className="button is-pulled-right is-small is-dark is-outlined"
             style={{ marginLeft: '0.8em' }}
@@ -34,9 +35,18 @@ const ChannelHeader = ({
             Delete Channel
             {/* {!props.isUser ? 'View Members' : 'View Profile'} */}
           </button>
-          :
-          null
-        }
+        ) : null}
+        <div
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          onClick={props.burgerHandler}
+        >
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </div>
       </div>
       <div className="level level-right">
         {actions.map((action, index) => (

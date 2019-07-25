@@ -35,7 +35,7 @@ import {
   userJoiningEvent,
   userLeavingEvent,
   methods,
-  modules,
+  modules
 } from '../../constants/constants';
 import Welcome from '../Welcome/Welcome';
 import './Workspace.css';
@@ -46,17 +46,14 @@ import callApi from '../../libs/axios';
 function Workspace({ history, match }) {
   const workspaceId = match.params.id;
   const endpoint = process.env.REACT_APP_SOCKET_ENDPOINT;
-
   const userTypingStatusTimeout = useRef(false);
   const clientSocket = useRef(null);
   const currentChannel = useRef(null);
   const userData = useAppContext();
   const currentUser = userData.loginStatus.user;
-
   const typeUser = 'usr';
   const { params } = match;
   const isActiveChannelAUser = params.type ? params.type === typeUser : false;
-
   const [activeChannel, setActiveChannel] = useState({
     id: params.channelId,
     name: params.channelName,
@@ -67,7 +64,6 @@ function Workspace({ history, match }) {
 
   const channelsLoaded = useRef([]);
   const channels = useRef([]);
-
   const [messageStore, setMessageStore] = useState({});
   const [members, setMembers] = useState([]);
   const [membersPanel, setMembersPanel] = useState(false);
@@ -80,6 +76,7 @@ function Workspace({ history, match }) {
   const [unreadChannels, setUnreadChannels] = useState([]);
   const [profileModalVisibility, setProfileModalVisibility] = useState(false);
   const { dispatch } = useAppContext();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [addChannelModalVisibility, setAddChannelModalVisibility] = useState(
     false
@@ -98,6 +95,7 @@ function Workspace({ history, match }) {
     setUserTabOpened(isUser);
     setMembersPanel(false);
     setTypingNotification(null);
+    setSidebarOpen(false);
 
     // See if user is a part of this current channel
     if (!isUser && channels) {
@@ -197,15 +195,11 @@ function Workspace({ history, match }) {
     const { channel } = modules;
     const { id } = activeChannel;
     const { _id, name } = channels.current[0];
-    changeActiveChannel(
-      _id,
-      name,
-      false,
-    )
+    changeActiveChannel(_id, name, false);
     await callApi(del, `/${channel}/${id}`);
     setFetchChannelTrigger(fetchChannelTrigger + 1);
     history.push(`/workspaces/${workspaceId}/${_id}/ch/${name}`);
-  }
+  };
 
   const setUpSocket = (socket) => {
     socket.on(messageEvent, (obj) => handleIncomingMessage(obj));
@@ -437,8 +431,10 @@ function Workspace({ history, match }) {
     setAddUserModalVisibility(true);
   };
 
-  const getMessageContainerSize = () => {
-    return membersPanel || profilePanel ? 'is-6' : 'is-10';
+  const getMessageContainerClass = () => {
+    return membersPanel || profilePanel || sidebarOpen
+      ? 'is-6 is-hidden-mobile'
+      : 'is-10';
   };
 
   if (isWorkspaceLoading || isChannelsLoading) {
@@ -549,26 +545,61 @@ function Workspace({ history, match }) {
   };
 
   const isAuthorized = () => {
-    if (!activeChannel.isUser) {
-      return channels.current
-        .filter(({ _id }) => _id === activeChannel.id)[0]
+    if (activeChannel.id && !activeChannel.isUser) {
+      return (
+        channels.current.filter(({ _id }) => _id === activeChannel.id)[0]
           .user === currentUser._id
+      );
     }
     return false;
-  }
+  };
+  const getSidebarClass = () => {
+    if (sidebarOpen) {
+      return 'sidebarOpen';
+    }
+    return 'sidebar';
+  };
 
   return (
     <div className="workspace">
       <Container>
         <Columns className="workspace-column">
-          <Sidebar>
-            <div className="level">
+          <Sidebar className={getSidebarClass()}>
+            <div className="level" style={{ marginBottom: '0.7em' }}>
               <div className="content channel-name">
-                <h4>{workspace.name}</h4>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <h4>{workspace.name}</h4>
+                  <div className="close-sidebar">
+                    <a
+                      className="delete is-large"
+                      onClick={() => {
+                        setSidebarOpen(false);
+                      }}
+                    />
+                  </div>
+                </div>
+
                 <h6>{currentUser.name}</h6>
               </div>
             </div>
-            <div style={{ marginTop: '4em' }}>
+            <SearchBar
+              objects={getCombinedChannelsAndMembersData()}
+              idKey="id"
+              valueKey="name"
+              keysToFilter={['name']}
+              searchItemClicked={(object) => {
+                if (object) {
+                  changeActiveChannel(
+                    object.id,
+                    object.name,
+                    object.type === 'member'
+                  );
+                }
+              }}
+            />
+            <div style={{ marginTop: '1em' }}>
               <SidebarList
                 list={prettyChannels}
                 heading="Channels"
@@ -592,17 +623,25 @@ function Workspace({ history, match }) {
             </div>
           </Sidebar>
 
-          <div className={'column channel-body ' + getMessageContainerSize()}>
+          <div className={'column channel-body ' + getMessageContainerClass()}>
+            <ChannelHeader
+              heading={`${ 
+                activeChannel.name
+                  ? '#'+activeChannel.name
+                  : 'Hi, ' + currentUser.name
+              }`}
+              actions={[]}
+              isAuthorized={isAuthorized()}
+              handleDeleteChannel={handleDeleteChannel}
+              handleViewMembers={handleViewMembers}
+              isUser={isUserTabOpened}
+              showButton = {activeChannel.id ? true: false}
+              burgerHandler={() => {
+                setSidebarOpen(true);
+              }}
+            />
             {activeChannel.id ? (
               <>
-                <ChannelHeader
-                  heading={`#${activeChannel.name}`}
-                  actions={[]}
-                  isAuthorized={isAuthorized()}
-                  handleDeleteChannel={handleDeleteChannel}
-                  handleViewMembers={handleViewMembers}
-                  isUser={isUserTabOpened}
-                />
                 {renderChannelInfo()}
                 {renderMessages()}
                 <div className="fixed form">
@@ -626,11 +665,7 @@ function Workspace({ history, match }) {
               />
             )}
           </div>
-
-          <div
-            className="column is-4 has-top-border-2"
-            style={{ height: '92.7vh', paddingLeft: '0em', marginTop: '3.8em' }}
-          >
+          <div className="column is-4 info-panel">
             {activeChannel.id && membersPanel ? (
               <ChannelMembers
                 channelId={activeChannel.id}
@@ -669,14 +704,7 @@ function Workspace({ history, match }) {
         onClose={closeAddUserModal}
         modal={{ closeOnEsc: true }}
       />
-      <div
-        style={{
-          position: 'absolute',
-          right: '1em',
-          top: '0.5em',
-          zIndex: '2'
-        }}
-      >
+      <div>
         <Profile
           show={profileModalVisibility}
           showClose={false}
@@ -698,23 +726,7 @@ function Workspace({ history, match }) {
           top: '6em',
           zIndex: '1000'
         }}
-      >
-        <SearchBar
-          objects={getCombinedChannelsAndMembersData()}
-          idKey="id"
-          valueKey="name"
-          keysToFilter={['name']}
-          searchItemClicked={(object) => {
-            if (object) {
-              changeActiveChannel(
-                object.id,
-                object.name,
-                object.type === 'member'
-              );
-            }
-          }}
-        />
-      </div>
+      />
     </div>
   );
 }

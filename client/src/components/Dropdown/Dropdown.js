@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import './Dropdown.css';
 const Dropdown = (props) => {
   const [state, setState] = useState('');
 
   return (
-    <div 
-      class={'dropdown is-right ' + state}
+    <div
+      class={'dropdown is-right workspace-dropdown ' + state}
       onMouseLeave={() => {
         setState('');
       }}

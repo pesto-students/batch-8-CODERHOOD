@@ -1,18 +1,10 @@
-import React from "react";
-import "./Container.css";
+import React from 'react';
+import './Container.css';
 
-const Container = props => {
+const Container = (props) => {
   return (
-    <section
-      className="section"
-      style={{
-        paddingTop: "0em",
-        paddingLeft: "0em",
-        paddingRight: "0em",
-        paddingBottom: "0em"
-      }}
-    >
-      <div className="container" style={{ maxWidth: "100%" }}>
+    <section className="section container" style={{ minWidth: '100%' }}>
+      <div className="container" style={{ minWidth: '100%' }}>
         {props.children}
       </div>
     </section>

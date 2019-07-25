@@ -1,0 +1,10 @@
+.message-item {
+  height: 1em;
+  margin-bottom: 1.8em !important;
+}
+@media (max-width: 780px) {
+  .message-item {
+    height: auto;
+    margin-bottom: 0 !important;
+  }
+}

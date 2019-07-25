@@ -1,0 +1,12 @@
+.workspace-dropdown {
+  position: absolute;
+  right: 1em;
+  top: 0.5em;
+  z-index: 2;
+}
+
+@media (max-width: 780px) {
+  .workspace-dropdown {
+    display: none;
+  }
+}
