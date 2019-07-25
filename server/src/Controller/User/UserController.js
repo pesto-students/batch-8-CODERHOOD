@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import * as gravatar from 'gravatar';
-import { create, deleteDoc, findOne, findMany, update } from '../../Repositories/genericRepository';
 import successHandler from '../../libs/routes/successHandler';
 import { userResponse } from '../../Constants/constants';
 import { userModel } from '../../Model';
 import getExistingUser from './utils';
-import { acceptAllWorkspaceInvites } from "../Invitation/utils";
+import { acceptAllWorkspaceInvites } from '../Invitation/utils';
+import {
+  create, deleteDoc, findOne, findMany, update,
+} from '../../Repositories/genericRepository';
 
 const getUser = async (req, res, next) => {
   try {
@@ -67,10 +69,10 @@ const createUser = async (req, res, next) => {
       password,
       avatar,
     });
-    
+
     if (result) {
       // eslint-disable-next-line no-underscore-dangle
-      acceptAllWorkspaceInvites(result._id, email);
+      await acceptAllWorkspaceInvites(result._id, email, true);
     }
 
     return res.status(201).send(successHandler(userCreated, result));
@@ -124,4 +126,6 @@ const login = async (req, res, next) => {
   }
 };
 
-export { getUser, createUser, getAllUsers, getSelectedUsers, deleteUser, updateUser, login };
+export {
+  getUser, createUser, getAllUsers, getSelectedUsers, deleteUser, updateUser, login,
+};

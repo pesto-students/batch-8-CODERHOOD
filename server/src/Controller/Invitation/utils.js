@@ -21,7 +21,10 @@ async function acceptWorkspaceInvite(wsModel, workspaceId, memberId) {
   }
 }
 
-async function acceptAllWorkspaceInvites(userId, userEmail) {
+async function acceptAllWorkspaceInvites(userId, userEmail, skipInviteChecks = false) {
+  if (skipInviteChecks) {
+    return;
+  }
   const userInvitations = await findMany(invitationModel, { email: userEmail });
   const { data } = userInvitations;
   // eslint-disable-next-line no-restricted-syntax
