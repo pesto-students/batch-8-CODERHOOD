@@ -1,4 +1,5 @@
 import React from 'react';
+import './Message.css';
 
 const Message = ({
   messageId,
@@ -10,17 +11,14 @@ const Message = ({
   ...props
 }) => {
   return (
-    <article
-      className="media"
-      style={{ paddingTop: '0.4em', paddingBottom: '0.4em' }}
-    >
+    <article className="media" style={{ paddingTop: '0.8em' }}>
       <figure className="media-left">
         <p className="image is-32x32" style={{ paddingTop: '.2em' }}>
           <img src={userPic} alt={username} />
         </p>
       </figure>
       <div className="media-content">
-        <div className="content" style={{ minHeight: '2em' }}>
+        <div className="content message-item">
           <div>
             <strong>{username}</strong> <small>{timeSince}</small>
             <br /> {message}

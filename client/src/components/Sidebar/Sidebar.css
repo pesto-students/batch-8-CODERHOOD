@@ -1,0 +1,23 @@
+.sidebar {
+  background: #343d4b;
+  min-height: 100%;
+  padding-top: 1.5em;
+  padding-bottom: 0px;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.sidebarOpen {
+  background: #343d4b;
+  height: 100vh;
+  padding-top: 1.5em;
+  padding-bottom: 0px;
+  padding-left: 0.7em;
+  padding-right: 1em;
+}
+
+@media (max-width: 780px) {
+  .sidebar {
+    display: none;
+  }
+}
