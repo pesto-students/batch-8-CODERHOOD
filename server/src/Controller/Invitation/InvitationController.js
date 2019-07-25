@@ -30,12 +30,12 @@ const createInvitation = async (req, res, next) => {
     };
     const result = await create(invitationModel, data);
     const { invitationCreated } = invitationResponse;
-    await sendWorkspaceInvite(data);
     const invitedUser = await findOne(userModel, { email });
-    if (invitedUser !== undefined) {
+    if (invitedUser) {
       const { _id } = invitedUser;
       await acceptAllWorkspaceInvites(_id, email);
     }
+    await sendWorkspaceInvite(data);
     res.status(201).send(successHandler(invitationCreated, result));
   } catch (error) {
     next(error);
