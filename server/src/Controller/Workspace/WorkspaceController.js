@@ -9,7 +9,7 @@ import successHandler from '../../libs/routes/successHandler';
 import { workspaceResponse } from '../../Constants/constants';
 import { workspaceModel } from '../../Model';
 import updateMembers from '../utils';
-
+import { createWorkspaceNamespace, configureEventHandlersForWorkspace } from '../../Sockets/socket';
 
 const getWorkspace = async (req, res, next) => {
   try {
@@ -48,6 +48,9 @@ const createWorkspace = async (req, res, next) => {
     const { workspaceCreated } = workspaceResponse;
     const data = { name, user, members: [...members, user] };
     const result = await create(workspaceModel, data);
+    const { _id: id } = result;
+    const nsps = createWorkspaceNamespace(id);
+    configureEventHandlersForWorkspace(nsps);
 
     res
       .status(201)
