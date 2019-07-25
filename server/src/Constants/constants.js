@@ -22,6 +22,7 @@ export const channelResponse = {
   channelFound: 'Channel is here',
   channelNotFound: 'Channel does not exists',
   foundAllChannels: 'Channels are here',
+  channelNameEmpty: 'Channel Name cannot be empty',
   channelCreated: 'Channel created successfully',
   channelUpdated: 'Channel updated successfully',
   channelDeleted: 'Channel deleted successfully',
@@ -39,7 +40,7 @@ export const userResponse = {
   userDeleted: 'User deleted successfully',
   userAlreadyExists: 'This email is already registered',
   invalidPassword: 'The password is invalid',
-  userDoesNotExists: 'User doesn\'t exists.',
+  userDoesNotExists: "User doesn't exists.",
 };
 
 // Workspace
