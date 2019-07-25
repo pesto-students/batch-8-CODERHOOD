@@ -31,9 +31,15 @@ const Grid = ({ heading, list, actionClicked, action }) => {
       </div>
       <div className="grid">
           {renderDefaultTile()}
-          {list.map((tile) => (
-            <div className="grid__item">{tile}</div>
-          ))}
+          {
+            list.length
+            ?
+            list.map((tile) => (
+              <div className="grid__item">{tile}</div>
+            ))
+            :
+            <h2>You have no joined workspaces.</h2>
+          }
       </div>
     </>
   );
