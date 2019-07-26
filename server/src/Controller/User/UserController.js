@@ -6,7 +6,11 @@ import { userModel } from '../../Model';
 import getExistingUser from './utils';
 import { acceptAllWorkspaceInvites } from '../Invitation/utils';
 import {
-  create, deleteDoc, findOne, findMany, update,
+  create,
+  deleteDoc,
+  findOne,
+  findMany,
+  update,
 } from '../../Repositories/genericRepository';
 
 const getUser = async (req, res, next) => {
@@ -50,7 +54,12 @@ const getSelectedUsers = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const {
+      name,
+      email,
+      password,
+      isTestingMode,
+    } = req.body;
     const { userCreated, userAlreadyExists } = userResponse;
     const user = await getExistingUser(userModel, email);
     if (user) {
@@ -72,7 +81,7 @@ const createUser = async (req, res, next) => {
 
     if (result) {
       // eslint-disable-next-line no-underscore-dangle
-      await acceptAllWorkspaceInvites(result._id, email, true);
+      await acceptAllWorkspaceInvites(result._id, email, isTestingMode || false);
     }
 
     return res.status(201).send(successHandler(userCreated, result));
@@ -127,5 +136,11 @@ const login = async (req, res, next) => {
 };
 
 export {
-  getUser, createUser, getAllUsers, getSelectedUsers, deleteUser, updateUser, login,
+  getUser,
+  createUser,
+  getAllUsers,
+  getSelectedUsers,
+  deleteUser,
+  updateUser,
+  login,
 };
