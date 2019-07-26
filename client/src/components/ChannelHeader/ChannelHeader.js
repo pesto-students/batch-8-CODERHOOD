@@ -12,7 +12,7 @@ const ChannelHeader = ({
     <div className="has-bottom-border-2">
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <h5>{heading}</h5>
-        {isAuthorized ? (
+        {props.showButton ? (
           <button
             className="button is-small is-dark is-outlined"
             style={{ marginLeft: '0.8em' }}
@@ -20,7 +20,6 @@ const ChannelHeader = ({
               handleViewMembers();
             }}
           >
-            ) : null}
             {!props.isUser ? 'View Members' : 'View Profile'}
           </button>
         ) : null}
