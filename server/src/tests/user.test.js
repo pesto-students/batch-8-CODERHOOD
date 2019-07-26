@@ -48,6 +48,7 @@ describe('Test api/user endpoints', () => {
       name: 'bobby',
       email: 'bob@mail.com',
       password: 'pass1',
+      isTestingMode: true,
     };
 
     const req = mockRequest({ ...user });
@@ -86,6 +87,7 @@ describe('Test api/user endpoints', () => {
       name: 'john',
       email: 'john@mail.com',
       password: 'password',
+      isTestingMode: true,
     };
 
     const tempReq = mockRequest({ ...user2 });
@@ -176,6 +178,7 @@ describe('Test api/user endpoints', () => {
       name: 'memberA',
       email: 'chm1@mail.com',
       password: 'password',
+      isTestingMode: true,
     };
 
     let tempReq = mockRequest({ ...userA });
@@ -186,6 +189,7 @@ describe('Test api/user endpoints', () => {
       name: 'memberB',
       email: 'chm2@mail.com',
       password: 'password',
+      isTestingMode: true,
     };
 
     tempReq = mockRequest({ ...userB });

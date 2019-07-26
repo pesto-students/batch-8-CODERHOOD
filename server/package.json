@@ -7,7 +7,7 @@
     "start": "yarn build && node dist/index.js",
     "build": "babel src/ -d dist",
     "dev": "nodemon --exec babel-node src/index.js",
-    "test": "jest --runInBand --passWithNoTests",
+    "test": "jest src/ --runInBand --passWithNoTests",
     "pretest": "yarn"
   },
   "author": "",
