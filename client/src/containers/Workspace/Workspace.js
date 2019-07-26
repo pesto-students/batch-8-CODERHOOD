@@ -625,17 +625,17 @@ function Workspace({ history, match }) {
 
           <div className={'column channel-body ' + getMessageContainerClass()}>
             <ChannelHeader
-              heading={`${ 
+              heading={
                 activeChannel.name
-                  ? '#'+activeChannel.name
+                  ? '#' + activeChannel.name
                   : 'Hi, ' + currentUser.name
-              }`}
+              }
               actions={[]}
               isAuthorized={isAuthorized()}
               handleDeleteChannel={handleDeleteChannel}
               handleViewMembers={handleViewMembers}
               isUser={isUserTabOpened}
-              showButton = {activeChannel.id ? true: false}
+              showButton={activeChannel.id ? true : false}
               burgerHandler={() => {
                 setSidebarOpen(true);
               }}
