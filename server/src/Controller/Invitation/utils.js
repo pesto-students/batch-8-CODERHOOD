@@ -1,5 +1,7 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-underscore-dangle */
 import { findMany, findOne, updateArrayField } from '../../Repositories/genericRepository';
-import { invitationModel, workspaceModel } from '../../Model';
+import { invitationModel, workspaceModel, channelModel } from '../../Model';
 
 async function acceptWorkspaceInvite(wsModel, workspaceId, memberId) {
   try {
@@ -29,8 +31,14 @@ async function acceptAllWorkspaceInvites(userId, userEmail, skipInviteChecks = f
   const { data } = userInvitations;
   // eslint-disable-next-line no-restricted-syntax
   for (const invite of data) {
-    // eslint-disable-next-line no-await-in-loop
     await acceptWorkspaceInvite(workspaceModel, invite.workspace, userId);
+    const workspaceId = invite.workspace;
+    if (workspaceId) {
+      const channel = await findOne(channelModel, { workspace: workspaceId, name: 'General' });
+      if (channel) {
+        await updateArrayField(channelModel, 'add', { _id: channel._id }, userId);
+      }
+    }
   }
 
   // data.forEach(async (invite) => {
