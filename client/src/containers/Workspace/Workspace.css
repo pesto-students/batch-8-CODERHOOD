@@ -41,7 +41,7 @@ article .media:last-child {
 }
 
 .messages {
-  height: auto;
+  height: 92vh;
 }
 
 .channel-name h4 {
