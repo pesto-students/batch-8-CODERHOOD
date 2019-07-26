@@ -1,14 +1,18 @@
 .tabs li {
-    width: 25vw;
+  width: 25vw;
 }
 
-.tabs li.is-active a{
-    border-bottom-color: #b4304c;
-    color: #b4304c;
+.tabs ul {
+  width: 98%;
+}
+
+.tabs li.is-active a {
+  border-bottom-color: #b4304c;
+  color: #b4304c;
 }
 
 @media only screen and (max-width: 765px) {
-    .tabs li {
-        width: 49vw;
-    }
+  .tabs li {
+    width: 49vw;
+  }
 }

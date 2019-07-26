@@ -1,16 +1,15 @@
 .grid {
-    padding: 2em;
-    padding-top: 0em;
-    display: flex;
-    flex-wrap: wrap;
+  padding: 1em;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .grid__item {
-    margin: 0.5em;
-    flex: 0 1 auto;
+  margin: 0.5em;
+  flex: 0 1 auto;
 }
 
 div.heading {
-    margin: 0;
-    margin-left: 2vw;
+  margin: 0;
+  margin-left: 2vw;
 }
