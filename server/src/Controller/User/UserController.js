@@ -50,7 +50,7 @@ const getSelectedUsers = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, isTestingMode } = req.body;
     const { userCreated, userAlreadyExists } = userResponse;
     const user = await getExistingUser(userModel, email);
     if (user) {
@@ -71,8 +71,9 @@ const createUser = async (req, res, next) => {
     });
 
     if (result) {
+      const testingMode = isTestingMode ? true : false;
       // eslint-disable-next-line no-underscore-dangle
-      await acceptAllWorkspaceInvites(result._id, email, true);
+      await acceptAllWorkspaceInvites(result._id, email, testingMode);
     }
 
     return res.status(201).send(successHandler(userCreated, result));

@@ -86,6 +86,7 @@ describe('Test api/user endpoints', () => {
       name: 'john',
       email: 'john@mail.com',
       password: 'password',
+      isTestingMode: true,
     };
 
     const tempReq = mockRequest({ ...user2 });
